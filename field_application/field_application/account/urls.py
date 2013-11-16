@@ -1,5 +1,4 @@
 from django.conf.urls import url, patterns
-from django.contrib.auth import views as auth_views
 
 from field_application.account.views import SignOutView, SignInView 
 from field_application.account.views import SignUpView, ResetPasswordView
