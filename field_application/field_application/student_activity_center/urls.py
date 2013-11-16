@@ -4,5 +4,5 @@ from field_application.student_activity_center.views import ApplyView
 
 urlpatterns = patterns(
     '',
-    url(r'^signin/$', ApplyView.as_view(), name='signin'),
+    url(r'^apply/$', ApplyView.as_view(), name='apply'),
  )

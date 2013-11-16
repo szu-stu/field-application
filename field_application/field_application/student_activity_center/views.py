@@ -11,17 +11,19 @@ from field_application.student_activity_center.forms \
 
 class ApplyView(View):
 
+    @method_decorator(login_required)
     def get(self, request):
         return render(request, 
                       'student_activity_center/apply.html', 
-                      StudentActivityCenterApplicationForm())
+                      {'form': StudentActivityCenterApplicationForm()})
 
+    @method_decorator(login_required)
     def post(self, request):
         form = StudentActivityCenterApplicationForm(request.POST)
         if not form.is_valid():
             return render(request, 'student_activity_center/apply.html', form)
         app = form.save(commit=False)
-        app.organization = request.user
+        app.organization = request.user.organization
         app.save()
         return HttpResponseRedirect(reverse('home'))
 
