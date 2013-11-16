@@ -3,9 +3,13 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 
 from field_application.account.models import Organization
 
+
+class SignInForm(AuthenticationForm):
+    username = forms.ModelChoiceField(queryset=User.objects.all())
 
 class SignUpForm(UserCreationForm):
 

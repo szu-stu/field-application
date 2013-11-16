@@ -4,6 +4,7 @@
 <a href="{% url 'account:signup' %}">sign up</a>
 <a href="{% url 'account:signout' %}">sign out</a>
 <a href="{% url 'account:signin' %}">sign in</a>
+<a href="{% url 'account:reset_password' %}"> reset password</a>
 
 {% if user.is_authenticated %}
 <h1> has login </h1>
