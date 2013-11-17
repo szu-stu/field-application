@@ -21,7 +21,7 @@ class StudentActivityCenterApplication(models.Model):
         ('EVE','晚上'),
     )
 
-    organization = models.OneToOneField(Organization)
+    organization = models.ForeignKey(Organization)
     place = models.CharField(max_length=20, choices=PLACE)
     date = models.DateField()
     time = models.CharField(max_length=10, choices=TIME)

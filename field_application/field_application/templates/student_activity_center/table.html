@@ -2,13 +2,13 @@
 <head>
     <style>
         .application_exist{
-            width: 20px;
-            height: 20px;
+            width: 50px;
+            height: 50px;
             background-color: green;
         }
         .application_pass{
-            width: 20px;
-            height: 20px;
+            width: 50px;
+            height: 50px;
             background-color: red;
         }
         a{ display: block; }
@@ -23,20 +23,25 @@
 <div> -------------- </div>
 <a href="{% url 'student_activity_center:apply' %}"> student_activity_center apply</a>
 <a href="{% url 'student_activity_center:table' %}"> student_activity_center table</a>
+<a href="{% url 'student_activity_center:listing' %}"> student_activity_center list</a>
 <h1>table</h1>
     <table>
-        {% for place in table %}
-        <tr>
-            {% for app in place %}
-            <td> 
-                {% if app %}
-                <div class="application_pass">
-                {{ app.activity }}
-                </div>
-                {% endif %}
-            </td> 
-            {% endfor %}
-        </tr>
+        {% for place, apps in table.items %}
+            <tr>
+                {% for app in apps %}
+                <td> 
+                    {% if app %}
+                        <div class="application_pass">
+                        {{ app.activity }}
+                        {{ app.pk }}
+                        </div>
+                    {% else %}
+                        <div class="application_exist">
+                        </div>
+                    {% endif %}
+                </td> 
+                {% endfor %}
+            </tr>
         {% endfor %}
     </table>
 </body>
