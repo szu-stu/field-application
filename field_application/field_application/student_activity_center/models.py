@@ -1,4 +1,7 @@
 #-*- coding: utf-8 -*-
+from datetime import datetime, timedelta
+
+from django.utils import timezone
 from django.db import models
 from field_application.account.models import Organization
 
@@ -34,4 +37,38 @@ class StudentActivityCenterApplication(models.Model):
     sponsorship = models.CharField(max_length=30, blank=True, null=True)
     sponsorship_usage = models.CharField(max_length=40, blank=True, null=True)
 
+    @classmethod
+    def generate_table(cls):
+        field_used_this_week_applications = cls.get_application_this_week()
+        table = {}
+        for short_name, full_name in cls.PLACE:
+            table[short_name] = []
+            for i in range(0, 7):
+                table[short_name].append(None)
+            apps = field_used_this_week_applications.filter(place=short_name)
+            for app in apps:
+                table[short_name][app.date.weekday()] = app
+        table['date'] = cls.generate_date_list()
+        return table
+
+    @classmethod
+    def generate_date_list(cls):
+        date_list = []
+        now = timezone.now()
+        date_of_this_Monday = now - timedelta(days=now.weekday())
+        for i in range(0, 7):
+            date_list.append(date_of_this_Monday + timedelta(days=i))
+        return date_list
+
+    @classmethod
+    def get_application_this_week(cls):
+        ''' get all applications whose applied field
+        is going to be used this week '''
+        now = timezone.now()
+        date_of_this_Monday = now - timedelta(days=now.weekday())
+        date_of_next_Monday = date_of_this_Monday + timedelta(days=7)
+        application_this_week = cls.objects.filter(
+            date__gte=date_of_this_Monday,
+            date__lt=date_of_next_Monday)
+        return application_this_week
 

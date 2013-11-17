@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 
 from field_application.student_activity_center.forms \
         import StudentActivityCenterApplicationForm
+from field_application.student_activity_center.models \
+        import StudentActivityCenterApplication
 
 
 class ApplyView(View):
@@ -27,3 +29,16 @@ class ApplyView(View):
         app.save()
         return HttpResponseRedirect(reverse('home'))
 
+
+def display_table(request):
+    table = StudentActivityCenterApplication.generate_table()
+    return render(request,
+                  'student_activity_center/table.html',
+                  {'table': table})
+
+
+def display_listing(request):
+    listing = StudentActivityCenterApplication.get_application_this_week()
+    return render(request,
+                  'student_activity_center/listing.html',
+                  {'listing': listing})
