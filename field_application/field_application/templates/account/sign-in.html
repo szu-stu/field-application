@@ -12,7 +12,11 @@
 <h1> has not login </h1>
 {% endif %}
 
-    <form action="{% url 'account:signin' %}" method="POST" >
+{% if next %}
+<form action="{% url 'account:signin' %}?next={{ next }}" method="POST" >
+{% else %}
+<form action="{% url 'account:signin' %}" method="POST" >
+{% endif %}
     {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="submit" />
