@@ -23,7 +23,8 @@ class ApplyView(View):
     def post(self, request):
         form = StudentActivityCenterApplicationForm(request.POST)
         if not form.is_valid():
-            return render(request, 'student_activity_center/apply.html', form)
+            return render(request, 'student_activity_center/apply.html',
+                          {'form': form})
         app = form.save(commit=False)
         app.organization = request.user.organization
         app.save()

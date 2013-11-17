@@ -44,10 +44,17 @@ class StudentActivityCenterApplication(models.Model):
         for short_name, full_name in cls.PLACE:
             table[short_name] = []
             for i in range(0, 7):
-                table[short_name].append(None)
+                table[short_name].append([None, None, None])
             apps = field_used_this_week_applications.filter(place=short_name)
             for app in apps:
-                table[short_name][app.date.weekday()] = app
+                if app.time == 'MOR':
+                    table[short_name][app.date.weekday()][0] = app
+                elif app.time == 'AFT':
+                    table[short_name][app.date.weekday()][1] = app
+                elif app.time == 'EVE':
+                    table[short_name][app.date.weekday()][2] = app
+                else:
+                    raise Exception('invalid time')
         table['date'] = cls.generate_date_list()
         return table
 
