@@ -1,9 +1,16 @@
 #-*- coding: utf-8 -*-
+import os
 from datetime import datetime, timedelta
 
 from django.utils import timezone
 from django.db import models
 from field_application.account.models import Organization
+
+
+def file_save_path(instance, filename):
+    path = 'student_activity_center'
+    path = os.path.join(path, instance.organization.user.username)
+    return os.path.join(path, instance.activity + '_' + filename)
 
 
 class StudentActivityCenterApplication(models.Model):
@@ -28,6 +35,7 @@ class StudentActivityCenterApplication(models.Model):
     activity = models.CharField(max_length=30)
     approved = models.BooleanField(default=False)
     application_time = models.DateTimeField(auto_now_add=True)
+    plan_file = models.FileField(upload_to=file_save_path)
 
     applicant_name = models.CharField(max_length=10)
     applicant_phone_number = models.CharField(max_length=30)
@@ -78,4 +86,5 @@ class StudentActivityCenterApplication(models.Model):
             date__gte=date_of_this_Monday,
             date__lt=date_of_next_Monday)
         return application_this_week
+
 
