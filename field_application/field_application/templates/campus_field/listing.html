@@ -1,0 +1,51 @@
+<html>
+<head>
+    <style>
+        .application_exist{
+            width: 20px;
+            height: 20px;
+            background-color: green;
+        }
+        .application_pass{
+            width: 20px;
+            height: 20px;
+            background-color: red;
+        }
+        a{ display: block; }
+    </style>
+</head>
+
+<body>
+<a href="{% url 'account:signup' %}">sign up</a>
+<a href="{% url 'account:signout' %}">sign out</a>
+<a href="{% url 'account:signin' %}">sign in</a>
+<a href="{% url 'account:reset_password' %}"> reset password</a>
+<div> -------------- </div>
+<a href="{% url 'student_activity_center:apply' %}"> student_activity_center apply</a>
+<a href="{% url 'student_activity_center:table' %}"> student_activity_center table</a>
+<a href="{% url 'student_activity_center:listing' %}"> student_activity_center list</a>
+<h1>list</h1>
+    <table>
+        {% for app in listing %}
+        <tr>
+            <td> 
+                {% if app %}
+                    {{ app.activity }}
+                    {{ app.date }}
+                    {{ app.place }}
+                    {{ app.get_time_display }}
+                    {{ app.approved }}
+                    {{ app.application_time }}
+                    {{ app.applicant_name }}
+                    {{ app.application_time }}
+                    {{ app.activity_summary }}
+                    {{ app.sponsor }}
+                    {{ app.sponsorship }}
+                    {{ app.sponsorship_usage }}
+                {% endif %}
+            </td> 
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

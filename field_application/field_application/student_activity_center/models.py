@@ -40,7 +40,6 @@ class StudentActivityCenterApplication(models.Model):
     applicant_name = models.CharField(max_length=10)
     applicant_phone_number = models.CharField(max_length=30)
     activity_summary = models.CharField(max_length=200)
-    # plan document
     sponsor = models.CharField(max_length=30, blank=True, null=True)
     sponsorship = models.CharField(max_length=30, blank=True, null=True)
     sponsorship_usage = models.CharField(max_length=40, blank=True, null=True)

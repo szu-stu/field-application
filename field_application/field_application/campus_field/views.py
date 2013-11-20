@@ -1,0 +1,46 @@
+import logging
+
+from django.views.generic import View
+from django.shortcuts import render, render_to_response
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django.forms.forms import NON_FIELD_ERRORS
+
+from field_applicationi.campus_field.forms import ExhibitApplicationForm,
+                                                  PublicityApplicationForm
+from field_applicationi.campus_field.models import ExhibitApplication,
+                                                   PublicityApplication
+
+
+class ApplyExhibitView(View):
+
+    @method_decorator(login_required)
+    def get(self, request):
+        return render(request, 'campus_field/apply-exhibit.html', 
+                      {'form': ExhibitApplicationForm()})
+
+    @method_decorator(login_required)
+    def post(self, request):
+        form = ExhibitApplicationForm(request.POST,
+                                      request.FILES)
+        if not form.is_valid():
+            return render(request, 'campus_field/apply-exhibit.html', 
+                          {'form': form})
+        app = form.save(commit=False)
+        app.organization = request.user.organization
+        app.save()
+        return HttpResponseRedirect(reverse('home'))
+
+
+def display_table(request):
+    table = ExhibitApplication.generate_table()
+    return render(request, 'campus_field/table.html',
+                  {'table': table})
+
+
+def display_listing(request):
+    listing = ExhibitApplication.objects.all()
+    return render(request, 'campus_field/listing.html',
+                  {'listing': listing})

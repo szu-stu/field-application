@@ -34,6 +34,16 @@ class SignInView(View):
             return render(request, 'account/sign-in.html', {'form': form})
 
         user = form.get_user()
+        if not hasattr(user, 'organization'):
+            error_message = '''some one is using a user who don't have
+                               corresponding organization(super user
+                               for example) to apply. Please check it.'''
+            logger.error(error_message)
+            form.errors['__all__'] = form.error_class(
+                ["user doesn't has corresponding org"]
+            )
+            return render(request, 'account/sign-in.html', {'form': form})
+
         login(request, user)
         UserActivityLog.objects.create(user=user,
                                        ip_address=get_client_ip(request),
