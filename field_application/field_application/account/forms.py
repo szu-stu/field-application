@@ -9,7 +9,8 @@ from field_application.account.models import Organization
 
 
 class SignInForm(AuthenticationForm):
-    username = forms.ModelChoiceField(queryset=User.objects.all())
+    username = forms.ModelChoiceField(queryset=User.objects.all(),
+                                      empty_label='please chose your org')
 
 class SignUpForm(UserCreationForm):
 

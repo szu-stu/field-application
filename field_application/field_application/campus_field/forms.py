@@ -13,8 +13,10 @@ from field_application.campus_field.models import PublicityApplication
 
 
 class ExhibitApplicationForm(forms.ModelForm):
-    time = forms.MultipleChoiceField(choices=ExhibitApplication.TIME,
-                                     widget=CheckboxSelectMultiple)
+    #place = forms.MultipleChoiceField(choices=ExhibitApplication.PLACE,
+    #                                  widget=CheckboxSelectMultiple)
+    #time = forms.MultipleChoiceField(choices=ExhibitApplication.TIME,
+    #                                 widget=CheckboxSelectMultiple)
     exhibition = forms.ChoiceField(choices=ExhibitApplication.EXHIBITION,
                                    widget=RadioSelect)
     class Meta:

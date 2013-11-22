@@ -55,8 +55,9 @@ class ExhibitApplication(CampusFieldApplication):
         ('POS', u'poster'),
     )
 
+    #place = models.CharField(max_length=200, choices=PLACE)
     place = MultiSelectField(max_length=200, choices=PLACE)
-    time = models.CharField(max_length=10, choices=TIME)
+    time = MultiSelectField(max_length=10, choices=TIME)
     exhibition = models.CharField(max_length=20, choices=EXHIBITION)
     other_exhibition = models.CharField(max_length=20,
                                         blank=True, null=True)
