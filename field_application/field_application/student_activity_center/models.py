@@ -16,16 +16,16 @@ def file_save_path(instance, filename):
 class StudentActivityCenterApplication(models.Model):
 
     PLACE = (
-        ('Square','学生活动中心前广场'),
-        ('LectureHall','一楼影视报告厅'),
-        ('3rdFloorEast','学生活动中心三楼天台(东)'),
-        ('3rdFloorWest','学生活动中心三楼天台(西)'),
-        ('TheStoneDock','石头坞广场'),
+        ('Square', u'学生活动中心前广场'),
+        ('LectureHall', u'一楼影视报告厅'),
+        ('3rdFloorEast', u'学生活动中心三楼天台(东)'),
+        ('3rdFloorWest', u'学生活动中心三楼天台(西)'),
+        ('TheStoneDock', u'石头坞广场'),
     )
     TIME = (
-        ('MOR','早上'),
-        ('AFT','下午'),
-        ('EVE','晚上'),
+        ('MOR', u'早上'),
+        ('AFT', u'下午'),
+        ('EVE', u'晚上'),
     )
 
     organization = models.ForeignKey(Organization)

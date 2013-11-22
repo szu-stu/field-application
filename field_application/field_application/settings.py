@@ -133,8 +133,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
 
+    'field_application.custom',
     'field_application.account',
     'field_application.student_activity_center',
+    'field_application.campus_field',
 )
 
 # A sample logging configuration. The only tangible logging

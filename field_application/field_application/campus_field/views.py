@@ -8,10 +8,10 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.forms.forms import NON_FIELD_ERRORS
 
-from field_applicationi.campus_field.forms import ExhibitApplicationForm,
-                                                  PublicityApplicationForm
-from field_applicationi.campus_field.models import ExhibitApplication,
-                                                   PublicityApplication
+from field_application.campus_field.forms import ExhibitApplicationForm
+from field_application.campus_field.forms import PublicityApplicationForm
+from field_application.campus_field.models import ExhibitApplication
+from field_application.campus_field.models import PublicityApplication
 
 
 class ApplyExhibitView(View):
