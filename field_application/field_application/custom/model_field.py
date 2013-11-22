@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import capfirst
+from django.core import exceptions
 
 from field_application.custom.form_field import MultiSelectFormField
 

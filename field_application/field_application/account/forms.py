@@ -10,7 +10,7 @@ from field_application.account.models import Organization
 
 class SignInForm(AuthenticationForm):
     username = forms.ModelChoiceField(queryset=User.objects.all(),
-                                      empty_label='please chose your org')
+                                      empty_label='请选择组织')
 
 class SignUpForm(UserCreationForm):
 

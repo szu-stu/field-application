@@ -1,6 +1,16 @@
 <html>
 <head>
     <style>
+        .application_exist{
+            width: 20px;
+            height: 20px;
+            background-color: green;
+        }
+        .application_pass{
+            width: 20px;
+            height: 20px;
+            background-color: red;
+        }
         a{ display: block; }
     </style>
 </head>
@@ -20,11 +30,21 @@
 <a href="{% url 'campus_field:table' %}"> campus_field table</a>
 <a href="{% url 'campus_field:listing' %}"> campus_field list</a>
 <div> -------------- </div>
-<a href="{% url 'meeting_room:apply' %}"> meeting room apply</a>
+<a href="{% url 'meeting_room:apply' %}"> meeting room apply publicity</a>
 <a href="{% url 'meeting_room:table' %}"> meeting room table</a>
 <a href="{% url 'meeting_room:listing' %}"> meeting room list</a>
 <div> -------------- </div>
-
+<h1>list</h1>
+    <table>
+        {% for app in listing %}
+        <tr>
+            <td> 
+                {% if app %}
+                    {{ app }}
+                {% endif %}
+            </td> 
+        </tr>
+        {% endfor %}
+    </table>
 </body>
-
 </html>

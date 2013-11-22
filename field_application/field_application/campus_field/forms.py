@@ -50,9 +50,6 @@ class ExhibitApplicationForm(forms.ModelForm):
 
 
 class PublicityApplicationForm(forms.ModelForm):
-    exhibition = forms.MultipleChoiceField(
-            choices=ExhibitApplication.EXHIBITION,
-            widget=CheckboxSelectMultiple)
     class Meta:
        model = PublicityApplication
        exclude = ['organization', 'approved', 'application_time']

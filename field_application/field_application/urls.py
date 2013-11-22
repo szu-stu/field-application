@@ -15,7 +15,8 @@ urlpatterns = patterns('',
                 namespace='student_activity_center')),
     url(r'^campus_field/', include('field_application.campus_field.urls',
                                    namespace='campus_field')),
-
+    url(r'^meeting-room/', include('field_application.meeting_room.urls',
+                                   namespace='meeting_room')),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
