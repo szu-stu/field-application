@@ -49,7 +49,6 @@ class ExhibitApplication(CampusFieldApplication):
     )
 
     EXHIBITION = (
-        ('OTH', u'其它'),
         ('PIC', u'图片'),
         ('POS', u'海报'),
     )
@@ -65,10 +64,10 @@ class ExhibitApplication(CampusFieldApplication):
 class PublicityApplication(CampusFieldApplication):
 
     PLACE = (
-        ('', u'荔山餐厅前空地'),
-        ('', u'西南餐厅前空地'),
-        ('', u'文山湖路口'),
-        ('', u'桂庙路口'),
+        ('LS', u'荔山餐厅前空地'),
+        ('SW', u'西南餐厅前空地'),
+        ('WS', u'文山湖路口'),
+        ('GM', u'桂庙路口'),
         ('CD', u'CD座文化长廊'),
         ('A', u'A座文化大厅'),
     )
@@ -90,12 +89,11 @@ class PublicityApplication(CampusFieldApplication):
     ACTIVITY_TYPE = (
         ('LEAFLET', '派传单'),
         ('STAND', '设点'),
-        ('OTHER', '其它'),
     )
 
     activity_type = models.CharField(max_length=10, choices=ACTIVITY_TYPE)
     other_activity_type = models.CharField(max_length=10,
                                            blank=True, null=True)
-    place = MultiSelectField(max_length=200)
+    place = MultiSelectField(max_length=200, choices=PLACE)
     time = models.CharField(max_length=5, choices=TIME)
 
