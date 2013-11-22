@@ -34,6 +34,26 @@ class ApplyExhibitView(View):
         return HttpResponseRedirect(reverse('home'))
 
 
+class ApplyPublicityView(View):
+
+    @method_decorator(login_required)
+    def get(self, request):
+        return render(request, 'campus_field/apply-publicity.html', 
+                      {'form': PublicityApplicationForm()})
+
+    @method_decorator(login_required)
+    def post(self, request):
+        form = PublicityApplicationForm(request.POST,
+                                        request.FILES)
+        if not form.is_valid():
+            return render(request, 'campus_field/apply-publicity.html', 
+                          {'form': form})
+        app = form.save(commit=False)
+        app.organization = request.user.organization
+        app.save()
+        return HttpResponseRedirect(reverse('home'))
+
+
 def display_table(request):
     table = ExhibitApplication.generate_table()
     return render(request, 'campus_field/table.html',

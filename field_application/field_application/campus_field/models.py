@@ -37,11 +37,10 @@ class CampusFieldApplication(models.Model):
 class ExhibitApplication(CampusFieldApplication):
 
     PLACE = (
-        ('Square', u'学生活动中心前广场'),
-        ('LectureHall', u'一楼影视报告厅'),
-        ('3rdFloorEast', u'学生活动中心三楼天台(东)'),
-        ('3rdFloorWest', u'学生活动中心三楼天台(西)'),
-        ('TheStoneDock', u'石头坞广场'),
+        ('CD', u'CD座文化长廊'),
+        ('A', u'A座文化大厅'),
+        ('SW', u'西南餐厅前空地'),
+        ('LS', u'荔山餐厅前空地'),
     )
     
     TIME = (
@@ -50,12 +49,11 @@ class ExhibitApplication(CampusFieldApplication):
     )
 
     EXHIBITION = (
-        ('OTH', u'other'),
-        ('PIC', u'picture'),
-        ('POS', u'poster'),
+        ('OTH', u'其它'),
+        ('PIC', u'图片'),
+        ('POS', u'海报'),
     )
 
-    #place = models.CharField(max_length=200, choices=PLACE)
     place = MultiSelectField(max_length=200, choices=PLACE)
     time = MultiSelectField(max_length=10, choices=TIME)
     exhibition = models.CharField(max_length=20, choices=EXHIBITION)
@@ -67,35 +65,37 @@ class ExhibitApplication(CampusFieldApplication):
 class PublicityApplication(CampusFieldApplication):
 
     PLACE = (
-        ('Square', '学生活动中心前广场'),
-        ('LectureHall', '一楼影视报告厅'),
-        ('3rdFloorEast', '学生活动中心三楼天台(东)'),
-        ('3rdFloorWest', '学生活动中心三楼天台(西)'),
-        ('TheStoneDock', '石头坞广场'),
+        ('', u'荔山餐厅前空地'),
+        ('', u'西南餐厅前空地'),
+        ('', u'文山湖路口'),
+        ('', u'桂庙路口'),
+        ('CD', u'CD座文化长廊'),
+        ('A', u'A座文化大厅'),
     )
    
     TIME = (
-        ('p1', '8-9'),
-        ('P2', '8-9'),
-        ('P3', '8-9'),
-        ('P4', '8-9'),
-        ('P5', '8-9'),
-        ('P6', '8-9'),
-        ('P7', '8-9'),
-        ('P8', '8-9'),
-        ('P9', '8-9'),
-        ('P1', '8-9'),
-        ('P1', '8-9'),
+        (8, '8点-9点'),
+        (9, '9点-10点'),
+        (10, '10点-11点'),
+        (11, '11点-12点'),
+        (12, '12点-13点'),
+        (13, '13点-14点'),
+        (14, '14点-15点'),
+        (15, '15点-16点'),
+        (16, '16点-17点'),
+        (17, '17点-18点'),
+        (18, '18点-19点'),
     )
 
     ACTIVITY_TYPE = (
-        ('LEAFLET', 'deliver leaflet'),
-        ('STAND', 'set stand'),
+        ('LEAFLET', '派传单'),
+        ('STAND', '设点'),
+        ('OTHER', '其它'),
     )
 
     activity_type = models.CharField(max_length=10, choices=ACTIVITY_TYPE)
     other_activity_type = models.CharField(max_length=10,
                                            blank=True, null=True)
-    place = models.CharField(max_length=200)
+    place = MultiSelectField(max_length=200)
     time = models.CharField(max_length=5, choices=TIME)
 
