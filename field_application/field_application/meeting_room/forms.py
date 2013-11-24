@@ -11,8 +11,8 @@ from field_application.meeting_room.models import MeetingRoomApplication
 
 
 class MeetingRoomApplicationForm(forms.ModelForm):
-    #place = forms.ChoiceField(choices=MeetingRoomApplication.PLACE,
-    #                          widget=RadioSelect())
+    place = forms.ChoiceField(choices=MeetingRoomApplication.PLACE,
+                              widget=RadioSelect())
     class Meta:
         model = MeetingRoomApplication
         exclude = ['organization', 'approved', 'application_time']

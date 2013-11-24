@@ -4,7 +4,9 @@ from datetime import datetime, timedelta
 
 from django.utils import timezone
 from django.db import models
+
 from field_application.account.models import Organization
+from field_application.custom.utils import generate_date_list_this_week
 
 
 def file_save_path(instance, filename):
@@ -48,31 +50,19 @@ class StudentActivityCenterApplication(models.Model):
     def generate_table(cls):
         field_used_this_week_applications = cls.get_application_this_week()
         table = {}
+        empty_time_dict = { str(i): None for i in range(0, 3) }
         for short_name, full_name in cls.PLACE:
-            table[short_name] = []
+            table[full_name] = []
             for i in range(0, 7):
-                table[short_name].append([None, None, None])
+                table[full_name].append(list(empty_time_dict))
             apps = field_used_this_week_applications.filter(place=short_name)
             for app in apps:
-                if app.time == 'MOR':
-                    table[short_name][app.date.weekday()][0] = app
-                elif app.time == 'AFT':
-                    table[short_name][app.date.weekday()][1] = app
-                elif app.time == 'EVE':
-                    table[short_name][app.date.weekday()][2] = app
+                if app.time in empty_time_dict:
+                    table[full_name][app.date.weekday()][app.time] = app
                 else:
                     raise Exception('invalid time')
-        table['date'] = cls.generate_date_list()
+        table['date'] = generate_date_list_this_week()
         return table
-
-    @classmethod
-    def generate_date_list(cls):
-        date_list = []
-        now = timezone.now()
-        date_of_this_Monday = now - timedelta(days=now.weekday())
-        for i in range(0, 7):
-            date_list.append(date_of_this_Monday + timedelta(days=i))
-        return date_list
 
     @classmethod
     def get_application_this_week(cls):

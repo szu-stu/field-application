@@ -44,7 +44,7 @@ class MeetingRoomApplication(models.Model):
     meeting_topic = models.CharField(max_length=50)
     organization = models.ForeignKey(Organization)
     date = models.DateField()
-    place = MultiSelectField(max_length=200, choices=PLACE)
+    place = models.CharField(max_length=200, choices=PLACE)
     time = MultiSelectField(max_length=15, choices=TIME)
     applicant_name = models.CharField(max_length=10)
     applicant_phone_number = models.CharField(max_length=30)
