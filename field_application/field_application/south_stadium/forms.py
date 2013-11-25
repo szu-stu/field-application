@@ -5,20 +5,21 @@ from django import forms
 from django.utils import timezone
 from django.forms import ModelForm
 from django.forms.extras.widgets import SelectDateWidget
-from django.forms import Textarea
+from django.forms import Textarea, RadioSelect
+from django.forms import CheckboxSelectMultiple 
 
-from field_application.student_activity_center.models \
-        import StudentActivityCenterApplication
+from field_application.south_stadium.models import SouthStadiumApplication
 
 
-class StudentActivityCenterApplicationForm(ModelForm):
+class SouthStadiumApplicationForm(forms.ModelForm):
     class Meta:
-        model = StudentActivityCenterApplication
-        exclude = ['organization', 'approved', 'application_time']
-        widgets = {
-            'date': SelectDateWidget(),
-            'activity_summary': Textarea(),
-        }
+       model = SouthStadiumApplication
+       exclude = ['organization', 'approved', 'application_time']
+       widgets = {
+           'date': SelectDateWidget(),
+           'activity_summary': Textarea(),
+           'remarks': Textarea(),
+       }
 
     def clean_date(self):
         date = self.cleaned_data.get('date')
@@ -30,12 +31,11 @@ class StudentActivityCenterApplicationForm(ModelForm):
         return date
 
     def clean(self):
-        super(StudentActivityCenterApplicationForm, self).clean()
-        if StudentActivityCenterApplication.objects.filter(
-                place=self.cleaned_data.get('place'),
+        super(SouthStadiumApplicationForm, self).clean()
+        if SouthStadiumApplication.objects.filter(
                 date=self.cleaned_data.get('date'),
                 time=self.cleaned_data.get('time'),
                 approved=True).exists():
-            raise forms.ValidationError(u'该场地已有人使用')
+            raise forms.ValidationError(u'该时间段已有人使用')
         return self.cleaned_data
 

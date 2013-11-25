@@ -34,8 +34,9 @@ class CampusFieldApplication(models.Model):
     sponsorship_usage = models.CharField(max_length=40, blank=True, null=True)
     remarks = models.CharField(max_length=300, blank=True, null=True)
 
+# the date of this modell is diffenent, need to modified
     @classmethod
-    def get_application_this_week(cls):
+    def get_application_a_week(cls):
         ''' get all applications whose applied field
         is going to be used this week '''
         now = timezone.now()

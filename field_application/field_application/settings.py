@@ -146,6 +146,7 @@ INSTALLED_APPS = (
     'field_application.student_activity_center',
     'field_application.campus_field',
     'field_application.meeting_room',
+    'field_application.south_stadium',
 )
 
 # A sample logging configuration. The only tangible logging
