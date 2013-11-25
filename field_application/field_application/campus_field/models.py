@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 from django.utils import timezone
 from django.db import models
+from django.db.models import Q
 
 from field_application.account.models import Organization
 from field_application.custom.model_field import MultiSelectField
@@ -34,18 +35,16 @@ class CampusFieldApplication(models.Model):
     sponsorship_usage = models.CharField(max_length=40, blank=True, null=True)
     remarks = models.CharField(max_length=300, blank=True, null=True)
 
-# the date of this modell is diffenent, need to modified
     @classmethod
-    def get_application_a_week(cls):
-        ''' get all applications whose applied field
-        is going to be used this week '''
+    def get_applications_a_week(cls, offset=0):
+        ''' most are the same as custom.utils.get_application_a_week
+            except the filter logic '''
         now = timezone.now()
-        date_of_this_Monday = now - timedelta(days=now.weekday())
-        date_of_next_Monday = date_of_this_Monday + timedelta(days=7)
-        application_this_week = cls.objects.filter(
-            date__gte=date_of_this_Monday,
-            date__lt=date_of_next_Monday)
-        return application_this_week
+        first_day = now - timedelta(days=now.weekday()+offset)
+        last_day = first_day + timedelta(days=6)
+        applications_in_the_next_7days = cls.objects.filter(
+            Q(start_date__lte=last_day) & Q(end_date__gte=first_day))
+        return applications_in_the_next_7days 
 
 
 class ExhibitApplication(CampusFieldApplication):
