@@ -1,5 +1,4 @@
 #-*- coding: utf-8 -*-
-import os
 from datetime import datetime, timedelta
 
 from django.utils import timezone
@@ -7,12 +6,8 @@ from django.db import models
 
 from field_application.account.models import Organization
 from field_application.custom.utils import generate_date_list_this_week
-
-
-def file_save_path(instance, filename):
-    path = 'student_activity_center'
-    path = os.path.join(path, instance.organization.user.username)
-    return os.path.join(path, instance.activity + '_' + filename)
+from field_application.custom.utils import get_application_this_week 
+from field_application.utils.models import file_save_path
 
 
 class StudentActivityCenterApplication(models.Model):
@@ -37,7 +32,8 @@ class StudentActivityCenterApplication(models.Model):
     activity = models.CharField(max_length=30)
     approved = models.BooleanField(default=False)
     application_time = models.DateTimeField(auto_now_add=True)
-    plan_file = models.FileField(upload_to=file_save_path)
+    plan_file = models.FileField(
+            upload_to=file_save_path('student_activity_center'))
 
     applicant_name = models.CharField(max_length=10)
     applicant_phone_number = models.CharField(max_length=30)
@@ -48,7 +44,7 @@ class StudentActivityCenterApplication(models.Model):
 
     @classmethod
     def generate_table(cls):
-        field_used_this_week_applications = cls.get_application_this_week()
+        field_used_this_week_applications = get_application_this_week(cls)
         table = {}
         empty_time_dict = { str(i): None for i in range(0, 3) }
         for short_name, full_name in cls.PLACE:
@@ -63,17 +59,3 @@ class StudentActivityCenterApplication(models.Model):
                     raise Exception('invalid time')
         table['date'] = generate_date_list_this_week()
         return table
-
-    @classmethod
-    def get_application_this_week(cls):
-        ''' get all applications whose applied field
-        is going to be used this week '''
-        now = timezone.now()
-        date_of_this_Monday = now - timedelta(days=now.weekday())
-        date_of_next_Monday = date_of_this_Monday + timedelta(days=7)
-        application_this_week = cls.objects.filter(
-            date__gte=date_of_this_Monday,
-            date__lt=date_of_next_Monday)
-        return application_this_week
-
-

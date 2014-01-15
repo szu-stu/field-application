@@ -1,20 +1,17 @@
 #-*- coding: utf-8 -*-
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from django.utils import timezone
 from django.db import models
 
 from field_application.account.models import Organization
 from field_application.custom.model_field import MultiSelectField
-from field_application.custom.utils import generate_date_list_this_week
+from field_application.custom.utils import gennerate_date_list_7days 
 from field_application.custom.utils import get_applications_a_week 
+from field_application.utils.models import file_save_path
+from field_application.utils.models import get_second_key
 
-
-def file_save_path(instance, filename):
-    path = 'south_stadium'
-    path = os.path.join(path, instance.organization.user.username)
-    return os.path.join(path, instance.activity + '_' + filename)
 
 class SouthStadiumApplication(models.Model):
 
@@ -31,7 +28,8 @@ class SouthStadiumApplication(models.Model):
     approved = models.BooleanField(default=False)
     application_time = models.DateTimeField(auto_now_add=True)
 
-    plan_file = models.FileField(upload_to=file_save_path, blank=True, null=True)
+    plan_file = models.FileField(upload_to=file_save_path('south_stadium'),
+                                 blank=True, null=True)
     applicant_name = models.CharField(max_length=10)
     applicant_phone_number = models.CharField(max_length=30)
     activity_summary = models.CharField(max_length=200)
@@ -44,12 +42,11 @@ class SouthStadiumApplication(models.Model):
     def generate_table(cls, offset=0):
         apps_whose_field_used_within_7days \
             = get_applications_a_week(cls, offset)
-        table = {}
-        for time_short_name, time_full_name in cls.TIME:
-            table[time_full_name] = []
-            for i in range(0, 7):
-                table[time_full_name].append(None)
-            for app in apps_whose_field_used_within_7days:
-                table[time_full_name][app.date.weekday()] = app
-        table['date'] = generate_date_list_this_week()
+        table = { time_full_name: [None for i in range(0, 7)] \
+                for time_short_name, time_full_name in cls.TIME }
+        for app in apps_whose_field_used_within_7days:
+            for t in app.time:
+                table[get_second_key(t, SouthStadiumApplication.TIME)] \
+                     [(app.date-date.today()).days] = app
+        table['date'] = gennerate_date_list_7days()
         return table

@@ -13,9 +13,6 @@ from field_application.campus_field.models import PublicityApplication
 
 
 class ExhibitApplicationForm(forms.ModelForm):
-    exhibition = forms.MultipleChoiceField(
-            choices=ExhibitApplication.EXHIBITION,
-            widget=CheckboxSelectMultiple)
     class Meta:
        model = ExhibitApplication
        exclude = ['organization', 'approved', 'application_time']
@@ -24,7 +21,6 @@ class ExhibitApplicationForm(forms.ModelForm):
            'end_date': SelectDateWidget(),
            'activity_summary': Textarea(),
            'remarks': Textarea(),
-           'exhibition': RadioSelect(),
        }
 
     def clean_start_date(self):

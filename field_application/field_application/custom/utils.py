@@ -4,6 +4,7 @@ from django.utils import timezone
 
 
 def generate_date_list_this_week():
+    ''' the first day is Monday '''
     date_list = []
     now = timezone.now()
     date_of_this_Monday = now - timedelta(days=now.weekday())
@@ -12,14 +13,20 @@ def generate_date_list_this_week():
     return date_list
 
 
+def gennerate_date_list_7days(offset=0):
+    ''' the first day is today '''
+    first_day = timezone.now().today() + timedelta(offset*7)
+    return [ first_day + timedelta(days=i) for i in range(0,7) ]
+
+
 def get_applications_a_week(application_model, offset=0):
     ''' get days apllcations of the application_model within 7 days
         the first day is today by default
         offset = -1 means last 7 days while 1 means next
     '''
-    now = timezone.now()
-    first_day = now - timedelta(days=now.weekday()+offset)
-    last_day = first_day + timedelta(days=6)
+    today = timezone.now().today()
+    first_day = today + timedelta(offset*7)
+    last_day = first_day + timedelta(days=(6+offset*7))
     applications_in_the_next_7days = application_model.objects.filter(
         date__gte=first_day,
         date__lte=last_day)

@@ -9,12 +9,8 @@ from django.db.models import Q
 from field_application.account.models import Organization
 from field_application.custom.model_field import MultiSelectField
 from field_application.custom.utils import generate_date_list_this_week
-
-
-def file_save_path(instance, filename):
-    path = 'campus_field'
-    path = os.path.join(path, instance.organization.user.username)
-    return os.path.join(path, instance.activity + '_' + filename)
+from field_application.custom.utils import get_application_this_week
+from field_application.utils.models import file_save_path
 
 
 class CampusFieldApplication(models.Model):
@@ -26,7 +22,7 @@ class CampusFieldApplication(models.Model):
     approved = models.BooleanField(default=False)
     application_time = models.DateTimeField(auto_now_add=True)
 
-    plan_file = models.FileField(upload_to=file_save_path)
+    plan_file = models.FileField(upload_to=file_save_path('campus_field'))
     applicant_name = models.CharField(max_length=10)
     applicant_phone_number = models.CharField(max_length=30)
     activity_summary = models.CharField(max_length=200)
@@ -75,13 +71,13 @@ class ExhibitApplication(CampusFieldApplication):
 
     @classmethod
     def generate_table(cls):
-        field_used_this_week_applications = cls.get_application_this_week()
+        field_used_this_week_applications = cls.get_applications_a_week()
         table = {}
         empty_time_dict = { str(i): None for i in range(0, 11) }
         for short_name, full_name in cls.PLACE:
             table[short_name] = []
             for i in range(0, 7):
-                table[short_name].append(list(empty_time_list))
+                table[short_name].append(list(empty_time_dict))
             apps = field_used_this_week_applications.filter(place=short_name)
             for app in apps:
                 if app.time in empty_time_dict:
@@ -104,17 +100,17 @@ class PublicityApplication(CampusFieldApplication):
     )
    
     TIME = (
-        (8, '8点-9点'),
-        (9, '9点-10点'),
-        (10, '10点-11点'),
-        (11, '11点-12点'),
-        (12, '12点-13点'),
-        (13, '13点-14点'),
-        (14, '14点-15点'),
-        (15, '15点-16点'),
-        (16, '16点-17点'),
-        (17, '17点-18点'),
-        (18, '18点-19点'),
+        ('8', '8点-9点'),
+        ('9', '9点-10点'),
+        ('10', '10点-11点'),
+        ('11', '11点-12点'),
+        ('12', '12点-13点'),
+        ('13', '13点-14点'),
+        ('14', '14点-15点'),
+        ('15', '15点-16点'),
+        ('16', '16点-17点'),
+        ('17', '17点-18点'),
+        ('18', '18点-19点'),
     )
 
     ACTIVITY_TYPE = (
@@ -126,4 +122,4 @@ class PublicityApplication(CampusFieldApplication):
     other_activity_type = models.CharField(max_length=10,
                                            blank=True, null=True)
     place = MultiSelectField(max_length=200, choices=PLACE)
-    time = models.CharField(max_length=5, choices=TIME)
+    time = MultiSelectField(max_length=5, choices=TIME)
