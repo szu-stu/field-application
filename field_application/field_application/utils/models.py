@@ -22,3 +22,13 @@ def get_second_key(first_key, choices):
     for t in choices:
         if t[0] == first_key:
             return t[1]
+    raise Exception("can't find correspoding key in choices for:"+ first_key)
+
+
+def get_first_key(second_key, choices):
+    ''' get the first key of the choices used in models
+        corresponding to the second key '''
+    for t in choices:
+        if t[1] == second_key:
+            return t[0]
+    raise Exception("can't find correspoding key in choices for:"+ second_key)

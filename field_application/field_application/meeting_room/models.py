@@ -9,7 +9,7 @@ from field_application.account.models import Organization
 from field_application.custom.model_field import MultiSelectField
 from field_application.custom.utils import gennerate_date_list_7days 
 from field_application.custom.utils import get_applications_a_week 
-from field_application.utils.models import get_second_key
+from field_application.utils.models import get_second_key, get_first_key
 
 
 def generate_time_table():
@@ -64,5 +64,9 @@ class MeetingRoomApplication(models.Model):
             for t in app.time:
                 table[get_second_key(t, MeetingRoomApplication.TIME)] \
                      [(app.date-date.today()).days] = app
-        table['date'] = gennerate_date_list_7days()
-        return [(k, v) for k, v in table.items()]
+        #table['date'] = gennerate_date_list_7days()
+        f = lambda choices: \
+                lambda second_key: get_first_key(second_key, choices)
+        return {'date': gennerate_date_list_7days(),
+                'content': [(k, table[k]) \
+                        for k in sorted(table, key=f(cls.TIME))]}

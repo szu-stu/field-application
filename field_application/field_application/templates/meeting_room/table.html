@@ -42,7 +42,7 @@
             </div>
             {% endfor %}
         </tr>
-        {% for attribute, apps_7days in table %}
+        {% for attribute, apps_7days in table.content %}
             {% if attribute != 'date' %}
             <tr>
                 <td><div>{{ attribute }}</div></td>
