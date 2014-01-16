@@ -58,15 +58,11 @@ class MeetingRoomApplication(models.Model):
     def generate_table(cls, offset=0):
         apps_whose_field_used_within_7days \
             = get_applications_a_week(cls, offset)
-        table = { time_full_name: [None for i in range(0, 7)] \
+        table = { time_short_name: [None for i in range(0, 7)] \
                 for time_short_name, time_full_name in cls.TIME }
         for app in apps_whose_field_used_within_7days:
             for t in app.time:
-                table[get_second_key(t, MeetingRoomApplication.TIME)] \
-                     [(app.date-date.today()).days] = app
-        #table['date'] = gennerate_date_list_7days()
-        f = lambda choices: \
-                lambda second_key: get_first_key(second_key, choices)
+                table[t][(app.date-date.today()).days] = app
         return {'date': gennerate_date_list_7days(),
-                'content': [(k, table[k]) \
-                        for k in sorted(table, key=f(cls.TIME))]}
+                'content': [(get_second_key(k, cls.TIME), table[k]) \
+                        for k in sorted(table)]}
