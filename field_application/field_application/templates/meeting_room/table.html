@@ -12,6 +12,14 @@
             background-color: red;
         }
         a{ display: block; }
+        div{ 
+            width: 70px;
+            height: 70px;
+            background-color: green;
+            font-size: 11px;
+            display: inline-block;
+            margin-left: 3px;
+        }
     </style>
 </head>
 
@@ -26,28 +34,30 @@
 <a href="{% url 'student_activity_center:listing' %}"> student_activity_center list</a>
 <h1>table</h1>
     <table>
+        <tr><div></div></tr>
         <tr>
-        {% for date in table.date %}
-        {{ date }}
-        {% endfor %}
+            {% for date in table.date %}
+            <div>
+                {{ date }}
+            </div>
+            {% endfor %}
         </tr>
-        {% for attribute, apps_every_week in table.items %}
+        {% for attribute, apps_7days in table %}
             {% if attribute != 'date' %}
             <tr>
-                {% for apps_every_day in apps_every_week %}
-                    {% for app in apps_every_day %}
-                        <td> 
-                        {% if app %}
-                            <div class="application_pass">
-                            {{ app.meeting_topic }}
-                            {{ app.pk }}
-                            </div>
-                        {% else %}
-                            <div class="application_exist">
-                            </div>
-                        {% endif %}
-                        </td> 
-                    {% endfor %}
+                <td><div>{{ attribute }}</div></td>
+                {% for app in apps_7days %}
+                    <td> 
+                    {% if app %}
+                        <div style="background-color: red;">
+                            {{ app.activity }}</br>
+                            {{ app.date }}
+                        </div>
+                    {% else %}
+                        <div>
+                        </div>
+                    {% endif %}
+                    </td> 
                 {% endfor %}
             </tr>
             {% endif %}

@@ -46,11 +46,11 @@ class StudentActivityCenterApplication(models.Model):
     def generate_table(cls):
         field_used_this_week_applications = get_application_this_week(cls)
         table = {}
-        empty_time_dict = { str(i): None for i in range(0, 3) }
+        empty_time_dict = { cls.TIME[i][0]: None for i in range(0, 3) }
         for short_name, full_name in cls.PLACE:
             table[full_name] = []
             for i in range(0, 7):
-                table[full_name].append(list(empty_time_dict))
+                table[full_name].append(dict(empty_time_dict))
             apps = field_used_this_week_applications.filter(place=short_name)
             for app in apps:
                 if app.time in empty_time_dict:
