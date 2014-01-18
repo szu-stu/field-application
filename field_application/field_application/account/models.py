@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 class Organization(models.Model):
     user = models.OneToOneField(User)
+    chinese_name = models.CharField(max_length=30, unique=True)
     org_in_charge = models.CharField(max_length=30)
     tutor = models.CharField(max_length=20)
     tutor_contact_infor = models.CharField(max_length=30)
