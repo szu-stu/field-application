@@ -17,12 +17,6 @@ LANGUAGES = (
     ('en', _('English')),
 )
 
-# settings for django_tables2 library
-TEMPLATE_CONTEXT_PROCESSORS = \
-        DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
-                'django.core.context_processors.request',
-                )
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -156,7 +150,6 @@ INSTALLED_APPS = (
     'field_application.meeting_room',
     'field_application.south_stadium',
     'field_application.utils',
-    'django_tables2',
 )
 
 # A sample logging configuration. The only tangible logging

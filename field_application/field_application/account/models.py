@@ -13,6 +13,10 @@ class Organization(models.Model):
     director_contact_infor = models.CharField(max_length=30)
     belong_to = models.CharField(max_length=10)
 
+    # used in account.forms.SignInForm
+    def __unicode__(self):
+        return self.chinese_name
+
 
 class UserActivityLog(models.Model):
     user = models.ForeignKey(User)
