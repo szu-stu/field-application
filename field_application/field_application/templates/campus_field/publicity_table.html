@@ -1,0 +1,68 @@
+{% extends 'table_base.html' %}
+
+{% block htmltitle %} {% endblock %}
+
+{% block htmlhead %}
+    {% load html_tools %}
+    {{ 'campus_field/table.css' | as_css }}
+{% endblock %}
+
+{% block top_title %}<h1>校园文化活动露天场地申请</h1>{% endblock %}
+{% block title %}校园文化活动露天场地一周安排表(图形版){% endblock %}
+
+{% block main_content %}
+            <table>
+                <tr class="date">
+                    <td class="blue place bold_border" rowspan="5">活动类型<br />设点/派发传单/其它</td>
+                    {% for date in table.date %}
+                    <td class="bold_border" colspan="3">{{ date | date:"n月d日" }}<br />{{ date | date:"l" }}</td>
+                    {% endfor %}
+                </tr>
+
+                {% load range %}
+                {% for j in 4|get_range %}
+                <tr>
+                    {% for i in 7|get_range %}
+                        <td>{% cycle '8点--9点' '11点--12点' '14点--15点' '17点--18点' %}</td>
+                        <td>{% cycle '9点--10点' '12点--13点' '15点--16点' '18点--19点' %}</td>
+                        <td class="bold_border_right">{% cycle '10点--11点' '13点--14点' '16点--17点' ' ' %}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+
+                {% for attribute, apps_every_week in table.items %}
+                    {% if attribute != 'date' %}
+                        {% for r in 4|get_range %}
+                            <tr class="nine">
+                            {% if forloop.first %}
+                            <td class="bold_border" rowspan="4">{{ attribute }}</td>
+                            {% endif %}
+
+                            {% cycle '0' '3' '6' '9' as left silent %}
+                            {% cycle '1' '4' '7' '10' as mid silent %}
+                            {% cycle '2' '5' '8' ' ' as right silent %}
+                            {% for apps_every_day in apps_every_week %}
+                                {% if apps_every_day.left %}
+                                    <td>{{ apps_every_day.left }}</td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+
+                                {% if apps_every_day.mid %}
+                                    <td>{{ apps_every_day.mid }}</td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+
+                                {% if apps_every_day.right %}
+                                    <td class="bold_border_right">{ apps_every_day.right }}</td>
+                                {% else %}
+                                    <td class="bold_border_right"></td>
+                                {% endif %}
+                            {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </table>
+{% endblock %}

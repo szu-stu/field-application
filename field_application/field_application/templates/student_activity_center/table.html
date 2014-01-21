@@ -7,12 +7,15 @@
     {{ 'student_activity_center/table.css' | as_css }}
 {% endblock %}
 
+{% block top_title %}<h1 style="font-size:50px">学生活动中心场所申请</h1>{% endblock %}
+{% block title %}学生活动中心场所一周安排表(图形版){% endblock %}
+
 {% block main_content %}
     <table>
     	<tr class="date">
     		<td class="blue place" rowspan="2">活动场地</td>
             {% for date in table.date %}
-    		    <td colspan="3">{{ date | date:"m月d日" }}<br />星期三</td>
+    		    <td colspan="3">{{ date | date:"m月d日" }}<br />{{ date | date:"l" }}</td>
             {% endfor %}
     	</tr>
         {% load range %}
@@ -29,11 +32,11 @@
     	<tr>
             <td class="place">{{ place }}</td>
             {% for apps_everyday in apps_a_week %}
-                {% for app in apps_everyday %}
-                    {% if app %}
-    		        <td></td>
+                {% for time.app in apps_everyday.items %}
+                    {% if app.time %}
+    		        <td>{{ app.time }}</td>
                     {% else %}
-    		        <td></td>
+    		        <td>empty</td>
                     {% endif %}
                 {% endfor %}
             {% endfor %}

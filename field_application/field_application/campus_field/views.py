@@ -54,14 +54,27 @@ class ApplyPublicityView(View):
         return HttpResponseRedirect(reverse('home'))
 
 
-def display_table(request):
+def display_exhibit_table(request):
     week = int(request.GET.get('week') or 0)
     table = ExhibitApplication.generate_table(offset=week)
-    return render(request, 'campus_field/table.html',
+    return render(request, 'campus_field/exhibit_table.html',
             {'table': table, 'curr_week': week})
 
 
-def display_listing(request):
+def display_exhibit_list(request):
     listing = ExhibitApplication.objects.all()
-    return render(request, 'campus_field/listing.html',
+    return render(request, 'campus_field/exhibit_list.html',
+                  {'listing': listing})
+
+
+def display_publicity_table(request):
+    week = int(request.GET.get('week') or 0)
+    table = PublicityApplication.generate_table(offset=week)
+    return render(request, 'campus_field/publicity_table.html',
+            {'table': table, 'curr_week': week})
+
+
+def display_publicity_list(request):
+    listing = PublicityApplication.objects.all()
+    return render(request, 'campus_field/publicity_list.html',
                   {'listing': listing})

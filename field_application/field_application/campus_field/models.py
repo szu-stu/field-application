@@ -72,6 +72,14 @@ class ExhibitApplication(CampusFieldApplication):
 
     @classmethod
     def generate_table(cls, offset=0):
+        ''' generate a dict of the structure below
+        table - date : [ 7 date ]
+              - CD座文化长廊   : [ 7 * {'MOR': [], 'AFT': []} ]
+              - A座文化大厅    : [ 7 * {'MOR': [], 'AFT': []} ] 
+              - 西南餐厅前空地 : [ 7 * {'MOR': [], 'AFT': []} ] 
+              - 荔山餐厅前空地 : [ 7 * {'MOR': [], 'AFT': []} ]
+        [] contain all application which contain the same period
+        '''
         field_used_this_week_applications = cls.get_applications_a_week(offset)
         first_day = timezone.now().date() + timedelta(days=offset)
         last_day = first_day + timedelta(days=6)
@@ -130,3 +138,34 @@ class PublicityApplication(CampusFieldApplication):
                                            blank=True, null=True)
     place = MultiSelectField(max_length=200, choices=PLACE)
     time = MultiSelectField(max_length=5, choices=TIME)
+
+    @classmethod
+    def generate_table(cls, offset=0):
+        ''' generate a dict of the structure below
+        table - date : [ 7 date ]
+              - CD座文化长廊   : [ 7 * {'MOR': [], 'AFT': []} ]
+              - A座文化大厅    : [ 7 * {'MOR': [], 'AFT': []} ] 
+              - 西南餐厅前空地 : [ 7 * {'MOR': [], 'AFT': []} ] 
+              - 荔山餐厅前空地 : [ 7 * {'MOR': [], 'AFT': []} ]
+              - 文山湖路口     : [ 7 * {'MOR': [], 'AFT': []} ] 
+              - 桂庙路口       : [ 7 * {'MOR': [], 'AFT': []} ]
+        [] contain all application which contain the same period
+        '''
+        field_used_this_week_applications = cls.get_applications_a_week(offset)
+        first_day = timezone.now().date() + timedelta(days=offset)
+        last_day = first_day + timedelta(days=6)
+        table = {}
+        for short_name, full_name in cls.PLACE:
+            table[full_name] = [{str(j): [] for j in range(8, 19)} \
+                                                for i in range(7)]
+            apps = field_used_this_week_applications.filter(
+                    place__contains=get_first_key(full_name, cls.PLACE))
+            for app in apps:
+                for i in range((app.end_date-app.start_date).days):
+                    d = app.start_date + timedelta(days=i)
+                    if d < first_day or d > last_day: 
+                        break
+                    for t in app.time:
+                        table[full_name][(d-first_day).days][t].append(app)
+        table['date'] = gennerate_date_list_7days(offset)
+        return table

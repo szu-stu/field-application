@@ -23,7 +23,7 @@
 		<div class="main">
 			<div class="nav">
                 <span class="name nav-content">{% block title %}{% endblock %}</span>
-                <span class="time nav-content">当前时间: 2013年11月20日 星期三</span>
+                <span class="time nav-content">当前时间: {% now "Y年n月d日 l"%}</span>
 				<ul class="week nav-content">
 					<a href="?week={{ curr_week|add:"-1" }}">〖上一周〗</a>
 					<a href="?week=0">〖本周〗</a>
