@@ -20,13 +20,14 @@ def gennerate_date_list_7days(offset=0):
 
 
 def get_applications_a_week(application_model, offset=0):
-    ''' get days apllcations of the application_model within 7 days
-        the first day is today by default
+    ''' Get all application_model object
+        which is going to be used in the next 7 days.
+        The first day is today by default
         offset = -1 means last 7 days while 1 means next
     '''
     today = timezone.now().today()
     first_day = today + timedelta(offset*7)
-    last_day = first_day + timedelta(days=(6+offset*7))
+    last_day = first_day + timedelta(days=6)
     applications_in_the_next_7days = application_model.objects.filter(
         date__gte=first_day,
         date__lte=last_day)

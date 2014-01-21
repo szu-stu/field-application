@@ -32,9 +32,10 @@ class ApplyView(View):
 
 
 def display_table(request):
-    table = SouthStadiumApplication.generate_table()
+    week = int(request.GET.get('week') or 0)
+    table = SouthStadiumApplication.generate_table(offset=week)
     return render(request, 'south_stadium/table.html',
-                  {'table': table})
+                  {'table': table, 'curr_week': week})
 
 
 def display_listing(request):

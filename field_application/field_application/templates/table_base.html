@@ -16,8 +16,8 @@
 <body>
 	<div class="container">
 		<div class="header">
-			<img src="logo.png" class="logo">
-			<h1>校园文化活动露天场地申请</h1>
+			<a href="/"><img src="logo.png" class="logo"></a>
+			{% block top_title %}<h1>校园文化活动露天场地申请</h1>{% endblock %}
 			<div class="line"></div>
 		</div>
 		<div class="main">
@@ -25,13 +25,13 @@
                 <span class="name nav-content">{% block title %}{% endblock %}</span>
                 <span class="time nav-content">当前时间: 2013年11月20日 星期三</span>
 				<ul class="week nav-content">
-					<a href="#">〖上一周〗</a>
-					<a href="#">〖本周〗</a>
-					<a href="#">〖下一周〗</a>
+					<a href="?week={{ curr_week|add:"-1" }}">〖上一周〗</a>
+					<a href="?week=0">〖本周〗</a>
+					<a href="?week={{ curr_week|add:"1" }}">〖下一周〗</a>
 				</ul>
 				<ul class="choice nav-content">
-					<a href="#">【文字版】</a>
-					<a href="#">【网上申请】</a>
+					<a href="../list/">【文字版】</a>
+					<a href="../apply/">【网上申请】</a>
 				</ul>
 			</div>
             {% block main_content %}

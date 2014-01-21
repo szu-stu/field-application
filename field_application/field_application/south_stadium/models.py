@@ -50,6 +50,6 @@ class SouthStadiumApplication(models.Model):
 
         time_order = {'MOR': 0, 'AFT': 1, 'EVE': 2}
         f = lambda i: time_order[i]
-        return {'date': gennerate_date_list_7days(),
+        return {'date': gennerate_date_list_7days(offset),
                 'content': [(get_second_key(k, cls.TIME), table[k]) \
                         for k in sorted(table, key=lambda i: time_order[i])]}

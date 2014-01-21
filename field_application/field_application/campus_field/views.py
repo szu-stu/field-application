@@ -55,9 +55,10 @@ class ApplyPublicityView(View):
 
 
 def display_table(request):
-    table = ExhibitApplication.generate_table()
+    week = int(request.GET.get('week') or 0)
+    table = ExhibitApplication.generate_table(offset=week)
     return render(request, 'campus_field/table.html',
-                  {'table': table})
+            {'table': table, 'curr_week': week})
 
 
 def display_listing(request):

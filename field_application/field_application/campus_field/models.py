@@ -8,9 +8,10 @@ from django.db.models import Q
 
 from field_application.account.models import Organization
 from field_application.custom.model_field import MultiSelectField
-from field_application.custom.utils import generate_date_list_this_week
+from field_application.custom.utils import gennerate_date_list_7days 
 from field_application.custom.utils import get_application_this_week
 from field_application.utils.models import file_save_path
+from field_application.utils.models import get_first_key
 
 
 class CampusFieldApplication(models.Model):
@@ -36,7 +37,7 @@ class CampusFieldApplication(models.Model):
         ''' most are the same as custom.utils.get_application_a_week
             except the filter logic '''
         now = timezone.now()
-        first_day = now - timedelta(days=now.weekday()+offset)
+        first_day = now - timedelta(days=now.weekday()+7*offset)
         last_day = first_day + timedelta(days=6)
         applications_in_the_next_7days = cls.objects.filter(
             Q(start_date__lte=last_day) & Q(end_date__gte=first_day))
@@ -70,21 +71,27 @@ class ExhibitApplication(CampusFieldApplication):
     exhibit_board_number = models.IntegerField()
 
     @classmethod
-    def generate_table(cls):
-        field_used_this_week_applications = cls.get_applications_a_week()
+    def generate_table(cls, offset=0):
+        field_used_this_week_applications = cls.get_applications_a_week(offset)
+        first_day = timezone.now().date() + timedelta(days=offset)
+        last_day = first_day + timedelta(days=6)
         table = {}
-        empty_time_dict = { str(i): None for i in range(0, 11) }
         for short_name, full_name in cls.PLACE:
-            table[short_name] = []
-            for i in range(0, 7):
-                table[short_name].append(list(empty_time_dict))
-            apps = field_used_this_week_applications.filter(place=short_name)
+            table[full_name] = [{'MOR': [], 'AFT': []} for i in range(7)]
+            apps = field_used_this_week_applications.filter(
+                    place__contains=get_first_key(full_name, cls.PLACE))
             for app in apps:
-                if app.time in empty_time_dict:
-                    table[short_name][app.date.weekday()][app.time] = app
-                else:
-                    raise Exception('invalid time of exhibition')
-        table['date'] = cls.generate_date_list_this_week()
+                for i in range((app.end_date-app.start_date).days):
+                    d = app.start_date + timedelta(days=i)
+                    if d < first_day or d > last_day: 
+                        break
+                    if 'MOR' in app.time:
+                        table[full_name][(d-first_day).days] \
+                                ['MOR'].append(app)
+                    if 'AFT' in app.time:
+                        table[full_name][(d-first_day).days] \
+                                ['AFT'].append(app)
+        table['date'] = gennerate_date_list_7days(offset)
         return table
 
 

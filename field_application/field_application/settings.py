@@ -13,8 +13,7 @@ def path(*a):
 # settings for translation
 _ = lambda s: s
 LANGUAGES = (
-    ('cn', _('China')),
-    ('en', _('English')),
+    ('zh-cn', _('China')),
 )
 
 DEBUG = True

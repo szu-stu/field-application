@@ -1,58 +1,47 @@
+{% extends 'table_base.html' %}
 
-<html>
-<head>
-    <style>
-        .application_exist{
-            width: 50px;
-            height: 50px;
-            background-color: green;
-        }
-        .application_pass{
-            width: 50px;
-            height: 50px;
-            background-color: red;
-        }
-        a{ display: block; }
-    </style>
-</head>
+{% block htmltitle %} {% endblock %}
 
-<body>
-<a href="{% url 'account:signup' %}">sign up</a>
-<a href="{% url 'account:signout' %}">sign out</a>
-<a href="{% url 'account:signin' %}">sign in</a>
-<a href="{% url 'account:reset_password' %}"> reset password</a>
-<div> -------------- </div>
-<a href="{% url 'student_activity_center:apply' %}"> student_activity_center apply</a>
-<a href="{% url 'student_activity_center:table' %}"> student_activity_center table</a>
-<a href="{% url 'student_activity_center:listing' %}"> student_activity_center list</a>
-<h1>table</h1>
-    <table>
-        <tr>
-        {% for date in table.date %}
-        {{ date }}
-        {% endfor %}
-        </tr>
-        {% for attribute, apps_every_week in table.items %}
-            {% if attribute != 'date' %}
-            <tr>
-                {% for apps_every_day in apps_every_week %}
-                    {% for app in apps_every_day %}
-                        <td> 
-                        {% if app %}
-                            <div class="application_pass">
-                            {{ app.activity }}
-                            {{ app.pk }}
-                            </div>
-                        {% else %}
-                            <div class="application_exist">
-                            </div>
-                        {% endif %}
-                        </td> 
+{% block htmlhead %}
+    {% load html_tools %}
+    {{ 'south_stadium/table.css' | as_css }}
+{% endblock %}
+
+{% block top_title %}<h1>校园文化活动露天场地申请</h1>{% endblock %}
+{% block title %}校园文化活动露天场地一周安排表(图形版){% endblock %}
+
+{% block main_content %}
+            <table>
+                <tr class="date">
+                    <td class="blue" rowspan="2">活动类型<br />展览活动</td>
+                    {% for date in table.date %}
+                    <td colspan="2">{{ date | date:"n月d日" }}<br />{{ date | date:"l" }}</td>
                     {% endfor %}
+                </tr>
+                <tr class="mor_aft">
+                    {% load range %}
+                    {% for i in 14|get_range %}
+                    <td>{% cycle '上午' '下午' %}</td>
+                    {% endfor %}
+                </tr>
+                {% for attribute, apps_every_week in table.items %}
+                    {% if attribute != 'date' %}
+                    <tr>
+                        <td class="place">{{ attribute }}</td>
+                        {% for apps_every_day in apps_every_week %}
+                            {% if apps_every_day.MOR %}
+                                <td>{{ apps_every_day.MOR }}</td>
+                            {% else %}
+                                <td>a</td>
+                            {% endif %}
+                            {% if apps_every_day.AFT %}
+                                <td>{{ apps_every_day.AFT }}</td>
+                            {% else %}
+                                <td>b</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endif %}
                 {% endfor %}
-            </tr>
-            {% endif %}
-        {% endfor %}
-    </table>
-</body>
-</html>
+            </table>
+{% endblock %}
