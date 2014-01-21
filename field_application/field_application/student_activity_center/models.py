@@ -5,9 +5,10 @@ from django.utils import timezone
 from django.db import models
 
 from field_application.account.models import Organization
-from field_application.custom.utils import generate_date_list_this_week
-from field_application.custom.utils import get_application_this_week 
+from field_application.custom.utils import gennerate_date_list_7days 
+from field_application.custom.utils import get_applications_a_week 
 from field_application.utils.models import file_save_path
+from field_application.utils.models import get_second_key
 
 
 class StudentActivityCenterApplication(models.Model):
@@ -43,10 +44,19 @@ class StudentActivityCenterApplication(models.Model):
     sponsorship_usage = models.CharField(max_length=40, blank=True, null=True)
 
     @classmethod
-    def generate_table(cls):
-        field_used_this_week_applications = get_application_this_week(cls)
+    def generate_table(cls, offset=0):
+        ''' generate dict
+        table- date : [ 7 * date ] 
+             - 学生活动中心前广场       : [ 7*{'MOR': -, 'AFT': -, 'EVE': -} ]
+             - 一楼影视报告厅           : [ 7*{'MOR': -, 'AFT': -, 'EVE': -} ]
+             - 学生活动中心三楼天台(东) : [ 7*{'MOR': -, 'AFT': -, 'EVE': -} ]
+             - 学生活动中心三楼天台(西) : [ 7*{'MOR': -, 'AFT': -, 'EVE': -} ]
+             - 石头坞广场               : [ 7*{'MOR': -, 'AFT': -, 'EVE': -} ]
+        '''
+        field_used_this_week_applications = \
+                get_applications_a_week(cls, offset)
         table = {}
-        empty_time_dict = { cls.TIME[i][0]: None for i in range(0, 3) }
+        empty_time_dict = { time: None for time, l in cls.TIME }
         for short_name, full_name in cls.PLACE:
             table[full_name] = []
             for i in range(0, 7):
@@ -57,5 +67,5 @@ class StudentActivityCenterApplication(models.Model):
                     table[full_name][app.date.weekday()][app.time] = app
                 else:
                     raise Exception('invalid time')
-        table['date'] = generate_date_list_this_week()
+        table['date'] = gennerate_date_list_7days(offset)
         return table

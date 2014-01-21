@@ -34,9 +34,10 @@ class ApplyView(View):
 
 
 def display_table(request):
-    table = StudentActivityCenterApplication.generate_table()
+    week = int(request.GET.get('week') or 0)
+    table = StudentActivityCenterApplication.generate_table(offset=week)
     return render(request, 'student_activity_center/table.html',
-                  {'table': table})
+                  {'table': table, 'curr_week': week})
 
 
 def display_listing(request):

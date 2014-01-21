@@ -1,0 +1,22 @@
+.date{
+	height: 35px;
+}
+.mor_aft{
+	height: 30px;
+}
+.place{
+	width: 150px;
+	height: 50px;
+}
+.bold_border{
+	border: 5px solid #ffffff;
+}
+.bold_border_bottom{
+	border-bottom: 5px solid #ffffff;
+}
+.bold_border_right{
+	border-right: 5px solid #ffffff;
+}
+.nine{
+	height: 30px;
+}
