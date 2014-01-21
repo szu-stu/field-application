@@ -8,10 +8,9 @@
 	<meta name="description" content="深圳大学资讯传媒社区, 荔园信息聚集平台">
     {% block htmltitle %}<title>深圳大学校园文化活动露天场地申请</title>{% endblock %}
     {% load html_tools %}
+    {{ 'table/base.css' | as_css }}
+    {{ 'table/apply_main.css' | as_css }}
     {% block htmlhead %}
-        {{ apply.css | as_css }}
-	    <link href="apply.css" rel="stylesheet" type="text/css">
-	    <link href="open_area.css" rel="stylesheet" type="text/css">
     {% endblock %}
 </head>
 <body>
