@@ -32,9 +32,10 @@ class ApplyMeetingRoomView(View):
 
 
 def display_table(request):
-    table = MeetingRoomApplication.generate_table()
+    week = int(request.GET.get('week') or 0)
+    table = MeetingRoomApplication.generate_table(offset=week)
     return render(request, 'meeting_room/table.html',
-                  {'table': table})
+            {'table': table, 'curr_week': week})
 
 
 def display_listing(request):

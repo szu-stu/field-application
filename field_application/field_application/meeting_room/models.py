@@ -15,10 +15,13 @@ from field_application.utils.models import get_second_key, get_first_key
 def generate_time_table():
     ''' generate TIME for model choices
         ( ('0', '8点-8点30分'),
-          ('1', '8点30分-9点'), ...
+          ('1', '8点30分-9点'),
+          ...
+          ('29', '22点30分-23点'),
+        )
     '''
-    start = 8
-    end = 8
+    start = 0
+    end = 0
     time_table = []
     for i in range(0, 30):
         if not i%2:
@@ -56,13 +59,25 @@ class MeetingRoomApplication(models.Model):
 
     @classmethod
     def generate_table(cls, offset=0):
+        ''' generate table
+        table - date : [ 7 * date ]
+              - time_list : [ 30 * time ]
+              - content - 石头坞一楼会议室      : [ 30*[ 7*app ] ]
+                        - 石头坞二楼会议室      : [ 30*[ 7*app ] ] 
+                        - 学生活动中心305会议室 : [ 30*[ 7*app ] ] 
+                        - 学生活动中心307会议室 : [ 30*[ 7*app ] ] 
+        '''
+        content = { place: \
+                    [ [None for j in range(7)] \
+                        for s, f in cls.TIME] \
+                    for short_name, place in cls.PLACE}
         apps_whose_field_used_within_7days \
             = get_applications_a_week(cls, offset)
-        table = { time_short_name: [None for i in range(0, 7)] \
-                for time_short_name, time_full_name in cls.TIME }
+        today = date.today() + timedelta(days=offset*7)
         for app in apps_whose_field_used_within_7days:
             for t in app.time:
-                table[t][(app.date-date.today()).days] = app
-        return {'date': gennerate_date_list_7days(),
-                'content': [(get_second_key(k, cls.TIME), table[k]) \
-                        for k in sorted(table)]}
+                content[get_first_key(cls.PLACE, app.place)] \
+                       [int(t)][(app.date-today).days]
+        return {'date': gennerate_date_list_7days(offset),
+                'time_list': (full_name for s, full_name in cls.TIME),
+                'content': content}

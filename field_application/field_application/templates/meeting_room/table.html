@@ -1,67 +1,45 @@
-<html>
-<head>
-    <style>
-        .application_exist{
-            width: 20px;
-            height: 20px;
-            background-color: green;
-        }
-        .application_pass{
-            width: 20px;
-            height: 20px;
-            background-color: red;
-        }
-        a{ display: block; }
-        div{ 
-            width: 70px;
-            height: 70px;
-            background-color: green;
-            font-size: 11px;
-            display: inline-block;
-            margin-left: 3px;
-        }
-    </style>
-</head>
+{% extends 'table_base.html' %}
 
-<body>
-<a href="{% url 'account:signup' %}">sign up</a>
-<a href="{% url 'account:signout' %}">sign out</a>
-<a href="{% url 'account:signin' %}">sign in</a>
-<a href="{% url 'account:reset_password' %}"> reset password</a>
-<div> -------------- </div>
-<a href="{% url 'student_activity_center:apply' %}"> student_activity_center apply</a>
-<a href="{% url 'student_activity_center:table' %}"> student_activity_center table</a>
-<a href="{% url 'student_activity_center:listing' %}"> student_activity_center list</a>
-<h1>table</h1>
+{% block htmltitle %} {% endblock %}
+
+{% block htmlhead %}
+    {% load html_tools %}
+    {{ 'meeting_room/table.css' | as_css }}
+{% endblock %}
+
+{% block top_title %}<h1 style="font-size:50px;line-height:65px">会议室使用申请</h1>{% endblock %}
+{% block title %}会议室安排表(图形版){% endblock %}
+
+{% block main_content %}
     <table>
-        <tr><div></div></tr>
         <tr>
-            {% for date in table.date %}
-            <div>
-                {{ date }}
-            </div>
-            {% endfor %}
+        	<td rowspan="2">{{ table.date.0 | date:"n月" }}</td>
+        {% for place in table.content %}
+            <td colspan="7">{{place}}</td>
+        {% endfor %}
+    	</tr>
+    	<tr>
+        	{% for place in table.content %}
+        	{% for day in table.date %}
+        		<td>{{ day | date:"d日"}}</td>
+        	{% endfor %}
+        	{% endfor %}
         </tr>
-        {% for attribute, apps_7days in table.content %}
-            {% if attribute != 'date' %}
-            <tr>
-                <td><div>{{ attribute }}</div></td>
-                {% for app in apps_7days %}
-                    <td> 
-                    {% if app %}
-                        <div style="background-color: red;">
-                            {{ app.activity }}</br>
-                            {{ app.date }}
-                        </div>
-                    {% else %}
-                        <div>
-                        </div>
-                    {% endif %}
-                    </td> 
-                {% endfor %}
-            </tr>
-            {% endif %}
+
+        {% load range %}
+        {% for time in table.time_list %}
+        <tr>
+        	<td class="timing">{{ time }}</td>
+        	{% for place in table.content %}
+        		{% for day in 7|get_range %}
+        		{% if table.place.time.day %}
+        			<td>{{table.place.time.day.meeting_topic}}</td>
+        		{% else %}
+        			<td>a</td>
+        		{% endif%}
+        		{% endfor %}
+        	{% endfor %}
+        </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+{% endblock %}
