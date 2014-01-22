@@ -16,31 +16,15 @@
 </head>
 
 <body>
-<a href="{% url 'account:signup' %}">sign up</a>
-<a href="{% url 'account:signout' %}">sign out</a>
-<a href="{% url 'account:signin' %}">sign in</a>
-<a href="{% url 'account:reset_password' %}"> reset password</a>
-<div> -------------- </div>
-<a href="{% url 'student_activity_center:apply' %}"> student_activity_center apply</a>
-<a href="{% url 'student_activity_center:table' %}"> student_activity_center table</a>
-<a href="{% url 'student_activity_center:listing' %}"> student_activity_center list</a>
-<div> -------------- </div>
-<a href="{% url 'campus_field:apply_exhibit' %}"> campus_field apply exhibition</a>
-<a href="{% url 'campus_field:apply_publicity' %}"> campus_field apply publicity</a>
-<a href="{% url 'campus_field:table' %}"> campus_field table</a>
-<a href="{% url 'campus_field:listing' %}"> campus_field list</a>
-<div> -------------- </div>
-<a href="{% url 'meeting_room:apply' %}"> meeting room apply publicity</a>
-<a href="{% url 'meeting_room:table' %}"> meeting room table</a>
-<a href="{% url 'meeting_room:listing' %}"> meeting room list</a>
-<div> -------------- </div>
 <h1>list</h1>
     <table>
         {% for app in listing %}
         <tr>
             <td> 
                 {% if app %}
-                    {{ app }}
+                    {{ app.meeting_topic }}
+                    {{ app.date }}
+                    {{ app.time }}
                 {% endif %}
             </td> 
         </tr>

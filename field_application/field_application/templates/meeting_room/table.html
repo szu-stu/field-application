@@ -11,35 +11,32 @@
 {% block title %}会议室安排表(图形版){% endblock %}
 
 {% block main_content %}
-    <table>
-        <tr>
-        	<td rowspan="2">{{ table.date.0 | date:"n月" }}</td>
-        {% for place in table.content %}
-            <td colspan="7">{{place}}</td>
-        {% endfor %}
-    	</tr>
-    	<tr>
-        	{% for place in table.content %}
-        	{% for day in table.date %}
-        		<td>{{ day | date:"d日"}}</td>
-        	{% endfor %}
-        	{% endfor %}
-        </tr>
 
-        {% load range %}
+{% for place, apps_every_place in table.content.items %}
+<table>
+    <tr>
+        <td colspan="2"></td>
         {% for time in table.time_list %}
-        <tr>
-        	<td class="timing">{{ time }}</td>
-        	{% for place in table.content %}
-        		{% for day in 7|get_range %}
-        		{% if table.place.time.day %}
-        			<td>{{table.place.time.day.meeting_topic}}</td>
-        		{% else %}
-        			<td>a</td>
-        		{% endif%}
-        		{% endfor %}
-        	{% endfor %}
-        </tr>
+        <td>{{ time }}</td>
         {% endfor %}
-    </table>
+    </tr>
+    {% for app_every_day in apps_every_place %}      
+    {% cycle table.date.0 table.date.1 table.date.2 table.date.3 table.date.4 table.date.5 table.date.6 as date silent %}   
+    <tr>
+        {% if forloop.first %}
+        <td rowspan="7">{{ place }}</td>
+        {% endif %}
+        <td>{{ date | date:"n月d日" }}</td>
+        {% for app in app_every_day %}
+            {% if app %}
+            <td>{{app}}</td>
+            {% else %}
+            <td></td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endfor %}
+
 {% endblock %}

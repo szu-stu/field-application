@@ -34,7 +34,7 @@
             {% for apps_everyday in apps_a_week %}
                 {% for time, app in apps_everyday.items %}
                     {% if app %}
-    		        <td>{{ time }}{{ app }}</td>
+    		        <td>{{ app }}</td>
                     {% else %}
     		        <td>empty</td>
                     {% endif %}

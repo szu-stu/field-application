@@ -16,7 +16,7 @@ def generate_date_list_this_week():
 def gennerate_date_list_7days(offset=0):
     ''' the first day is today '''
     first_day = timezone.now().today() + timedelta(offset*7)
-    return [ first_day + timedelta(days=i) for i in range(0,7) ]
+    return tuple(first_day + timedelta(days=i) for i in range(0,7))
 
 
 def get_applications_a_week(application_model, offset=0):

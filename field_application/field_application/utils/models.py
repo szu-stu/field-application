@@ -22,7 +22,8 @@ def get_second_key(first_key, choices):
     for t in choices:
         if t[0] == first_key:
             return t[1]
-    raise Exception("can't find correspoding key in choices for:"+ first_key)
+    raise Exception("can't find correspoding key in choices for:" \
+            + str(first_key))
 
 
 def get_first_key(second_key, choices):
@@ -31,4 +32,5 @@ def get_first_key(second_key, choices):
     for t in choices:
         if t[1] == second_key:
             return t[0]
-    raise Exception("can't find correspoding key in choices for:"+ second_key)
+    raise Exception("can't find correspoding key in choices for:" \
+            + str(second_key))
