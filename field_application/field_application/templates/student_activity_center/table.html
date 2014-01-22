@@ -34,9 +34,11 @@
             {% for apps_everyday in apps_a_week %}
                 {% for time, app in apps_everyday.items %}
                     {% if app %}
-    		        <td>{{ app }}</td>
+    		        <td class="{% if app.approved %}red{%else%}gray{%endif%}" data-app-id="{{ app.id }}">
+                        {{ app.id }}
+                    </td>
                     {% else %}
-    		        <td>empty</td>
+    		        <td></td>
                     {% endif %}
                 {% endfor %}
             {% endfor %}

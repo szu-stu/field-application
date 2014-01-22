@@ -12,11 +12,16 @@
     {{ 'table/apply_main.css' | as_css }}
     {% block htmlhead %}
     {% endblock %}
+    <style type="text/css">
+    .red{ background-color: red; }
+    .gray{ background-color: gray; }
+    .black{ background-color: black; }
+    </style>
 </head>
 <body>
 	<div class="container">
 		<div class="header">
-			<a href="/"><img src="logo.png" class="logo"></a>
+			<a href="/"><img src="/static/images/szu_logo.png" class="logo"></a>
 			{% block top_title %}<h1>校园文化活动露天场地申请</h1>{% endblock %}
 			<div class="line"></div>
 		</div>

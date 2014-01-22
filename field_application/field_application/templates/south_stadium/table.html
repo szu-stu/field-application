@@ -24,7 +24,9 @@
                         <td class="timing">{{ attribute }}</td>
                         {% for app in apps_7days %}
                             {% if app %}
-                            <td><a href="">{{ app.activity }}</a></td>
+                            <td class="{% if app.approved %}red{%else%}gray{%endif%}" data-app-id="{{ app.id }}">
+                                <a href="">{{ app.activity }}</a>
+                            </td>
                             {% else %}
                             <td></td>
                             {% endif %}

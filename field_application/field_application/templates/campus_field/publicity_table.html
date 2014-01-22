@@ -43,19 +43,19 @@
                             {% cycle '2' '5' '8' ' ' as right silent %}
                             {% for apps_every_day in apps_every_week %}
                                 {% if apps_every_day.left %}
-                                    <td>{{ apps_every_day.left }}</td>
+                                    <td data-app-id="{{ apps_every_day.left.id }}">{{ apps_every_day.left.id }}</td>
                                 {% else %}
                                     <td></td>
                                 {% endif %}
 
                                 {% if apps_every_day.mid %}
-                                    <td>{{ apps_every_day.mid }}</td>
+                                    <td data-app-id="{{ apps_every_day.mid.id }}">{{ apps_every_day.mid.id }}</td>
                                 {% else %}
                                     <td></td>
                                 {% endif %}
 
                                 {% if apps_every_day.right %}
-                                    <td class="bold_border_right">{ apps_every_day.right }}</td>
+                                    <td class="bold_border_right" data-app-id="{{ apps_every_day.right.id }}">{ apps_every_day.right.id }}</td>
                                 {% else %}
                                     <td class="bold_border_right"></td>
                                 {% endif %}

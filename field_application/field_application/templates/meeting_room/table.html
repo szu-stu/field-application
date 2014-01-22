@@ -29,7 +29,7 @@
         <td>{{ date | date:"n月d日" }}</td>
         {% for app in app_every_day %}
             {% if app %}
-            <td>{{app}}</td>
+            <td class="{% if app.approved %}red{%else%}gray{%endif%}" data-app-id="{{ app.id }}">{{app.id}}</td>
             {% else %}
             <td></td>
             {% endif %}

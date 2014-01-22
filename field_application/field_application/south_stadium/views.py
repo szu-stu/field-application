@@ -38,6 +38,12 @@ def display_table(request):
                   {'table': table, 'curr_week': week})
 
 
+def display_message(request):
+    app_id = request.POST.get('data-app-id')
+    app = SouthStadiumApplication.objects.get(pk=app_id)
+    return render(request, 'south_stadium/message.html', {'app', app})
+
+
 def display_listing(request):
     listing = SouthStadiumApplication.objects.all()
     return render(request, 'south_stadium/listing.html',

@@ -30,14 +30,14 @@
                         <td class="place">{{ attribute }}</td>
                         {% for apps_every_day in apps_every_week %}
                             {% if apps_every_day.MOR %}
-                                <td>{{ apps_every_day.MOR }}</td>
+                                <td data-app-id="{{ apps_every_day.MOR.id }}">{{ apps_every_day.MOR.0.id }}</td>
                             {% else %}
-                                <td>a</td>
+                                <td></td>
                             {% endif %}
                             {% if apps_every_day.AFT %}
-                                <td>{{ apps_every_day.AFT }}</td>
+                                <td data-app-id="{{ apps_every_day.AFT.id }}">{{ apps_every_day.AFT.0.id }}</td>
                             {% else %}
-                                <td>b</td>
+                                <td></td>
                             {% endif %}
                         {% endfor %}
                     </tr>
