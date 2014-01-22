@@ -7,7 +7,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.forms import HiddenInput
 
 from field_application.account.models import Organization
-from field_application.utils.hanzi2pinyin import trans
 
 
 class SignInForm(AuthenticationForm):
