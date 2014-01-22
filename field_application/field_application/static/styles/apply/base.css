@@ -1,0 +1,66 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+body{
+	background-color: #e2ebfe;
+	font-family: "宋体";
+}
+.container{
+	width: 1000px;	
+	position: relative;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.header{
+	width: 100%;
+	height: 100px;
+	position: relative;
+	overflow: hidden;
+}
+.logo{
+	position: absolute;
+}
+.header h1{
+	font-family: "Microsoft Yahei";
+	font-size: 58px;
+	color: #0060ba;
+	font-weight: normal;
+	line-height: 100px;
+	vertical-align: middle;
+	text-align: center;
+	margin-left: 270px;
+}
+.header h3{
+	font-family: "Microsoft Yahei";
+	font-size: 24px;
+	color: #0060ba;
+	font-weight: normal;
+	line-height: 30px;
+	vertical-align: middle;
+	text-align: center;
+	margin-left: 270px;
+}
+.line{
+	width: 100%;
+	height: 5px;
+	background-color: #0060ba;
+	position: relative;
+	position: absolute;
+	top:95px;
+	left: 0px;
+}
+.main{
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+}
+.footer{
+	background-color: #d3cdc9;
+	margin: 30px 0px 30px 0px;
+}
+.footer p{
+	text-align: center;
+	font-size: 12px;
+	color: #777777;
+}

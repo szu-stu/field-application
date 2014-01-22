@@ -5,7 +5,7 @@ from django import forms
 from django.utils import timezone
 from django.forms import ModelForm
 from django.forms.extras.widgets import SelectDateWidget
-from django.forms import Textarea, RadioSelect
+from django.forms import Textarea, RadioSelect, HiddenInput
 from django.forms import CheckboxSelectMultiple 
 
 from field_application.south_stadium.models import SouthStadiumApplication
@@ -16,6 +16,7 @@ class SouthStadiumApplicationForm(forms.ModelForm):
        model = SouthStadiumApplication
        exclude = ['organization', 'approved', 'application_time']
        widgets = {
+           'organization': HiddenInput(),
            'date': SelectDateWidget(),
            'activity_summary': Textarea(),
            'remarks': Textarea(),

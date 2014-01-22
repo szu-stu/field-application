@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="深圳大学,深大,荔园,学子天地,场地申请,南区体育馆,运动广场,申请表">
+    <meta name="description" content="深圳大学资讯传媒社区, 荔园信息聚集平台">
+    <title>{% block htmltitle %} {% endblock %}</title>
+    {% load html_tools %}
+    {{ 'base.css' | as_css }}
+    {% block base_htmlhead %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="/static/images/szu_logo.png" class="logo">
+            {% block top_title %}<h1>校园场地申请</h1>{% endblock %}
+            <div class="line"></div>
+        </div>
+        <div class="main">
+            {% if user.is_authenticated %}
+            <div class="user-nav">
+                <span style="color:red">已登录</sopan>
+                <a href="{% url 'account:signout' %}">退出登录</a>
+                <a href="{% url 'account:reset_password' %}">修改密码</a>
+                <a href="/">【返回场地申请主页】</a>
+                <a href="#">【管理场地申请】</a>
+                <a href="../table/">【查看场地申请情况】</a>
+            </div>
+            {% endif %}
+            {% block main_container %}
+            {% endblock %}
+        </div>
+        <div class="footer">
+            <p>CONPYRIGNT©2013 BY StuCampus.SZU ALL RIGHTS RESERVED.<br />版权所有©深圳大学学子天地 技术开发部</p>
+        </div>
+    </div>
+</body>
+</html>
