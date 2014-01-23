@@ -1,12 +1,182 @@
-<html>
-<head>
-</head>
-<body>
+{% extends 'apply_base.html' %}
+
+{% block htmltitle %} {% endblock %}
+
+{% block top_title %}<h1>校园文化活动露天场地申请</h1>{% endblock %}
+
+{% block main_content %}
     <form method="POST" enctype="multipart/form-data" action="{% url 'campus_field:apply_publicity' %}">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="submit" />
+        <table>
+            <tr>
+                <td class="title">活动项目</td>
+                <td>
+                    {{ form.activity }}
+                    <div class="error">
+                    {% for error in form.activity.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                </td>
+                <td class="title">申请部门</td>
+                <td>
+                    {{ form.organization }}
+                    <input type="text" disabled="disabled" value="{{user.organization}}"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="title">申请人姓名</td>
+                <td>
+                    {{ form.applicant_name }}
+                    <div class="error">
+                    {% for error in form.applicant.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                </td>
+                <td class="title">联系电话</td>
+                <td>
+                    {{ form.applicant_phone_number }}
+                    <div class="error">
+                    {% for error in form.applicant_phone_number.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="title">活动类型</td>
+                <td colspan="3">
+                    {{ form.activity_type }}
+                    <span>其它：</span>
+                    {{ form.other_activity_type }}
+                    <div class="error">
+                    {% for error in form.activity_type.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                    <div class="error">
+                    {% for error in form.other_activity_type.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="title">活动地点</td>
+                <td colspan="3">
+                    {{ form.place }}
+                    <div class="error">
+                    {% for error in form.place.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="title">活动时间</td>
+                <td colspan="3">
+                    {{ form.start_date }}
+                    <span>——</span>
+                    {{ form.end_date }}
+                    <span>(注：设点最多3天) </span>
+                    <div class="error">
+                    {% for error in form.start_date.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                    <div class="error">
+                    {% for error in form.end_date.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="title">活动时段</td>
+                <td colspan="3">
+                    {{ form.time }}
+                    <div class="error">
+                    {% for error in form.time.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="title">活动策划<br />文件上传</td>
+                <td colspan="3">
+                    {{ form.plan_file }}
+                    <span>(注：只能上传doc、txt格式文件)</span>
+                    <div class="error">
+                    {% for error in form.plan_file.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>  
+                </td>
+            </tr>
+            <tr>
+                <td class="title">活动内容简介</td>
+                <td colspan="3">
+                    {{ form.activity_summary }}
+                    <div class="error">
+                    {% for error in form.activity_summary.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="title" rowspan="2">有关赞助说明</td>
+                <td colspan="3">
+                    <span>赞助商：</span>
+                    {{ form.sponsor }}
+                    <span>赞助金额及物品：</span>
+                    {{ form.sponsorship }}
+                    <div class="error">
+                    {% for error in form.sponsor.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                    <div class="error">
+                    {% for error in form.sponsorship.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <span>赞助财物主要用于：</span>
+                    {{ form.sponsorship_usage }}
+                    <div class="error">
+                    {% for error in form.sponsorship_usage.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="title">备注(可选)</td>
+                <td colspan="3">
+                    {{ form.remarks }}
+                    <div class="error">
+                    {% for error in form.remarks.errors %}
+                        {{ error }}&nbsp
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <p>申请说明：<br />1.点击上面各个空白方格填写相关资料，全部填完后点击下面“提交”按钮完成网上提交。<br />2.提交的信息经批准后，可以通过“以打印格式查看”页面打印表格，并送交相应单位批准。<br />如果已经经学院团委/校学生会/社 联/义工联批准同意，可直接到校团委处打印表格并审批。<br />3.申请天数限制：设点最多3天，需至少提前1天申请。<br />4.如果活动地点不在上面列表之内，可以在的址栏的"其它"一栏填上要申请的地址。<br />如果有多个地址，可用两个"|"(即"||")分开。比如：Ａ地||Ｂ地||Ｃ地。</p>
+                </td>
+            </tr>
+        </table>
+        <div class="button_container">
+            <input type="submit" value="提交" />
+            <input type="reset" value="重置" style="margin-left:100px;"/>
+        </div>
     </form>
-</body>
-</html>
+{% endblock %}
 

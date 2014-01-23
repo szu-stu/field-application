@@ -48,3 +48,11 @@ p{
     text-align: center;
     margin-top: 10px;
 }
+li{
+    display: inline;
+    list-style: none;
+    line-height: 150%;
+}
+ul{
+    padding: 5px;
+}
