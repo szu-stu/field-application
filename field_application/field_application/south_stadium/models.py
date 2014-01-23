@@ -42,11 +42,12 @@ class SouthStadiumApplication(models.Model):
     def generate_table(cls, offset=0):
         apps_whose_field_used_within_7days \
             = get_applications_a_week(cls, offset)
-        table = { time_short_name: [None for i in range(0, 7)] \
+        table = { time_short_name: [ []for i in range(0, 7)] \
                 for time_short_name, time_full_name in cls.TIME }
+        today = date.today() + timedelta(offset*7)
         for app in apps_whose_field_used_within_7days:
             for t in app.time:
-                table[t][(app.date-date.today()).days] = app
+                table[t][(app.date-today).days].append(app)
 
         time_order = {'MOR': 0, 'AFT': 1, 'EVE': 2}
         f = lambda i: time_order[i]
