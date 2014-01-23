@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 import copy
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from django.utils import timezone
 from django.db import models
@@ -61,9 +61,10 @@ class StudentActivityCenterApplication(models.Model):
         for short_name, full_name in cls.PLACE:
             table[full_name] = [copy.deepcopy(empty_time_dict) for i in range(7)]
             apps = field_used_this_week_applications.filter(place=short_name)
+            today = date.today() + timedelta(offset*7)
             for app in apps:
                 if app.time in empty_time_dict:
-                    table[full_name][app.date.weekday()][app.time].append(app)
+                    table[full_name][(app.date-today).days][app.time].append(app)
                 else:
                     raise Exception('invalid time')
         table['date'] = gennerate_date_list_7days(offset)
