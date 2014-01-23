@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import copy
 from datetime import datetime, timedelta
 
 from django.utils import timezone
@@ -46,25 +47,23 @@ class StudentActivityCenterApplication(models.Model):
     @classmethod
     def generate_table(cls, offset=0):
         ''' generate dict
-        table- date : [ 7 * date ] 
-             - 学生活动中心前广场       : [ 7*{'MOR': -, 'AFT': -, 'EVE': -} ]
-             - 一楼影视报告厅           : [ 7*{'MOR': -, 'AFT': -, 'EVE': -} ]
-             - 学生活动中心三楼天台(东) : [ 7*{'MOR': -, 'AFT': -, 'EVE': -} ]
-             - 学生活动中心三楼天台(西) : [ 7*{'MOR': -, 'AFT': -, 'EVE': -} ]
-             - 石头坞广场               : [ 7*{'MOR': -, 'AFT': -, 'EVE': -} ]
+        table-date : [ 7 * date ] 
+             -学生活动中心前广场      : [7 * {'MOR': [], 'AFT': [], 'EVE': []} ]
+             -一楼影视报告厅          : [7 * {'MOR': [], 'AFT': [], 'EVE': []} ]
+             -学生活动中心三楼天台(东): [7 * {'MOR': [], 'AFT': [], 'EVE': []} ]
+             -学生活动中心三楼天台(西): [7 * {'MOR': [], 'AFT': [], 'EVE': []} ]
+             -石头坞广场              : [7 * {'MOR': [], 'AFT': [], 'EVE': []} ]
         '''
         field_used_this_week_applications = \
                 get_applications_a_week(cls, offset)
         table = {}
-        empty_time_dict = { time: None for time, l in cls.TIME }
+        empty_time_dict = { time: [] for time, l in cls.TIME }
         for short_name, full_name in cls.PLACE:
-            table[full_name] = []
-            for i in range(0, 7):
-                table[full_name].append(dict(empty_time_dict))
+            table[full_name] = [copy.deepcopy(empty_time_dict) for i in range(7)]
             apps = field_used_this_week_applications.filter(place=short_name)
             for app in apps:
                 if app.time in empty_time_dict:
-                    table[full_name][app.date.weekday()][app.time] = app
+                    table[full_name][app.date.weekday()][app.time].append(app)
                 else:
                     raise Exception('invalid time')
         table['date'] = gennerate_date_list_7days(offset)

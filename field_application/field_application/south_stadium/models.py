@@ -40,6 +40,12 @@ class SouthStadiumApplication(models.Model):
 
     @classmethod
     def generate_table(cls, offset=0):
+        ''' generate table
+        table - date [ 7 * date ]
+              - content - ('早上08:00-12:00', [ 7 * [] ])
+                        - ('下午14:00-17:00', [ 7 * [] ])
+                        - ('晚上19:00-22:30', [ 7 * [] ])
+        '''
         apps_whose_field_used_within_7days \
             = get_applications_a_week(cls, offset)
         table = { time_short_name: [ []for i in range(0, 7)] \
