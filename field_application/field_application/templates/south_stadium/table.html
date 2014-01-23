@@ -22,11 +22,13 @@
                     {% if attribute != 'date' %}
                     <tr>
                         <td class="timing">{{ attribute }}</td>
-                        {% for app in apps_7days %}
-                            {% if app %}
-                            <td class="{% if app.approved %}red{%else%}gray{%endif%}" data-app-id="{{ app.id }}">
-                                <a href="">{{ app.activity }}</a>
-                            </td>
+                        {% for apps in apps_7days %}
+                            {% if apps %}
+                                {% for app in apps %}
+                                <td class="{% if app.approved %}red{%else%}gray{%endif%}" data-app-id="{{ app.id }}">
+                                    <a href="">{{ app.activity }}</a>
+                                </td>
+                                {% endfor %}
                             {% else %}
                             <td></td>
                             {% endif %}
