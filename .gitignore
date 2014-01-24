@@ -1,7 +1,0 @@
-*_db
-
-*.pyc
-*.log
-*.swp
-
-wwwroot/
