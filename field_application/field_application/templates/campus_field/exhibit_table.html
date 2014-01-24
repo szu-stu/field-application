@@ -1,5 +1,8 @@
 {% extends 'table_base.html' %}
 
+{% load range %}
+{% load get_by_index %}
+
 {% block htmltitle %} {% endblock %}
 
 {% block htmlhead %}
@@ -19,7 +22,6 @@
                     {% endfor %}
                 </tr>
                 <tr class="mor_aft">
-                    {% load range %}
                     {% for i in 14|get_range %}
                     <td>{% cycle '上午' '下午' %}</td>
                     {% endfor %}
@@ -29,16 +31,27 @@
                     <tr>
                         <td class="place">{{ attribute }}</td>
                         {% for apps_every_day in apps_every_week %}
+
                             {% if apps_every_day.MOR %}
-                                <td data-app-id="{{ apps_every_day.MOR.id }}">{{ apps_every_day.MOR.0.id }}</td>
+                            <td data-app-id="{% for app in apps_every_day.MOR %} {{ app.id }} {% endfor %}">
+                                {% for app in apps_every_day.MOR %}
+                                {{ app.id }}
+                                {% endfor %}
+                            </td>
                             {% else %}
                                 <td></td>
                             {% endif %}
+
                             {% if apps_every_day.AFT %}
-                                <td data-app-id="{{ apps_every_day.AFT.id }}">{{ apps_every_day.AFT.0.id }}</td>
+                            <td data-app-id="{% for app in apps_every_day.AFT %} {{ app.id }} {% endfor %}">
+                                {% for app in apps_every_day.AFT %}
+                                {{ app.id }}
+                                {% endfor %}
+                            </td>
                             {% else %}
                                 <td></td>
                             {% endif %}
+
                         {% endfor %}
                     </tr>
                     {% endif %}
