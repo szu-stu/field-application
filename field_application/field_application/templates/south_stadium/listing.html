@@ -1,32 +1,29 @@
-<html>
-<head>
-    <style>
-        .application_exist{
-            width: 20px;
-            height: 20px;
-            background-color: green;
-        }
-        .application_pass{
-            width: 20px;
-            height: 20px;
-            background-color: red;
-        }
-        a{ display: block; }
-    </style>
-</head>
+{% extends 'apply_base.html' %}
 
-<body>
-<h1>list</h1>
+{% block htmltitle %} {% endblock %}
+
+{% block top_title %}<h1>学生活动中心场所申请</h1>{% endblock %}
+
+{% block main_content %}
     <table>
-        {% for app in listing %}
         <tr>
-            <td> 
-                {% if app %}
-                    {{ app }}
-                {% endif %}
-            </td> 
+            <td>申请组织</td>
+            <td>活动主题</td>
+            <td>使用日期</td>
+            <td>使用时间</td>
+            <td>申请时间</td>
+            <td>是否审批</td>
+        </tr>
+        {% for app in page %}
+        <tr>
+            <td>{{ app.organization }}</td>
+            <td>{{ app.activity }}</td> 
+            <td>{{ app.date | date:"Y年n月d日"}}</td>
+            <td>{% for time in app.time %} {{ time }} {% endfor %}</td>
+            <td>{{ app.application_time }}</td>
+            <td>{% if app.approved %}已批准{% else %}未批准{% endif %}</td>
         </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+    {% include 'paginator.html' with page=page %}
+{% endblock %}

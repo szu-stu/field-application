@@ -5,11 +5,15 @@ from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.forms.forms import NON_FIELD_ERRORS
+from django.core.paginator import InvalidPage, Paginator
 
 from field_application.student_activity_center.forms \
         import StudentActivityCenterApplicationForm
 from field_application.student_activity_center.models \
         import StudentActivityCenterApplication
+from field_application.utils.models import get_second_key
+from field_application.student_activity_center.models import \
+        StudentActivityCenterApplication
 
 
 class ApplyView(View):
@@ -42,5 +46,24 @@ def display_table(request):
 
 def display_listing(request):
     listing = StudentActivityCenterApplication.objects.all()
+    for app in listing:
+        app.place = get_second_key(app.place,
+                StudentActivityCenterApplication.PLACE)
+        app.time = get_second_key(app.time,
+                StudentActivityCenterApplication.TIME)
+    paginator = Paginator(listing, 3)
+    try:
+        page = paginator.page(request.GET.get('page'))
+    except InvalidPage:
+        page = paginator.page(1)
     return render(request, 'student_activity_center/listing.html',
-                  {'listing': listing})
+                  {'page': page})
+
+
+@login_required
+def manage(request):
+    org = request.user.organization
+    listing = StudentActivityCenterApplication.objects.filter(organization=org)
+
+    return render(request, 'student_activity_center/manage.html',
+                    {'listing': listing})
