@@ -72,7 +72,15 @@ class PublicityApplicationForm(forms.ModelForm):
             raise forms.ValidationError(u'所填日期已过')
         if end_date > now + timedelta(days=14):
             raise forms.ValidationError(u'申请的场地使用时间距离现在不能超过14天')
-        start_date = self.cleaned_data.get('start_date')
-        if end_date > start_date + timedelta(days=3):
-            raise forms.ValidationError(u'展览时间不得超过3天')
         return end_date
+
+    def clean(self):
+        start_date = self.cleaned_data.get('start_date')
+        end_date = self.cleaned_data.get('end_date')
+        if start_date and end_date \
+                and end_date > start_date + timedelta(days=2):
+            msg = u'展览时间不得超过3天'
+            self._errors['end_date'] = self.error_class([msg])
+            del self.cleaned_data['end_date']
+        return super(PublicityApplicationForm, self).clean()
+

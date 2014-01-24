@@ -17,7 +17,6 @@
             {% for date in table.date %}
     		    <td colspan="3">{{ date | date:"m月d日" }}<br />{{ date | date:"l" }}</td>
             {% endfor %}
-    	</tr>
         {% load range %}
     	<tr>
             {% for i in 7|get_range %}
@@ -35,7 +34,8 @@
             {% for apps_everyday in apps_a_week %}
                 {% for time, apps in apps_everyday.items %}
                     {% if apps %}
-    		            <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}" data-app-id="{{ app.id }}">
+                    <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}"
+                        data-app-id="{% for app in apps %} {{ app.id }} {% endfor %}">
                         {% for app in apps %}
                             {{ app.id }}
                         {% endfor %}
