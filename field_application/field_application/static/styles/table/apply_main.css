@@ -27,14 +27,14 @@
     color: #4d6ff7;
     text-decoration: none;
 }
-table{
+table.app_table{
     width: 100%;
     font-size: 12px;
     color: #000000;
     text-align: center;
     border-collapse:collapse;
 }
-td{
+.app_table td{
     border: 2px #ffffff solid;
 }
 .grey{
@@ -44,5 +44,5 @@ td{
     background-color:#ff7766;
 }
 .blue{
-    background-color: #d9cffe;
+    background-color: #e2ebfe;
 }
