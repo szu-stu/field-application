@@ -18,17 +18,20 @@
                         <td>{{ date | date:"n月d日" }}<br />{{ date | date:"l" }}</td>
                     {% endfor %}
                 </tr>
+
+                {% load all_approved %}
                 {% for attribute, apps_7days in table.content %}
                     {% if attribute != 'date' %}
                     <tr>
                         <td class="timing">{{ attribute }}</td>
                         {% for apps in apps_7days %}
                             {% if apps %}
+                            <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}"
+                                data-app-id="{% for app in apps %} {{ app.id }} {% endfor %}">
                                 {% for app in apps %}
-                                <td class="{% if app.approved %}red{%else%}gray{%endif%}" data-app-id="{{ app.id }}">
                                     <a href="">{{ app.activity }}</a>
-                                </td>
                                 {% endfor %}
+                                </td>
                             {% else %}
                             <td></td>
                             {% endif %}

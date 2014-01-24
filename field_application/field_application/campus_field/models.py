@@ -143,12 +143,12 @@ class PublicityApplication(CampusFieldApplication):
     def generate_table(cls, offset=0):
         ''' generate a dict of the structure below
         table - date : [ 7 date ]
-              - CD座文化长廊   : [ 7 * {'MOR': [], 'AFT': []} ]
-              - A座文化大厅    : [ 7 * {'MOR': [], 'AFT': []} ] 
-              - 西南餐厅前空地 : [ 7 * {'MOR': [], 'AFT': []} ] 
-              - 荔山餐厅前空地 : [ 7 * {'MOR': [], 'AFT': []} ]
-              - 文山湖路口     : [ 7 * {'MOR': [], 'AFT': []} ] 
-              - 桂庙路口       : [ 7 * {'MOR': [], 'AFT': []} ]
+              - CD座文化长廊   : [ 7 * {'8': [], '9': [], ...} ]
+              - A座文化大厅    : [ 7 * {'8': [], '9': [], ...} ] 
+              - 西南餐厅前空地 : [ 7 * {'8': [], '9': [], ...} ] 
+              - 荔山餐厅前空地 : [ 7 * {'8': [], '9': [], ...} ]
+              - 文山湖路口     : [ 7 * {'8': [], '9': [], ...} ] 
+              - 桂庙路口       : [ 7 * {'8': [], '9': [], ...} ]
         [] contain all application which contain the same period
         '''
         field_used_this_week_applications = cls.get_applications_a_week(offset)
@@ -161,7 +161,7 @@ class PublicityApplication(CampusFieldApplication):
             apps = field_used_this_week_applications.filter(
                     place__contains=get_first_key(full_name, cls.PLACE))
             for app in apps:
-                for i in range((app.end_date-app.start_date).days):
+                for i in range((app.end_date-app.start_date).days+1):
                     d = app.start_date + timedelta(days=i)
                     if d < first_day or d > last_day: 
                         break
