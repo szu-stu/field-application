@@ -5,7 +5,7 @@
 {% block top_title %}<h1 style="font-size:50px">南区运动广场二楼平台场地申请</h1>{% endblock %}
 
 {% block main_content %}
-            <form method="POST" enctype="multipart/form-data" action="{% block post_url %}{% endblock %}">
+            <form method="POST" enctype="multipart/form-data" action="{{ post_url }}">
                 {% csrf_token %}
                 <table>
                     <tr>

@@ -17,7 +17,7 @@ class ApplyView(View):
 
     @method_decorator(login_required)
     def get(self, request):
-        return render(request, 'south_stadium/apply.html', 
+        return render(request, 'south_stadium/form.html', 
                       {'form': SouthStadiumApplicationForm()})
 
     @method_decorator(login_required)
@@ -25,7 +25,7 @@ class ApplyView(View):
         form = SouthStadiumApplicationForm(request.POST,
                                            request.FILES)
         if not form.is_valid():
-            return render(request, 'south_stadium/apply.html',
+            return render(request, 'south_stadium/form.html',
                           {'form': form})
         app = form.save(commit=False)
         app.organization = request.user.organization
@@ -76,25 +76,33 @@ def manage(request):
     except InvalidPage:
         page = paginator.page(1)
     return render(request, 'south_stadium/manage.html',
-                    {'page': page})
+            {'page': page})
 
 
 class ModifyView(View):
 
     @method_decorator(login_required)
     def get(self, request):
-        app = SouthStadiumApplication.objects.get(id=request.GET.get('id'))
+        app_id = request.GET.get('id')
+        app = SouthStadiumApplication.objects.get(id=app_id)
         form = SouthStadiumApplicationForm(instance=app)
-        return render(request, 'south_stadium/modify.html', 
-                {'form': form, 'app_id': request.GET.get('id')})
+        return render(request, 'south_stadium/form.html', 
+                {'form': form, 'app_id': app_id,
+                 'post_url': reverse('south_stadium:modify')+'?id='+app_id})
 
     @method_decorator(login_required)
     def post(self, request):
-        app = SouthStadiumApplication.objects.get(id=request.GET.get('id'))
+        app_id = request.GET.get('id')
+        app = SouthStadiumApplication.objects.get(id=app_id)
         form = SouthStadiumApplicationForm(request.POST, request.FILES,
                                            instance=app)
         if not form.is_valid():
-            return render(request, 'south_stadium/modify.html',
-                          {'form': form})
+            return render(request, 'south_stadium/form.html', 
+                {'form': form, 'app_id': app_id,
+                 'post_url': reverse('south_stadium:modify')+'?id='+app_id})
         form.save()
         return HttpResponseRedirect(reverse('south_stadium:manage'))
+
+
+def message(request):
+    app = SouthStadiumApplication.objects.get(id=request.GET.get('id'))
