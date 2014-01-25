@@ -28,8 +28,7 @@ class SouthStadiumApplication(models.Model):
     approved = models.BooleanField(default=False)
     application_time = models.DateTimeField(auto_now_add=True)
 
-    plan_file = models.FileField(upload_to=file_save_path('south_stadium'),
-                                 blank=True, null=True)
+    plan_file = models.FileField(upload_to=file_save_path('south_stadium'))
     applicant_name = models.CharField(max_length=10)
     applicant_phone_number = models.CharField(max_length=30)
     activity_summary = models.CharField(max_length=200)

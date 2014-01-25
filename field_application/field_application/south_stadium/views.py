@@ -11,6 +11,7 @@ from django.core.paginator import InvalidPage, Paginator
 from field_application.south_stadium.forms import SouthStadiumApplicationForm
 from field_application.south_stadium.models import SouthStadiumApplication
 from field_application.utils.models import get_second_key
+from field_application.utils.ajax import render_json
 
 
 class ApplyView(View):
@@ -38,12 +39,6 @@ def display_table(request):
     table = SouthStadiumApplication.generate_table(offset=week)
     return render(request, 'south_stadium/table.html',
                   {'table': table, 'curr_week': week})
-
-
-def display_message(request):
-    app_id = request.POST.get('data-app-id')
-    app = SouthStadiumApplication.objects.get(pk=app_id)
-    return render(request, 'south_stadium/message.html', {'app', app})
 
 
 def display_listing(request):
@@ -106,3 +101,18 @@ class ModifyView(View):
 
 def message(request):
     app = SouthStadiumApplication.objects.get(id=request.GET.get('id'))
+    time = [get_second_key(t, SouthStadiumApplication.TIME) \
+                for t in app.time]
+    data = {'organization': app.organization.chinese_name,
+            'date': app.date.strftime('%Y年%m月%d日'),
+            'time': time, 'activity': app.activity,
+            'approved': app.approved, 'plan_file': app.plan_file.url,
+            'applicant_name': app.applicant_name,
+            'applicant_phone_number': app.applicant_phone_number,
+            'application_time': \
+                    app.application_time.strftime('%Y年%m月%d日 %H:%M:%S'),
+            'sponsor': app.sponsor, 'sponsorship': app.sponsorship,
+            'sponsorship_usage': app.sponsorship_usage,
+            'activity_summary': app.activity_summary,
+            'remarks': app.remarks }
+    return render_json(data)
