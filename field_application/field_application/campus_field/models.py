@@ -68,7 +68,7 @@ class ExhibitApplication(CampusFieldApplication):
     exhibition = models.CharField(max_length=20, choices=EXHIBITION)
     other_exhibition = models.CharField(max_length=20,
                                         blank=True, null=True)
-    exhibit_board_number = models.IntegerField()
+    exhibit_board_number = models.PositiveIntegerField()
 
     @classmethod
     def generate_table(cls, offset=0):
