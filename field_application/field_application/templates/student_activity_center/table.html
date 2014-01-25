@@ -5,13 +5,16 @@
 {% block htmlhead %}
     {% load html_tools %}
     {{ 'student_activity_center/table.css' | as_css }}
+    {{ 'artDialog/v4/artDialog.js' | as_js }}
+    {{ 'artDialog/v4/skins/opera.css' | as_css }}
+    {{ 'popupBox.js' | as_js }}
 {% endblock %}
 
 {% block top_title %}<h1 style="font-size:50px">学生活动中心场所申请</h1>{% endblock %}
 {% block title %}学生活动中心场所一周安排表(图形版){% endblock %}
 
 {% block main_content %}
-    <table>
+    <table class="app_table">
     	<tr class="date">
     		<td class="blue place" rowspan="2">活动场地</td>
             {% for date in table.date %}
@@ -35,13 +38,13 @@
                 {% for time, apps in apps_everyday.items %}
                     {% if apps %}
                     <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}"
-                        data-app-id="{% for app in apps %} {{ app.id }} {% endfor %}">
+                        data-app-id="{% for app in apps %} {{ app.id }} {% endfor %}" onclick="javascript:popupBox('{{app.applicant_name}}')">
                         {% for app in apps %}
                             {{ app.id }}
                         {% endfor %}
                         </td>
                     {% else %}
-    		        <td></td>
+    		        <td class="blue"></td>
                     {% endif %}
                 {% endfor %}
             {% endfor %}

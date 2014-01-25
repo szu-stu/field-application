@@ -5,13 +5,42 @@
 {% block htmlhead %}
     {% load html_tools %}
     {{ 'south_stadium/table.css' | as_css }}
+    {{ 'artDialog/v4/artDialog.js' | as_js }}
+    {{ 'artDialog/v4/skins/opera.css' | as_css }}
+    {{ 'popupBox.js' | as_js }}
 {% endblock %}
 
 {% block top_title %}<h1 style="font-size:50px">南区运动广场二楼平台场地申请</h1>{% endblock %}
 {% block title %}南区运动广场二楼平台一周安排表(图形版){% endblock %}
 
 {% block main_content %}
-            <table>
+<style>
+table.aui_dialog td.aui_main{
+    vertical-align: top;
+}
+table.app_cond{
+    width: 480px;
+}
+.app_cond td{
+    border: 1px solid white;
+    height: 28px;
+}
+td.app_sing_cond{
+    text-align: left;
+}
+.app_table_title{
+    background-color: #CCCCCC;
+    text-align: center;
+    width: 480px;
+}
+span.app_approved{
+    color: #E10601;
+}
+table.app_table td.gray, table.app_table td.red{
+    cursor: pointer;
+}
+</style>
+            <table class="app_table">
                 <tr class="date">
                     <td class="blue">运动广场二楼</td>
                     {% for date in table.date %}
@@ -27,13 +56,13 @@
                         {% for apps in apps_7days %}
                             {% if apps %}
                             <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}"
-                                data-app-id="{% for app in apps %} {{ app.id }} {% endfor %}">
-                                {% for app in apps %}
-                                    <a href="">{{ app.activity }}</a>
-                                {% endfor %}
+                                data-app-id="[{% for app in apps %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}' }, {% endfor %}]"  onclick="javascript:popupBox(this.getAttribute('data-app-id'))">
+                                {# {% for app in apps %} #}
+                                {#     <a href="#">{{ app.activity }}</a> #}
+                                {# {% endfor %} #}
                                 </td>
                             {% else %}
-                            <td></td>
+                            <td class="blue"></td>
                             {% endif %}
                         {% endfor %}
                     </tr>
