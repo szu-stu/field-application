@@ -7,11 +7,13 @@ from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.forms.forms import NON_FIELD_ERRORS
+from django.core.paginator import InvalidPage, Paginator
 
 from field_application.campus_field.forms import ExhibitApplicationForm
 from field_application.campus_field.forms import PublicityApplicationForm
 from field_application.campus_field.models import ExhibitApplication
 from field_application.campus_field.models import PublicityApplication
+from field_application.utils.models import get_second_key
 
 
 class ApplyExhibitView(View):
@@ -63,8 +65,20 @@ def display_exhibit_table(request):
 
 def display_exhibit_list(request):
     listing = ExhibitApplication.objects.all()
+    for app in listing:
+        for i in range(len(app.place)):
+            app.place[i] = get_second_key(app.place[i],
+                    ExhibitApplication.PLACE)
+        for i in range(len(app.time)):
+            app.time[i] = get_second_key(app.time[i],
+                    ExhibitApplication.TIME)
+    paginator = Paginator(listing, 3)
+    try:
+        page = paginator.page(request.GET.get('page'))
+    except InvalidPage:
+        page = paginator.page(1)
     return render(request, 'campus_field/exhibit_list.html',
-                  {'listing': listing})
+                  {'page': page})
 
 
 def display_publicity_table(request):
@@ -76,5 +90,17 @@ def display_publicity_table(request):
 
 def display_publicity_list(request):
     listing = PublicityApplication.objects.all()
+    for app in listing:
+        for i in range(len(app.place)):
+            app.place[i] = get_second_key(app.place[i],
+                    PublicityApplication.PLACE)
+        for i in range(len(app.time)):
+            app.time[i] = get_second_key(app.time[i],
+                    PublicityApplication.TIME)
+    paginator = Paginator(listing, 3)
+    try:
+        page = paginator.page(request.GET.get('page'))
+    except InvalidPage:
+        page = paginator.page(1)
     return render(request, 'campus_field/publicity_list.html',
-                  {'listing': listing})
+                  {'page': page})
