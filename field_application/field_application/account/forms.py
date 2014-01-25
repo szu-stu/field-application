@@ -14,6 +14,7 @@ class SignInForm(AuthenticationForm):
                                       empty_label='请选择组织')
 
     def clean_username(self):
+        ''' change Organization.chinese_name to User.username '''
         org = Organization.objects.get(
                 chinese_name=self.cleaned_data['username'])
         return org.user.username

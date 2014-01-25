@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from django.views.generic import View
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect
@@ -21,8 +22,9 @@ class ApplyView(View):
     @method_decorator(login_required)
     def get(self, request):
         return render(request, 
-                      'student_activity_center/apply.html', 
-                      {'form': StudentActivityCenterApplicationForm()})
+                      'student_activity_center/form.html', 
+                      {'form': StudentActivityCenterApplicationForm(),
+                       'post_url': reverse('student_activity_center:apply')})
 
     @method_decorator(login_required)
     def post(self, request):
@@ -30,7 +32,8 @@ class ApplyView(View):
                                                     request.FILES)
         if not form.is_valid():
             return render(request, 'student_activity_center/apply.html',
-                          {'form': form})
+                    {'form': form,
+                     'post_url': reverse('student_activity_center:apply')})
         app = form.save(commit=False)
         app.organization = request.user.organization
         app.save()
@@ -63,7 +66,64 @@ def display_listing(request):
 @login_required
 def manage(request):
     org = request.user.organization
-    listing = StudentActivityCenterApplication.objects.filter(organization=org)
-
+    listing = StudentActivityCenterApplication.objects.\
+            filter(organization=org).order_by('-pk')
+    paginator = Paginator(listing, 3)
+    for app in listing:
+        app.time = get_second_key(app.time,
+                StudentActivityCenterApplication.TIME)
+        app.place = get_second_key(app.place,
+                StudentActivityCenterApplication.PLACE)
+    try:
+        page = paginator.page(request.GET.get('page'))
+    except InvalidPage:
+        page = paginator.page(1)
     return render(request, 'student_activity_center/manage.html',
-                    {'listing': listing})
+            {'page': page})
+
+ 
+def get_detail(request):
+    app = StudentActivityCenterApplication.objects.get(
+            id=request.GET.get('id'))
+    time = [get_second_key(t, StudentActivityCenterApplication.TIME) \
+                for t in app.time]
+    data = {'organization': app.organization.chinese_name,
+            'place': app.place,
+            'date': app.date.strftime('%Y年%m月%d日'),
+            'time': time, 'activity': app.activity,
+            'approved': app.approved, 'plan_file': app.plan_file.url,
+            'applicant_name': app.applicant_name,
+            'applicant_phone_number': app.applicant_phone_number,
+            'application_time': \
+                    app.application_time.strftime('%Y年%m月%d日 %H:%M:%S'),
+            'sponsor': app.sponsor, 'sponsorship': app.sponsorship,
+            'sponsorship_usage': app.sponsorship_usage,
+            'activity_summary': app.activity_summary,
+            'remarks': app.remarks }
+    return render_json(data)
+
+class ModifyView(View):
+
+    @method_decorator(login_required)
+    def get(self, request):
+        app_id = request.GET.get('id')
+        app = StudentActivityCenterApplication.objects.get(id=app_id)
+        form = StudentActivityCenterApplicationForm(instance=app)
+        return render(request, 'student_activity_center/form.html', 
+                {'form': form, 'app_id': app_id,
+                 'post_url': \
+                     reverse('student_activity_center:modify')+'?id='+app_id})
+
+    @method_decorator(login_required)
+    def post(self, request):
+        app_id = request.GET.get('id')
+        app = StudentActivityCenterApplication.objects.get(id=app_id)
+        form = StudentActivityCenterApplicationForm(
+                request.POST, request.FILES, instance=app)
+        if not form.is_valid():
+            return render(request, 'student_activity_center/form.html', 
+                {'form': form, 'app_id': app_id,
+                 'post_url': \
+                     reverse('student_activity_center:modify')+'?id='+app_id})
+        form.save()
+        return HttpResponseRedirect(reverse('student_activity_center:manage'))

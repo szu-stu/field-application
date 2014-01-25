@@ -2,7 +2,7 @@
 
 {% block htmltitle %} {% endblock %}
 
-{% block top_title %}<h1>学生活动中心</h1>{% endblock %}
+{% block top_title %}<h1>meeting room application</h1>{% endblock %}
 
 {% block main_content %}
     <table>
@@ -14,18 +14,17 @@
             <td>使用时间</td>
             <td>申请时间</td>
             <td>是否审批</td>
-            <td>修改申请表</td>
         </tr>
         {% for app in page %}
         <tr>
             <td>{{ app.organization }}</td>
-            <td>{{ app.activity }}</td> 
+            <td>{{ app.meeting_topic }}</td> 
             <td>{{ app.place }}</td>
             <td>{{ app.date | date:"Y年n月d日"}}</td>
-            <td>{{ app.time }}</td>
+            <td>{% for time in app.time %} {{ time }} {% endfor %}</td>
             <td>{{ app.application_time }}</td>
             <td>{% if app.approved %}已批准{% else %}未批准{% endif %}</td>
-            <td><a href="{% url 'student_activity_center:modify' %}?id={{ app.id }}">manage</a></td>
+            <td><a href="{% url 'meeting_room:modify' %}?id={{ app.id }}">manage</a></td>
         </tr>
         {% endfor %}
     </table>

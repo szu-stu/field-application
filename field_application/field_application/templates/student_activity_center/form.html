@@ -2,22 +2,18 @@
 
 {% block htmltitle %} {% endblock %}
 
-{% block top_title %}
-    <h1 style="font-size:50px;line-height:65px">会议室使用申请</h1>
-    <h3>——石头坞一楼、二楼会议室和学生活动中心305、307会议室</h3>
-{% endblock %}
+{% block top_title %}<h1>学生活动中心场所申请</h1>{% endblock %}
 
 {% block main_content %}
-    <h6 style="color:red;text-align:center;line-height:300%">石头坞一楼会议室周一12：00-14：00暂停申请，谢谢合作!</h6>
-    <form method="POST" enctype="multipart/form-data" action="{% url 'meeting_room:apply' %}">
+    <form method="POST" enctype="multipart/form-data" action="{{ post_url }}">
         {% csrf_token %}
         <table>
             <tr>
-                <td class="title">会议主题</td>
+                <td class="title">活动项目</td>
                 <td>
-                    {{ form.meeting_topic }}
+                    {{ form.activity }}
                     <div class="error">
-                    {% for error in form.meeting_topic.errors %}
+                    {% for error in form.activity.errors %}
                         {{ error }}&nbsp;
                     {% endfor %}
                     </div>
@@ -49,7 +45,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="title">会议室</td>
+                <td class="title">申请活动场地</td>
                 <td colspan="3">
                     {{ form.place }}
                     <div class="error">
@@ -60,7 +56,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="title">会议时间</td>
+                <td class="title">使用日期</td>
                 <td colspan="3">
                     {{ form.date }}
                     <span style="color:red">(只能申请14天内的场地)</span>
@@ -72,7 +68,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="title">会议时段</td>
+                <td class="title">使用时间</td>
                 <td colspan="3">
                     {{ form.time }}
                     <div class="error">
@@ -83,22 +79,53 @@
                 </td>
             </tr>
             <tr>
-                <td class="title">会议内容简介</td>
+                <td class="title">活动策划<br />文件上传</td>
                 <td colspan="3">
-                    {{ form.meeting_summary }}
+                    {{ form.plan_file }}
+                    <span>(注：只能上传doc、txt格式文件)</span>
                     <div class="error">
-                    {% for error in form.meeting_summary.errors %}
+                    {% for error in form.plan_file.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    </div>  
+                </td>
+            </tr>
+            <tr>
+                <td class="title">活动内容简介</td>
+                <td colspan="3">
+                    {{ form.activity_summary }}
+                    <div class="error">
+                    {% for error in form.activity_summary.errors %}
                         {{ error }}&nbsp;
                     {% endfor %}
                     </div>
                 </td>
             </tr>
             <tr>
-                <td class="title">备注(可选)</td>
+                <td class="title" rowspan="2">有关赞助说明</td>
                 <td colspan="3">
-                    {{ form.remarks }}
+                    <span>赞助商：</span>
+                    {{ form.sponsor }}
+                    <span>赞助金额及物品：</span>
+                    {{ form.sponsorship }}
                     <div class="error">
-                    {% for error in form.remarks.errors %}
+                    {% for error in form.sponsor.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    </div>
+                    <div class="error">
+                    {% for error in form.sponsorship.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <span>赞助财物主要用于：</span>
+                    {{ form.sponsorship_usage }}
+                    <div class="error">
+                    {% for error in form.sponsorship_usage.errors %}
                         {{ error }}&nbsp;
                     {% endfor %}
                     </div>
@@ -106,7 +133,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    <p>申请说明：<br />1.点击上面各个空白方格填写相关资料，全部填完后点击下面“提交”按钮完成网上提交。<br />2.同一个会议室相同的时间段只能提供一个申请，请不要选择已有人申请的时间段。<br />3.石头坞一楼、二楼会议室为校学生会、社团联合会专用会议室，其它组织如要使用需向校学生会、社团联合会办公室提出申请，并由校学生会、社团联合会办公室代为网上申请。</p>
+                    <p>申请说明：<br />1.点击上面各个空白方格填写相关资料，全部填完后点击下面“提交”按钮完成网上提交。<br />2.提交的信息经批准后，可以通过“以打印格式查看”页面打印表格，并送交相应单位批准。<br />如果已经经学院团委/校学生会/社 联/义工联批准同意，可直接到校团委处打印表格并审批。</p>
                 </td>
             </tr>
         </table>
@@ -116,4 +143,3 @@
         </div>
     </form>
 {% endblock %}
-

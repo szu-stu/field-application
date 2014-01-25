@@ -33,7 +33,7 @@ class ApplyExhibitView(View):
         app = form.save(commit=False)
         app.organization = request.user.organization
         app.save()
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect(reverse('campus_field:exhibit_table'))
 
 
 class ApplyPublicityView(View):

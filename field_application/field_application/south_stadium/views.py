@@ -19,7 +19,8 @@ class ApplyView(View):
     @method_decorator(login_required)
     def get(self, request):
         return render(request, 'south_stadium/form.html', 
-                      {'form': SouthStadiumApplicationForm()})
+                      {'form': SouthStadiumApplicationForm(),
+                       'post_url': reverse('south_stadium:apply')})
 
     @method_decorator(login_required)
     def post(self, request):
@@ -27,11 +28,12 @@ class ApplyView(View):
                                            request.FILES)
         if not form.is_valid():
             return render(request, 'south_stadium/form.html',
-                          {'form': form})
+                          {'form': form,
+                           'post_url': reverse('south_stadium:apply')})
         app = form.save(commit=False)
         app.organization = request.user.organization
         app.save()
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect(reverse('south_stadium:table'))
 
 
 def display_table(request):
@@ -99,7 +101,7 @@ class ModifyView(View):
         return HttpResponseRedirect(reverse('south_stadium:manage'))
 
 
-def message(request):
+def get_detail(request):
     app = SouthStadiumApplication.objects.get(id=request.GET.get('id'))
     time = [get_second_key(t, SouthStadiumApplication.TIME) \
                 for t in app.time]

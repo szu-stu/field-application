@@ -43,6 +43,7 @@ class StudentActivityCenterApplication(models.Model):
     sponsor = models.CharField(max_length=30, blank=True, null=True)
     sponsorship = models.CharField(max_length=30, blank=True, null=True)
     sponsorship_usage = models.CharField(max_length=40, blank=True, null=True)
+    deleted = models.BooleanField(default=False)
 
     @classmethod
     def generate_table(cls, offset=0):

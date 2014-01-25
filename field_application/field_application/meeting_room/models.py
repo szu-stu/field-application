@@ -55,6 +55,7 @@ class MeetingRoomApplication(models.Model):
     remarks = models.CharField(max_length=300, blank=True, null=True)
     approved = models.BooleanField(default=False)
     application_time = models.DateTimeField(auto_now_add=True)
+    deleted = models.BooleanField(default=False)
 
 
     @classmethod
