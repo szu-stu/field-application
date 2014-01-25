@@ -1,0 +1,39 @@
+/* application dialog */
+td.aui_main{
+    vertical-align: top;
+}
+
+/* application list table */
+td.app_sing_cond{
+    text-align: left;
+}
+.app_table_title{
+    background-color: #CCCCCC;
+    text-align: center;
+    width: 480px;
+}
+span.app_approved{
+    color: #E10601;
+}
+table.app_table td.gray, table.app_table td.red{
+    cursor: pointer;
+}
+
+/* single application info table */
+table.app_info_table{
+    width: 480px;
+}
+table.app_info_table td{
+    padding: 3px 5px;
+    word-break: break-all;
+}
+td.app_info_cont{
+    width: 380px;
+    vertical-align: top;
+    text-align: left;
+}   
+td.app_info_title{
+    width: 100px;
+    vertical-align: top;
+    text-align: right;
+}
