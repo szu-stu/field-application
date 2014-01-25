@@ -4,6 +4,7 @@ from field_application.south_stadium.views import ApplyView
 from field_application.south_stadium.views import display_table
 from field_application.south_stadium.views import display_listing
 from field_application.south_stadium.views import display_message
+from field_application.south_stadium.views import manage, ModifyView
 
 urlpatterns = patterns(
     '',
@@ -11,4 +12,6 @@ urlpatterns = patterns(
     url(r'^table/$', display_table, name='table'),
     url(r'^list/$', display_listing, name='listing'),
     url(r'^message/$', display_listing, name='message'),
+    url(r'^manage/$', manage, name='manage'),
+    url(r'^modify/$', ModifyView.as_view(), name='modify'),
  )

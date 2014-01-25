@@ -1,0 +1,5 @@
+{% extends 'south_stadium/form.html' %}
+
+{% block post_url %}
+{% url 'south_stadium:modify' %}?id={{ app_id }}
+{% endblock %}

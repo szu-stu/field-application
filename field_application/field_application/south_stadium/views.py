@@ -64,7 +64,37 @@ def display_listing(request):
 @login_required
 def manage(request):
     org = request.user.organization
-    listing = SouthStadiumApplication.objects.filter(organization=org)
+    listing = SouthStadiumApplication.objects.\
+            filter(organization=org).order_by('-pk')
+    paginator = Paginator(listing, 3)
+    for app in listing:
+        for i in range(len(app.time)):
+            app.time[i] = get_second_key(app.time[i],
+                    SouthStadiumApplication.TIME)
+    try:
+        page = paginator.page(request.GET.get('page'))
+    except InvalidPage:
+        page = paginator.page(1)
+    return render(request, 'south_stadium/manage.html',
+                    {'page': page})
 
-    return render(request, 'student_activity_center/manage.html',
-                    {'listing': listing})
+
+class ModifyView(View):
+
+    @method_decorator(login_required)
+    def get(self, request):
+        app = SouthStadiumApplication.objects.get(id=request.GET.get('id'))
+        form = SouthStadiumApplicationForm(instance=app)
+        return render(request, 'south_stadium/modify.html', 
+                {'form': form, 'app_id': request.GET.get('id')})
+
+    @method_decorator(login_required)
+    def post(self, request):
+        app = SouthStadiumApplication.objects.get(id=request.GET.get('id'))
+        form = SouthStadiumApplicationForm(request.POST, request.FILES,
+                                           instance=app)
+        if not form.is_valid():
+            return render(request, 'south_stadium/modify.html',
+                          {'form': form})
+        form.save()
+        return HttpResponseRedirect(reverse('south_stadium:manage'))
