@@ -4,10 +4,14 @@
 
 {% block htmlhead %}
     {% load html_tools %}
+
     {{ 'student_activity_center/table.css' | as_css }}
-    {{ 'artDialog/v4/artDialog.js' | as_js }}
+
+    {{ 'artDialog/v4/artDialog.js'    | as_js  }}
     {{ 'artDialog/v4/skins/opera.css' | as_css }}
-    {{ 'popupBox.js' | as_js }}
+    {{ 'artDialog/popupBox.css'       | as_css }}
+
+    {{ 'popupBox.js'  | as_js  }}
 {% endblock %}
 
 {% block top_title %}<h1 style="font-size:50px">学生活动中心场所申请</h1>{% endblock %}
@@ -38,10 +42,10 @@
                 {% for time, apps in apps_everyday.items %}
                     {% if apps %}
                     <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}"
-                        data-app-id="{% for app in apps %} {{ app.id }} {% endfor %}" onclick="javascript:popupBox('{{app.applicant_name}}')">
-                        {% for app in apps %}
-                            {{ app.id }}
-                        {% endfor %}
+                        data-app-id="[{% for app in apps %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}' }, {% endfor %}]" onclick="javascript:showAppList(this.getAttribute('data-app-id'), 'student_activity_center' )">
+                        {# {% for app in apps %} #}
+                        {#     {{ app.id }} #}
+                        {# {% endfor %} #}
                         </td>
                     {% else %}
     		        <td class="blue"></td>
