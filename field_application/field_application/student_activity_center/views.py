@@ -15,6 +15,7 @@ from field_application.student_activity_center.models \
 from field_application.utils.models import get_second_key
 from field_application.student_activity_center.models import \
         StudentActivityCenterApplication
+from field_application.utils.ajax import render_json
 
 
 class ApplyView(View):
@@ -85,12 +86,13 @@ def manage(request):
 def get_detail(request):
     app = StudentActivityCenterApplication.objects.get(
             id=request.GET.get('id'))
-    time = [get_second_key(t, StudentActivityCenterApplication.TIME) \
-                for t in app.time]
     data = {'organization': app.organization.chinese_name,
-            'place': app.place,
+            'place': get_second_key(app.place,
+                StudentActivityCenterApplication.PLACE),
             'date': app.date.strftime('%Y年%m月%d日'),
-            'time': time, 'activity': app.activity,
+            'time': get_second_key(app.time,
+                StudentActivityCenterApplication.TIME),
+            'activity': app.activity,
             'approved': app.approved, 'plan_file': app.plan_file.url,
             'applicant_name': app.applicant_name,
             'applicant_phone_number': app.applicant_phone_number,
@@ -98,8 +100,7 @@ def get_detail(request):
                     app.application_time.strftime('%Y年%m月%d日 %H:%M:%S'),
             'sponsor': app.sponsor, 'sponsorship': app.sponsorship,
             'sponsorship_usage': app.sponsorship_usage,
-            'activity_summary': app.activity_summary,
-            'remarks': app.remarks }
+            'activity_summary': app.activity_summary}
     return render_json(data)
 
 class ModifyView(View):
