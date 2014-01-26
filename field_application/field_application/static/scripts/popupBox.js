@@ -105,7 +105,7 @@ function showAppForm( appId, place ){
 /***** generate application info table *****/
 function genAppInfoTable( detail, place ){
 	detail = eval('('+detail+')');
-	detail['place'] = place;
+	
 	var indexToText = [];
 
 	indexToText['south_stadium'] = [
@@ -129,6 +129,19 @@ function genAppInfoTable( detail, place ){
 	];
 
 	indexToText['student_activity_center'] = indexToText['south_stadium'];
+	indexToText['meeting_room'] = [
+		{ index: "meeting_topic"          , 'text': "会议主题"          },
+		{ index: "organization"           , 'text': "申请部门"          },
+		{ index: "applicant_name"         , 'text': "申请人姓名"        },
+		{ index: "applicant_phone_number" , 'text': "联系电话"          },
+		{ index: "place"                  , 'text': "会议地址"          },
+		{ index: "date"                   , 'text': "会议日期"          },	
+		{ index: "time"                   , 'text': "会议时间"          },
+		{ index: "meeting_summary"        , 'text': "会议简介"          },
+	  //{ index: "plan_file"              , 'text': "策划文件"          },
+		{ index: "remarks"                , 'text': "备注"              },
+	];
+
 
 	var appFormTable = document.createElement( 'table' );
 	appFormTable.className = 'app_table app_info_table';
@@ -151,16 +164,26 @@ function genAppInfoTable( detail, place ){
 		    switch( iTT[i]['index'] ){
 		    	case 'plan_file':
 		    		if( detail[iTT[i]['index']] !='' )
-		    			insertText = '<a href="' + detail[iTT[i]['index']] + '">下载</a>';
+		    			detail['plan_file'] = '<a href="' + detail[iTT[i]['index']] + '">下载</a>';
 		    		else
-		    			insertText = '无文件可供下载';	
+		    			detail['plan_file'] = '无文件可供下载';
 		    		break;
 		    	case 'approved':
-		    		console.log( typeof detail['approved']);
 		    		detail['approved'] = ( detail['approved'] == true ) ? "已审批": "未审批";
-		    	default:
-		    		 insertText = detail[iTT[i]['index']];
+		    		break;
+		    	case 'place':
+		    		if( place == 'meeting_room'){
+						var meeting_place = {
+							 "1F": "石头坞一楼会议室",
+							 "2F": "石头坞二楼会议室",
+							"305": "学生活动中心305会议室",
+							"307": "学生活动中心307会议室",
+						};
+						detail['place'] = meeting_place[detail['place']];
+					}
+		    		break;
 		    }
+		    insertText = detail[iTT[i]['index']];
 		    appFormTableTD.innerHTML = insertText;
 
 		//end inserting row
