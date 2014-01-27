@@ -51,7 +51,7 @@ class ExhibitApplicationForm(forms.ModelForm):
                 apps = ExhibitApplication.objects.filter(
                         Q(start_date__lte=date) & \
                         Q(end_date__gte=date),
-                        place__contains=place)
+                        place__contains=place).filter(approved=True)
                 used_num = sum((app.exhibit_board_number for app in apps))
                 if used_num + exhibit_board_number > \
                         board_num_upper_limit[place]:
