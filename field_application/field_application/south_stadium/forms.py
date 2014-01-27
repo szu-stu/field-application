@@ -22,6 +22,9 @@ class SouthStadiumApplicationForm(forms.ModelForm):
            'remarks': Textarea(),
        }
 
+    # def clean_time(self):
+    #     raise Exception(self.cleaned_data['time'])
+
     def clean_date(self):
         date = self.cleaned_data.get('date')
         now = timezone.now().date()
@@ -33,10 +36,12 @@ class SouthStadiumApplicationForm(forms.ModelForm):
 
     def clean(self):
         super(SouthStadiumApplicationForm, self).clean()
-        if SouthStadiumApplication.objects.filter(
-                date=self.cleaned_data.get('date'),
-                time=self.cleaned_data.get('time'),
-                approved=True).exists():
-            raise forms.ValidationError(u'该时间段已有人使用')
+        for time in self.cleaned_data.get('time'):
+            if SouthStadiumApplication.objects.filter(
+                    date=self.cleaned_data.get('date'),
+                    time=time,
+                    approved=True).exists():
+                msg = self.strftime('%Y年%m月%d日') + time + u'已有人使用'
+                raise forms.ValidationError(msg)
         return self.cleaned_data
 

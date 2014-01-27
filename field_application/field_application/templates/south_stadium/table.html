@@ -27,10 +27,9 @@
         </tr>
 
         {% load all_approved %}
-        {% for attribute, apps_7days in table.content %}
-            {% if attribute != 'date' %}
+        {% for time, apps_7days in table.content %}
             <tr>
-                <td class="timing">{{ attribute }}</td>
+                <td class="timing">{{ time }}</td>
                 {% for apps in apps_7days %}
                     {% if apps %}
                     <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}"
@@ -44,7 +43,6 @@
                     {% endif %}
                 {% endfor %}
             </tr>
-            {% endif %}
         {% endfor %}
     </table>
 {% endblock %}

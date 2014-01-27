@@ -14,10 +14,10 @@ from field_application.utils.models import get_second_key, get_first_key
 
 def generate_time_table():
     ''' generate TIME for model choices
-        ( ('0', '8点-8点30分'),
-          ('1', '8点30分-9点'),
+        ( ('8', '8点-8点30分'),
+          ('9', '8点30分-9点'),
           ...
-          ('29', '22点30分-23点'),
+          ('37', '22点30分-23点'),
         )
     '''
     start = 8
@@ -74,11 +74,11 @@ class MeetingRoomApplication(models.Model):
                     for short_name, place in cls.PLACE}
         apps_whose_field_used_within_7days \
             = get_applications_a_week(cls, offset)
-        today = date.today() + timedelta(days=offset*7)
+        first_day = date.today() + timedelta(days=offset*7)
         for app in apps_whose_field_used_within_7days:
             for t in app.time:
                 content[get_second_key(app.place, cls.PLACE)] \
-                       [(app.date-today).days][int(t)] = app
+                       [(app.date-first_day).days][int(t)] = app
         return {'date': gennerate_date_list_7days(offset),
                 'time_list': tuple(full_name for s, full_name in cls.TIME),
                 'content': content}

@@ -2,7 +2,7 @@
 
 {% block htmltitle %} {% endblock %}
 
-{% block top_title %}<h1>学生活动中心场所申请</h1>{% endblock %}
+{% block top_title %}<h1 style="font-size:50px">南区运动广场二楼平台场地申请</h1>{% endblock %}
 
 {% block main_content %}
     <table>
@@ -13,7 +13,7 @@
             <td>使用时间</td>
             <td>申请时间</td>
             <td>是否审批</td>
-            <td>manage</td>
+            <td>修改申请表</td>
         </tr>
         {% for app in page %}
         <tr>
@@ -23,7 +23,7 @@
             <td>{% for time in app.time %} {{ time }} {% endfor %}</td>
             <td>{{ app.application_time }}</td>
             <td>{% if app.approved %}已批准{% else %}未批准{% endif %}</td>
-            <td><a href="{% url 'south_stadium:modify' %}?id={{ app.id }}">manage</a></td>
+            <td><a href="{% url 'south_stadium:modify' %}?id={{ app.id }}">修改申请表</a></td>
         </tr>
         {% endfor %}
     </table>

@@ -9,7 +9,7 @@
         <tr>
             <td>申请组织</td>
             <td>活动主题</td>
-            <td>活动地点</td>
+            <td>使用场地</td>
             <td>使用日期</td>
             <td>使用时间</td>
             <td>申请时间</td>
@@ -19,9 +19,9 @@
         <tr>
             <td>{{ app.organization }}</td>
             <td>{{ app.activity }}</td> 
-            <td>{{ app.place }}</td>
-            <td>{{ app.date }}</td>
-            <td>{{ app.time }}</td>
+            <td>{% for place in app.place %} {{ place }} {% endfor %}</td>
+            <td>{% for date in app.date %} {{ date }} {% endfor %}</td>
+            <td>{% for time in app.time %} {{ time }} {% endfor %}</td>
             <td>{{ app.application_time }}</td>
             <td>{% if app.approved %}已批准{% else %}未批准{% endif %}</td>
         </tr>

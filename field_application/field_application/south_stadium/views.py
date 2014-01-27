@@ -43,19 +43,18 @@ def display_table(request):
                   {'table': table, 'curr_week': week})
 
 
-def display_listing(request):
+def display_list(request):
     listing = SouthStadiumApplication.objects.all()
     for app in listing:
-        for i in range(len(app.time)):
-            app.time[i] = get_second_key(app.time[i],
-                    SouthStadiumApplication.TIME)
+        app.place = ['南区体育馆']
+        app.date = [app.date.strftime('%Y年%m月%d日')]
     paginator = Paginator(listing, 3)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
         page = paginator.page(1)
-    return render(request, 'south_stadium/listing.html',
-                  {'page': page})
+    return render(request, 'list.html',
+                  {'page': page, 'title': '南区运动广场二楼平台'})
 
 
 @login_required
@@ -63,17 +62,17 @@ def manage(request):
     org = request.user.organization
     listing = SouthStadiumApplication.objects.\
             filter(organization=org).order_by('-pk')
-    paginator = Paginator(listing, 3)
     for app in listing:
-        for i in range(len(app.time)):
-            app.time[i] = get_second_key(app.time[i],
-                    SouthStadiumApplication.TIME)
+        app.place = ['南区体育馆']
+        app.date = [app.date.strftime('%Y年%m月%d日')]
+    paginator = Paginator(listing, 10)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
         page = paginator.page(1)
-    return render(request, 'south_stadium/manage.html',
-            {'page': page})
+    return render(request, 'manage.html',
+            {'page': page, 'title': '南区运动广场二楼平台',
+             'modify_url': reverse('south_stadium:modify')})
 
 
 class ModifyView(View):
