@@ -13,6 +13,7 @@ from django.core.paginator import InvalidPage, Paginator
 from field_application.meeting_room.forms import MeetingRoomApplicationForm
 from field_application.meeting_room.models import MeetingRoomApplication
 from field_application.utils.models import get_second_key
+from field_application.utils.ajax import render_json
 
 
 class ApplyMeetingRoomView(View):
@@ -85,12 +86,14 @@ def get_detail(request):
     data = {'organization': app.organization.chinese_name,
             'place': app.place,
             'date': app.date.strftime('%Y年%m月%d日'),
-            'time': time, 'meeting_topic': app.meeting_topic,
-            'approved': app.approved, 'applicant_name': app.applicant_name,
+            'time': time,
+            'meeting_topic': app.meeting_topic,
+            'approved': app.approved,
+            'applicant_name': app.applicant_name,
             'applicant_phone_number': app.applicant_phone_number,
             'application_time': \
                     app.application_time.strftime('%Y年%m月%d日 %H:%M:%S'),
-            'meeting_summary': app.activity_summary,
+            'meeting_summary': app.meeting_summary,
             'remarks': app.remarks }
     return render_json(data)
 

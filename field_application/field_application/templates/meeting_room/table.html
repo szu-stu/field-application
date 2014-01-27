@@ -4,7 +4,14 @@
 
 {% block htmlhead %}
     {% load html_tools %}
+
     {{ 'meeting_room/table.css' | as_css }}
+
+    {{ 'artDialog/v4/artDialog.js'    | as_js  }}
+    {{ 'artDialog/v4/skins/opera.css' | as_css }}
+    {{ 'artDialog/popupBox.css'       | as_css }}
+
+    {{ 'popupBox.js'  | as_js  }}
 {% endblock %}
 
 {% block top_title %}<h1 style="font-size:50px;line-height:65px">会议室使用申请</h1>{% endblock %}
@@ -29,7 +36,7 @@
         <td>{{ date | date:"n月d日" }}</td>
         {% for app in app_every_day %}
             {% if app %}
-            <td class="{% if app.approved %}red{%else%}gray{%endif%}" data-app-id="{{ app.id }}">{{app.id}}</td>
+            <td class="{% if app.approved %}red{%else%}gray{%endif%}" data-app-id="{{ app.id }}" onclick="javascript:showAppForm( this.getAttribute('data-app-id'), 'meeting_room')"></td>
             {% else %}
             <td></td>
             {% endif %}
