@@ -13,6 +13,7 @@ from django.core.paginator import InvalidPage, Paginator
 from field_application.campus_field.forms import ExhibitApplicationForm
 from field_application.campus_field.models import ExhibitApplication
 from field_application.utils.models import get_second_key
+from field_application.utils.ajax import render_json
 
 
 class ApplyView(View):
@@ -84,12 +85,15 @@ def manage(request):
 def get_detail(request):
     app = ExhibitApplication.objects.get(
             id=request.GET.get('id'))
+    time = [get_second_key(time, ExhibitApplication.TIME) \
+                for time in app.time]
+    place = [get_second_key(place, ExhibitApplication.PLACE) \
+                for place in app.place]
     data = {'organization': app.organization.chinese_name,
-            'place': get_second_key(app.place,
-                ExhibitApplication.PLACE),
-            'date': app.date.strftime('%Y年%m月%d日'),
-            'time': get_second_key(app.time,
-                ExhibitApplication.TIME),
+            'place': place, 
+            'start_date': app.start_date.strftime('%Y年%m月%d日'),
+            'end_date': app.end_date.strftime('%Y年%m月%d日'),
+            'time': time,
             'activity': app.activity,
             'approved': app.approved, 'plan_file': app.plan_file.url,
             'applicant_name': app.applicant_name,
