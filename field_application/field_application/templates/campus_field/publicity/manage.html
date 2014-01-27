@@ -2,14 +2,13 @@
 
 {% block htmltitle %} {% endblock %}
 
-{% block top_title %}<h1>meeting room application</h1>{% endblock %}
+{% block top_title %}<h1>exhibit application</h1>{% endblock %}
 
 {% block main_content %}
     <table>
         <tr>
             <td>申请组织</td>
             <td>活动主题</td>
-            <td>会议室</td>
             <td>使用日期</td>
             <td>使用时间</td>
             <td>申请时间</td>
@@ -19,13 +18,12 @@
         {% for app in page %}
         <tr>
             <td>{{ app.organization }}</td>
-            <td>{{ app.meeting_topic }}</td> 
-            <td>{{ app.place }}</td>
+            <td>{{ app.activity }}</td> 
             <td>{{ app.date | date:"Y年n月d日"}}</td>
             <td>{% for time in app.time %} {{ time }} {% endfor %}</td>
             <td>{{ app.application_time }}</td>
             <td>{% if app.approved %}已批准{% else %}未批准{% endif %}</td>
-            <td><a href="{% url 'meeting_room:modify' %}?id={{ app.id }}">manage</a></td>
+            <td><a href="{% url 'publicity:modify' %}?id={{ app.id }}">manage</a></td>
         </tr>
         {% endfor %}
     </table>

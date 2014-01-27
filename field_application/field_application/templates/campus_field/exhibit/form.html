@@ -5,7 +5,7 @@
 {% block top_title %}<h1>校园文化活动露天场地申请</h1>{% endblock %}
 
 {% block main_content %}
-    <form method="POST" enctype="multipart/form-data" action="{% url 'campus_field:apply_exhibit' %}">
+    <form method="POST" enctype="multipart/form-data" action="{{ post_url }}">
         {% csrf_token %}
         <table>
             <tr>
