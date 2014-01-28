@@ -71,7 +71,8 @@ def manage(request):
     except InvalidPage:
         page = paginator.page(1)
     return render(request, 'manage.html',
-            {'page': page, 'title': u'会议室使用申请'})
+            {'page': page, 'title': u'会议室使用申请',
+             'modify_url': reverse('meeting_room:modify')})
 
  
 def get_detail(request):
@@ -113,3 +114,4 @@ class ModifyView(View):
                  'post_url': reverse('meeting_room:modify')+'?id='+app_id})
         form.save()
         return HttpResponseRedirect(reverse('meeting_room:manage'))
+

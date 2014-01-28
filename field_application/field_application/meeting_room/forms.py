@@ -18,7 +18,7 @@ class MeetingRoomApplicationForm(forms.ModelForm):
         exclude = ['organization', 'approved', 'application_time']
         widgets = {
             'date': SelectDateWidget(),
-            'activity_summary': Textarea(),
+            'meeting_summary': Textarea(),
             'remarks': Textarea(),
         }
 
@@ -36,7 +36,10 @@ class MeetingRoomApplicationForm(forms.ModelForm):
         if MeetingRoomApplication.objects.filter(
                 place=self.cleaned_data.get('place'),
                 date=self.cleaned_data.get('date'),
-                time=self.cleaned_data.get('time'),).exists():
-            raise forms.ValidationError('该场地已有人申请')
+                time=self.cleaned_data.get('time'),
+                approved=True).exists():
+            msg = '该时间段已有人申请'
+            self._errors['time'] = self.error_class([msg])
+            del self.cleaned_data['time']
         return self.cleaned_data
 

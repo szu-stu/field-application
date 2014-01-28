@@ -14,34 +14,30 @@ from field_application.utils.models import get_second_key, get_first_key
 
 def generate_time_table():
     ''' generate TIME for model choices
-        ( ('8', '8点-8点30分'),
-          ('9', '8点30分-9点'),
+        ( ('8点-8点30分', '8点-8点30分'),
+          ('8点30分-9点', '8点30分-9点'),
           ...
-          ('37', '22点30分-23点'),
+          ('22点30分-23点', '22点30分-23点'),
         )
     '''
-    start = 8
-    end = 8
-    time_table = []
-    for i in range(0, 30):
-        if not i%2:
-            time_table.append((str(i), str(start) + u'点-' + str(end) + u'点30分'))
-            end += 1
-        else:
-            time_table.append((str(i), str(start) + u'点30分-' + str(end) + u'点'))
-            start += 1
-    return time_table
-
+    s = [8, u'点', 8, u'点30分']
+    TIME = []
+    for i in range(30):
+        x, a, y, b = s
+        t = str(x)+a + '-' + str(y)+b
+        TIME.append((t, t))
+        s = [y, b, x+1, a]
+    return TIME
 
 class MeetingRoomApplication(models.Model):
 
     TIME = generate_time_table()
 
     PLACE = (
-        ('1F', u'石头坞一楼会议室'),
-        ('2F', u'石头坞二楼会议室'),
-        ('305', u'学生活动中心305会议室'),
-        ('307', u'学生活动中心307会议室'),
+        (u'学生活动中心307会议室', u'学生活动中心307会议室'),
+        (u'石头坞一楼会议室', u'石头坞一楼会议室'),
+        (u'石头坞二楼会议室', u'石头坞二楼会议室'),
+        (u'学生活动中心305会议室', u'学生活动中心305会议室'),
     )
 
     meeting_topic = models.CharField(max_length=50)
@@ -68,17 +64,27 @@ class MeetingRoomApplication(models.Model):
                         - 学生活动中心305会议室 : [ 7*[ 30*app ] ] 
                         - 学生活动中心307会议室 : [ 7*[ 30*app ] ] 
         '''
-        content = { place: \
-                    [ [None for s, f in cls.TIME] \
+        content = { place: [ {time: None for time, t in cls.TIME} \
                         for j in range(7)] \
-                    for short_name, place in cls.PLACE}
+                    for place, p in cls.PLACE}
         apps_whose_field_used_within_7days \
             = get_applications_a_week(cls, offset)
         first_day = date.today() + timedelta(days=offset*7)
         for app in apps_whose_field_used_within_7days:
             for t in app.time:
-                content[get_second_key(app.place, cls.PLACE)] \
-                       [(app.date-first_day).days][int(t)] = app
+                content[app.place][(app.date-first_day).days][t] = app
+        # sort by TIME
+        #for place in content:
+        #    content[place] = [ [content[place][i][time] \
+        #                        for time, t in cls.TIME] \
+        #                            for i in range(7) ]
+        for place in content:
+            for day in range(7):
+                content[place][day] = [content[place][day][time] \
+                                        for time, t in cls.TIME ]
+        # sort by PLACE
+        content = [(place, content[place]) for place, p in cls.PLACE]
+        print content
         return {'date': gennerate_date_list_7days(offset),
-                'time_list': tuple(full_name for s, full_name in cls.TIME),
+                'time_list': tuple(time for time, t in cls.TIME),
                 'content': content}

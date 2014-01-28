@@ -42,6 +42,7 @@ class SouthStadiumApplicationForm(forms.ModelForm):
                     time=time,
                     approved=True).exists():
                 msg = self.strftime('%Y年%m月%d日') + time + u'已有人使用'
-                raise forms.ValidationError(msg)
+                self._errors['date'] = self.error_class([msg])
+                del self.cleaned_data['date']
         return self.cleaned_data
 
