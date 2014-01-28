@@ -73,18 +73,13 @@ class MeetingRoomApplication(models.Model):
         for app in apps_whose_field_used_within_7days:
             for t in app.time:
                 content[app.place][(app.date-first_day).days][t] = app
-        # sort by TIME
-        #for place in content:
-        #    content[place] = [ [content[place][i][time] \
-        #                        for time, t in cls.TIME] \
-        #                            for i in range(7) ]
+        # sort in the order of TIME
         for place in content:
             for day in range(7):
                 content[place][day] = [content[place][day][time] \
                                         for time, t in cls.TIME ]
-        # sort by PLACE
+        # sort int the order of PLACE
         content = [(place, content[place]) for place, p in cls.PLACE]
-        print content
         return {'date': gennerate_date_list_7days(offset),
                 'time_list': tuple(time for time, t in cls.TIME),
                 'content': content}

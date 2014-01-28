@@ -34,18 +34,17 @@
     	</tr>
 
         {% load all_approved %}
-        {% for place, apps_a_week in table.items %}
-        {% if place != 'date' %}
+        {% for place, apps_a_week in table.content %}
     	<tr>
             <td class="place">{{ place }}</td>
             {% for apps_everyday in apps_a_week %}
-                {% for time, apps in apps_everyday.items %}
+                {% for apps in apps_everyday %}
                     {% if apps %}
                     <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}"
                         data-app-id="[{% for app in apps %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}' }, {% endfor %}]" onclick="javascript:showAppList(this.getAttribute('data-app-id'), 'student_activity_center' )">
-                        {# {% for app in apps %} #}
-                        {#     {{ app.id }} #}
-                        {# {% endfor %} #}
+                        {% for app in apps %}
+                           {{ app.id }}
+                        {% endfor %}
                         </td>
                     {% else %}
     		        <td class="blue"></td>
@@ -53,7 +52,6 @@
                 {% endfor %}
             {% endfor %}
     	</tr>
-        {% endif %}
         {% endfor %}
 
     </table>

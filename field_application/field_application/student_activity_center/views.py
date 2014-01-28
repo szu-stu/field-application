@@ -12,7 +12,6 @@ from field_application.student_activity_center.forms \
         import StudentActivityCenterApplicationForm
 from field_application.student_activity_center.models \
         import StudentActivityCenterApplication
-from field_application.utils.models import get_second_key
 from field_application.student_activity_center.models import \
         StudentActivityCenterApplication
 from field_application.utils.ajax import render_json
@@ -32,7 +31,7 @@ class ApplyView(View):
         form = StudentActivityCenterApplicationForm(request.POST,
                                                     request.FILES)
         if not form.is_valid():
-            return render(request, 'student_activity_center/apply.html',
+            return render(request, 'student_activity_center/form.html',
                     {'form': form,
                      'post_url': reverse('student_activity_center:apply')})
         app = form.save(commit=False)
@@ -48,20 +47,20 @@ def display_table(request):
                   {'table': table, 'curr_week': week})
 
 
-def display_listing(request):
+def display_list(request):
     listing = StudentActivityCenterApplication.objects.all()
     for app in listing:
-        app.place = get_second_key(app.place,
-                StudentActivityCenterApplication.PLACE)
-        app.time = get_second_key(app.time,
-                StudentActivityCenterApplication.TIME)
+        app.place = [app.place]
+        app.time = [app.time]
+        app.date = [app.date]
     paginator = Paginator(listing, 3)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
         page = paginator.page(1)
-    return render(request, 'student_activity_center/listing.html',
-                  {'page': page})
+    return render(request, 'list.html',
+                {'page': page, 'title': u'学生活动中心场地申请',
+                 'modify_url': reverse('student_activity_center:modify')})
 
 
 @login_required
@@ -71,27 +70,25 @@ def manage(request):
             filter(organization=org).order_by('-pk')
     paginator = Paginator(listing, 3)
     for app in listing:
-        app.time = get_second_key(app.time,
-                StudentActivityCenterApplication.TIME)
-        app.place = get_second_key(app.place,
-                StudentActivityCenterApplication.PLACE)
+        app.place = [app.place]
+        app.time = [app.time]
+        app.date = [app.date]
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
         page = paginator.page(1)
-    return render(request, 'student_activity_center/manage.html',
-            {'page': page})
+    return render(request, 'manage.html',
+            {'page': page, 'title': u'学生活动中心场地申请',
+             'modify_url': reverse('student_activity_center:modify')})
 
  
 def get_detail(request):
     app = StudentActivityCenterApplication.objects.get(
             id=request.GET.get('id'))
     data = {'organization': app.organization.chinese_name,
-            'place': get_second_key(app.place,
-                StudentActivityCenterApplication.PLACE),
+            'place': app.place,
             'date': app.date.strftime('%Y年%m月%d日'),
-            'time': get_second_key(app.time,
-                StudentActivityCenterApplication.TIME),
+            'time': app.time,
             'activity': app.activity,
             'approved': app.approved, 'plan_file': app.plan_file.url,
             'applicant_name': app.applicant_name,
@@ -128,3 +125,4 @@ class ModifyView(View):
                      reverse('student_activity_center:modify')+'?id='+app_id})
         form.save()
         return HttpResponseRedirect(reverse('student_activity_center:manage'))
+
