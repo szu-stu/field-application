@@ -98,7 +98,8 @@ def get_detail(request):
             'activity_type': \
                     get_second_key(app.activity_type,
                                    PublicityApplication.ACTIVITY_TYPE),
-            'other_activity_type': app.other_activity_type}
+            'other_activity_type': app.other_activity_type,
+            'remarks': app.remarks}
     return render_json(data)
 
 
