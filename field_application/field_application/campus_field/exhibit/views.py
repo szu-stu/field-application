@@ -12,7 +12,6 @@ from django.core.paginator import InvalidPage, Paginator
 
 from field_application.campus_field.forms import ExhibitApplicationForm
 from field_application.campus_field.models import ExhibitApplication
-from field_application.utils.models import get_second_key
 from field_application.utils.ajax import render_json
 
 
@@ -47,20 +46,16 @@ def display_table(request):
 
 def display_list(request):
     listing = ExhibitApplication.objects.all()
-    for app in listing:
-        for i in range(len(app.place)):
-            app.place[i] = get_second_key(app.place[i],
-                    ExhibitApplication.PLACE)
-        for i in range(len(app.time)):
-            app.time[i] = get_second_key(app.time[i],
-                    ExhibitApplication.TIME)
     paginator = Paginator(listing, 3)
+    for app in listing:
+        app.date = app.start_date.strftime('%Y年%m月%d日') \
+            + '-' + app.start_date.strftime('%Y年%m月%d日')
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
         page = paginator.page(1)
-    return render(request, 'campus_field/exhibit/list.html',
-                  {'page': page})
+    return render(request, 'list.html',
+                {'page': page, 'title': u'校园文化活动露天场地申请'})
 
 
 @login_required
@@ -70,30 +65,25 @@ def manage(request):
             filter(organization=org).order_by('-pk')
     paginator = Paginator(listing, 3)
     for app in listing:
-        app.time = [get_second_key(time, ExhibitApplication.TIME) \
-                        for time in app.time ]
-        app.place = [ get_second_key(place, ExhibitApplication.PLACE) \
-                        for place in app.place ]
+        app.date = app.start_date.strftime('%Y年%m月%d日') \
+            + '-' + app.start_date.strftime('%Y年%m月%d日')
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
         page = paginator.page(1)
     return render(request, 'campus_field/exhibit/manage.html',
-            {'page': page})
+            {'page': page, 'title': u'校园活动露天场地申请',
+             'modify_url': reverse('exhibit:modify')})
 
  
 def get_detail(request):
     app = ExhibitApplication.objects.get(
             id=request.GET.get('id'))
-    time = [get_second_key(time, ExhibitApplication.TIME) \
-                for time in app.time]
-    place = [get_second_key(place, ExhibitApplication.PLACE) \
-                for place in app.place]
     data = {'organization': app.organization.chinese_name,
-            'place': place, 
+            'place': app.place, 
             'start_date': app.start_date.strftime('%Y年%m月%d日'),
             'end_date': app.end_date.strftime('%Y年%m月%d日'),
-            'time': time,
+            'time': app.time,
             'activity': app.activity,
             'approved': app.approved, 'plan_file': app.plan_file.url,
             'applicant_name': app.applicant_name,

@@ -20,7 +20,7 @@
             <td>{{ app.organization }}</td>
             <td>{{ app.activity }}</td> 
             <td>{% for place in app.place %} {{ place }} {% endfor %}</td>
-            <td>{% for date in app.date %} {{ date }} {% endfor %}</td>
+            <td>{{ app.date }}</td>
             <td>{% for time in app.time %} {{ time }} {% endfor %}</td>
             <td>{{ app.application_time }}</td>
             <td>{% if app.approved %}已批准{% else %}未批准{% endif %}</td>

@@ -28,7 +28,7 @@ class ApplyView(View):
         form = PublicityApplicationForm(request.POST,
                                         request.FILES)
         if not form.is_valid():
-            return render(request, 'campus_field/apply/publicity.html', 
+            return render(request, 'campus_field/publicity/form.html', 
                           {'form': form})
         app = form.save(commit=False)
         app.organization = request.user.organization
@@ -46,20 +46,15 @@ def display_table(request):
 def display_list(request):
     listing = PublicityApplication.objects.all()
     for app in listing:
-        for i in range(len(app.place)):
-            app.place[i] = get_second_key(app.place[i],
-                    PublicityApplication.PLACE)
-        for i in range(len(app.time)):
-            app.time[i] = get_second_key(app.time[i],
-                    PublicityApplication.TIME)
+        app.date = app.start_date.strftime('%Y年%m月%d日') \
+            + '-' + app.start_date.strftime('%Y年%m月%d日')
     paginator = Paginator(listing, 3)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
         page = paginator.page(1)
-    return render(request, 'campus_field/publicity/list.html',
-                  {'page': page})
-
+    return render(request, 'list.html',
+                {'page': page, 'title': u'校园文化活动露天场地申请'})
 
 @login_required
 def manage(request):
@@ -68,16 +63,15 @@ def manage(request):
             filter(organization=org).order_by('-pk')
     paginator = Paginator(listing, 3)
     for app in listing:
-        app.time = [get_second_key(time, PublicityApplication.TIME) \
-                    for time in app.time ]
-        app.place = [get_second_key(place, PublicityApplication.PLACE) \
-                    for place in app.place]
+        app.date = app.start_date.strftime('%Y年%m月%d日') \
+            + '-' + app.start_date.strftime('%Y年%m月%d日')
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
         page = paginator.page(1)
-    return render(request, 'campus_field/publicity/manage.html',
-            {'page': page})
+    return render(request, 'manage.html',
+                {'page': page, 'title': u'校园文化活动露天场地申请',
+                 'modify_url': reverse('publicity:modify')})
 
  
 def get_detail(request):
@@ -133,3 +127,4 @@ class ModifyView(View):
                      reverse('publicity:modify')+'?id='+app_id})
         form.save()
         return HttpResponseRedirect(reverse('publicity:manage'))
+

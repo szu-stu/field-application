@@ -46,7 +46,7 @@ def display_list(request):
     listing = SouthStadiumApplication.objects.all()
     for app in listing:
         app.place = ['南区体育馆']
-        app.date = [app.date.strftime('%Y年%m月%d日')]
+        app.date = app.date.strftime('%Y年%m月%d日')
     paginator = Paginator(listing, 3)
     try:
         page = paginator.page(request.GET.get('page'))
@@ -63,7 +63,7 @@ def manage(request):
             filter(organization=org).order_by('-pk')
     for app in listing:
         app.place = ['南区体育馆']
-        app.date = [app.date.strftime('%Y年%m月%d日')]
+        app.date = app.date.strftime('%Y年%m月%d日')
     paginator = Paginator(listing, 10)
     try:
         page = paginator.page(request.GET.get('page'))

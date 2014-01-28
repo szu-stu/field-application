@@ -47,7 +47,7 @@ def display_list(request):
     listing = MeetingRoomApplication.objects.all()
     paginator = Paginator(listing, 3)
     for app in listing:
-        app.date = [app.date]
+        app.date = app.date.strftime('%Y年%m月%d日')
         app.activity = app.meeting_topic
     try:
         page = paginator.page(request.GET.get('page'))
@@ -63,7 +63,7 @@ def manage(request):
     listing = MeetingRoomApplication.objects.\
             filter(organization=org).order_by('-pk')
     for app in listing:
-        app.date = [app.date]
+        app.date = app.date.strftime('%Y年%m月%d日')
         app.activity = app.meeting_topic
     paginator = Paginator(listing, 3)
     try:
