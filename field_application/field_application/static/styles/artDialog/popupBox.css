@@ -28,12 +28,12 @@ table.app_info_table td{
     word-break: break-all;
 }
 td.app_info_cont{
-    width: 380px;
+    width: 360px;
     vertical-align: top;
     text-align: left;
 }   
 td.app_info_title{
-    width: 100px;
+    width: 120px;
     vertical-align: top;
     text-align: right;
 }

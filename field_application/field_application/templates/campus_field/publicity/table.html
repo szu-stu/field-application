@@ -4,7 +4,14 @@
 
 {% block htmlhead %}
     {% load html_tools %}
+    
     {{ 'campus_field/table.css' | as_css }}
+
+    {{ 'artDialog/v4/artDialog.js'    | as_js  }}
+    {{ 'artDialog/v4/skins/opera.css' | as_css }}
+    {{ 'artDialog/popupBox.css'       | as_css }}
+
+    {{ 'popupBox.js'  | as_js  }}
 {% endblock %}
 
 {% load range %}
@@ -14,6 +21,7 @@
 {% block title %}校园文化活动露天场地一周安排表(图形版){% endblock %}
 
 {% block main_content %}
+    {% load all_approved %}
             <table class="app_table">
                 <tr class="date">
                     <td class="blue place bold_border" rowspan="5">活动类型<br />设点/派发传单/其它</td>
@@ -49,31 +57,31 @@
                             {% for apps_every_day in apps_every_week %}
 
                                 {% if apps_every_day|get:left %}
-                                <td data-app-id="{% for app in apps_every_day|get:left %} {{ app.id }} {% endfor %}">
-                                    {% for app in apps_every_day|get:left %}
-                                        {{ app.id }}
-                                    {% endfor %}
+                                <td class="{% if apps_every_day|get:left|all_approved %}red{%else%}gray{%endif%}" data-app-id="[{% for app in apps_every_day|get:left %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}' }, {% endfor %}]" onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'publicity' )">
+                                    {# {% for app in apps_every_day|get:left %} #}
+                                    {#     {{ app.id }} #}
+                                    {# {% endfor %} #}
                                 </td>
                                 {% else %}
                                     <td></td>
                                 {% endif %}
 
                                 {% if apps_every_day|get:mid %}
-                                <td data-app-id="{% for app in apps_every_day|get:mid %} {{ app.id }} {% endfor %}">
-                                    {% for app in apps_every_day|get:mid %}
-                                        {{ app.id }}
-                                    {% endfor %}
+                                <td class="{% if apps_every_day|get:mid|all_approved %}red{%else%}gray{%endif%}" data-app-id="[{% for app in apps_every_day|get:mid %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}' }, {% endfor %}]" onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'publicity' )">
+                                    {# {% for app in apps_every_day|get:mid %} #}
+                                    {#     {{ app.id }} #}
+                                    {# {% endfor %} #}
                                 </td>
                                 {% else %}
                                     <td></td>
                                 {% endif %}
 
                                 {% if apps_every_day|get:right %}
-                                <td class="bold_border_right" 
-                                    data-app-id="{% for app in apps_every_day|get:right %} {{ app.id }} {% endfor %}">
-                                    {% for app in apps_every_day|get:right%}
-                                        {{ app.id }}
-                                    {% endfor %}
+                                <td class="bold_border_right {% if apps_every_day|get:right|all_approved %}red{%else%}gray{%endif%}" 
+                                     data-app-id="[{% for app in apps_every_day|get:right %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}' }, {% endfor %}]" onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'publicity' )">
+                                    {# {% for app in apps_every_day|get:right%} #}
+                                    {#     {{ app.id }} #}
+                                    {# {% endfor %} #}
                                 </td>
                                 {% else %}
                                     <td class="bold_border_right"></td>

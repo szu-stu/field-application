@@ -92,7 +92,10 @@ def get_detail(request):
                     app.application_time.strftime('%Y年%m月%d日 %H:%M:%S'),
             'sponsor': app.sponsor, 'sponsorship': app.sponsorship,
             'sponsorship_usage': app.sponsorship_usage,
-            'activity_summary': app.activity_summary}
+            'activity_summary': app.activity_summary,
+            'exhibit_board_number': app.exhibit_board_number,
+            'exhibition': app.exhibition,
+            'remarks': app.remarks}
     return render_json(data)
 
 

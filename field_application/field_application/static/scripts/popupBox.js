@@ -142,6 +142,47 @@ function genAppInfoTable( detail, place ){
 		{ index: "remarks"                , 'text': "备注"              },
 	];
 
+	indexToText['exhibit'] = [
+		{ index: "activity" , 'text': "活动项目" },
+		{ index: "organization" , 'text': "申请部门" },
+		{ index: "applicant_name" , 'text': "申请人姓名" },
+		{ index: "applicant_phone_number" , 'text': "联系电话" },
+		{ index: "exhibit_type" , 'text': "活动类型" },
+		{ index: "exhibition" , 'text': "展览内容" },
+		{ index: "exhibit_board_number" , 'text': "使用展板" },
+		{ index: "place" , 'text': "活动地址" },
+		{ index: "start_date" , 'text': "活动开始时间" },
+		{ index: "end_date" , 'text': "活动结束时间" },
+		{ index: "time" , 'text': "活动时段" },
+
+	  //{ index: "sponsor"                , 'text': "赞助商"            },
+	  //{ index: "sponsorship"            , 'text': "赞助金额及物品"    },
+	  //{ index: "sponsorship_usage"      , 'text': "赞助财物用途"      },
+		{ index: "activity_summary" , 'text': "活动简介" },
+		{ index: "remarks" , 'text': "备注" },
+		{ index: "plan_file" , 'text': "策划文件" },
+	];
+
+	indexToText['publicity'] = [
+		{ index: "activity" , 'text': "活动项目" },
+		{ index: "organization" , 'text': "申请部门" },
+		{ index: "applicant_name" , 'text': "申请人姓名" },
+		{ index: "applicant_phone_number" , 'text': "联系电话" },
+		{ index: "exhibit_type" , 'text': "活动类型" },
+		{ index: "place" , 'text': "活动地址" },
+		{ index: "start_date" , 'text': "活动开始时间" },
+		{ index: "end_date" , 'text': "活动结束时间" },
+		{ index: "time" , 'text': "活动时段" },
+
+		{ index: "sponsor"                , 'text': "赞助商"            },
+		{ index: "sponsorship"            , 'text': "赞助金额及物品"    },
+		{ index: "sponsorship_usage"      , 'text': "赞助财物用途"      },
+		
+		{ index: "activity_summary" , 'text': "活动简介" },
+		{ index: "remarks" , 'text': "备注" },
+		{ index: "plan_file" , 'text': "策划文件" },
+	];
+
 
 	var appFormTable = document.createElement( 'table' );
 	appFormTable.className = 'app_table app_info_table';
@@ -181,6 +222,9 @@ function genAppInfoTable( detail, place ){
 						};
 						detail['place'] = meeting_place[detail['place']];
 					}
+		    		break;
+		    	case 'exhibit_type':
+		    		detail['exhibit_type'] = '展览';
 		    		break;
 		    }
 		    insertText = detail[iTT[i]['index']];
