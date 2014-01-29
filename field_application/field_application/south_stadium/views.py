@@ -11,6 +11,7 @@ from django.core.paginator import InvalidPage, Paginator
 from field_application.south_stadium.forms import SouthStadiumApplicationForm
 from field_application.south_stadium.models import SouthStadiumApplication
 from field_application.utils.ajax import render_json
+from field_application.account.permission import check_perms
 
 
 class ApplyView(View):
@@ -71,7 +72,8 @@ def manage(request):
         page = paginator.page(1)
     return render(request, 'manage.html',
             {'page': page, 'title': u'南区运动广场二楼平台',
-             'modify_url': reverse('south_stadium:modify')})
+             'modify_url': reverse('south_stadium:modify'),
+             'approve_url': reverse('south_stadium:manager_approve')})
 
 
 class ModifyView(View):
@@ -114,3 +116,14 @@ def get_detail(request):
             'activity_summary': app.activity_summary,
             'remarks': app.remarks }
     return render_json(data)
+
+
+@login_required
+@check_perms('account.manager', u'无管理权限')
+def manager_approve(request):
+    app_id = request.GET.get('id')
+    app = SouthStadiumApplication.objects.get(id=app_id)
+    app.approved = True
+    app.save()
+    return HttpResponseRedirect(reverse('south_stadium:manage'))
+
