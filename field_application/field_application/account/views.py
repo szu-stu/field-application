@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import PasswordChangeForm
 from django.views.generic.edit import UpdateView
@@ -102,7 +103,7 @@ class ResetPasswordView(View):
             return render(request, 'account/reset-password.html',
                           {'form': form})
         form.save()
-        UserActivityLog.objects.create(user=user,
+        UserActivityLog.objects.create(user=request.user,
                                        ip_address=get_client_ip(request),
                                        behavior="change password")
         return HttpResponseRedirect(reverse('home'))
@@ -133,9 +134,19 @@ class Org_manage(ListView):
     template_name = 'account/org-manage.html'
 
 
+@permission_required('account.manager')
 def disable_org(request):
     org_id = request.GET.get('id')
     org = Organization.objects.get(id=org_id)
     org.is_banned = not org.is_banned
     org.save()
+    return HttpResponseRedirect(reverse('account:org_manage'))
+
+
+@permission_required('account.manager')
+def manager_reset_password(request):
+    org_id = request.GET.get('id')
+    org = Organization.objects.get(id=org_id)
+    org.user.set_password('123456')
+    org.user.save()
     return HttpResponseRedirect(reverse('account:org_manage'))

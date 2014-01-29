@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 
 
 class Organization(models.Model):
+    class Meta:
+        permissions = (
+            ('manager', 'Can disable other org and approve application'),
+            ('youth_league_committee', 'can use meeting room'),
+        )
     user = models.OneToOneField(User)
     chinese_name = models.CharField(max_length=30, unique=True)
     org_in_charge = models.CharField(max_length=30)

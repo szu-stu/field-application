@@ -1,11 +1,13 @@
 from django.conf.urls import url, patterns
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 
 from field_application.account.permission import check_user_pk 
+from field_application.account.views import Org_manage, disable_org
+from field_application.account.views import manager_reset_password
 from field_application.account.views import SignOutView, SignInView 
 from field_application.account.views import SignUpView, ResetPasswordView
 from field_application.account.views import EditProfile, Profile
-from field_application.account.views import Org_manage, disable_org
 
 
 urlpatterns = patterns(
@@ -19,6 +21,14 @@ urlpatterns = patterns(
         check_user_pk(Profile.as_view()), name='profile'),
     url(r'^edit_profile/(?P<pk>\d+)/$', 
         check_user_pk(EditProfile.as_view()), name='edit_profile'),
-    url(r'^org_manage/$', Org_manage.as_view(), name='org_manage'),
-    url(r'^disable_org/$', disable_org, name='disable_org'),
+    url(r'^org_manage/$',
+        permission_required('account.manager', login_url='/deny/') \
+                (Org_manage.as_view()), name='org_manage'),
+    url(r'^disable_org/$',
+        permission_required('account.manager', login_url='/deny/') \
+            (disable_org), name='disable_org'),
+    # this is used by manager to set password to 123456
+    url(r'^manager_reset_password/$',
+        permission_required('account.manager', login_url='/deny/') \
+            (manager_reset_password), name='manager_reset_password'),
  )
