@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.forms.forms import NON_FIELD_ERRORS
 from django.core.paginator import InvalidPage, Paginator
 
+from field_application.account.permission import check_perms
 from field_application.meeting_room.forms import MeetingRoomApplicationForm
 from field_application.meeting_room.models import MeetingRoomApplication
 from field_application.utils.ajax import render_json
@@ -18,12 +19,16 @@ from field_application.utils.ajax import render_json
 class ApplyMeetingRoomView(View):
 
     @method_decorator(login_required)
+    @method_decorator(check_perms('account.youth_league_committee',
+                                  '非团委下属组织不能申请会议室'))
     def get(self, request):
         return render(request, 'meeting_room/form.html', 
                       {'form': MeetingRoomApplicationForm(),
                        'post_url': reverse('meeting_room:apply')})
 
     @method_decorator(login_required)
+    @method_decorator(check_perms('account.youth_league_committee',
+                                  '非团委下属组织不能申请会议室'))
     def post(self, request):
         form = MeetingRoomApplicationForm(request.POST)
         if not form.is_valid():
@@ -95,6 +100,8 @@ def get_detail(request):
 class ModifyView(View):
 
     @method_decorator(login_required)
+    @method_decorator(check_perms('account.youth_league_committee',
+                                  '非团委下属组织不能申请会议室'))
     def get(self, request):
         app_id = request.GET.get('id')
         app = MeetingRoomApplication.objects.get(id=app_id)
@@ -104,6 +111,8 @@ class ModifyView(View):
                  'post_url': reverse('meeting_room:modify')+'?id='+app_id})
 
     @method_decorator(login_required)
+    @method_decorator(check_perms('account.youth_league_committee',
+                                  '非团委下属组织不能申请会议室'))
     def post(self, request):
         app_id = request.GET.get('id')
         app = MeetingRoomApplication.objects.get(id=app_id)

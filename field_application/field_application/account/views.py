@@ -8,12 +8,17 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import PasswordChangeForm
+from django.views.generic.edit import UpdateView
+from django.views.generic import DetailView, ListView
 
 from field_application.account.permission import guest_or_redirect
+from field_application.account.permission import check_perms 
 from field_application.account.forms import SignUpForm, SignInForm
 from field_application.account.models import UserActivityLog, get_client_ip
+from field_application.account.models import Organization
 
 
 logger = logging.getLogger(__name__)
@@ -99,7 +104,50 @@ class ResetPasswordView(View):
             return render(request, 'account/reset-password.html',
                           {'form': form})
         form.save()
-        UserActivityLog.objects.create(user=user,
+        UserActivityLog.objects.create(user=request.user,
                                        ip_address=get_client_ip(request),
                                        behavior="change password")
         return HttpResponseRedirect(reverse('home'))
+
+
+class EditProfile(UpdateView):
+    model = Organization
+    fields = ['chinese_name', 'org_in_charge',
+              'tutor','tutor_contact_infor',
+              'director', 'director_contact_infor', 'belong_to']
+    template_name = 'account/edit-profile.html'
+    success_url = '/'
+
+
+class Profile(DetailView):
+    model = Organization
+    fields = ['chinese_name', 'org_in_charge',
+              'tutor','tutor_contact_infor',
+              'director', 'director_contact_infor',
+              'belong_to', 'is_banned']
+    template_name = 'account/profile.html'
+    context_object_name = 'organization'
+
+
+class Org_manage(ListView):
+    model = Organization
+    context_object_name = 'list'
+    template_name = 'account/org-manage.html'
+
+
+@permission_required('account.manager')
+def disable_org(request):
+    org_id = request.GET.get('id')
+    org = Organization.objects.get(id=org_id)
+    org.is_banned = not org.is_banned
+    org.save()
+    return HttpResponseRedirect(reverse('account:org_manage'))
+
+
+@check_perms('account.manager', message='无管理权限')
+def manager_reset_password(request):
+    org_id = request.GET.get('id')
+    org = Organization.objects.get(id=org_id)
+    org.user.set_password('123456')
+    org.user.save()
+    return HttpResponseRedirect(reverse('account:org_manage'))

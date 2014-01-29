@@ -15,6 +15,9 @@
             <td>申请时间</td>
             <td>是否审批</td>
             <td>修改申请表</td>
+            {% if perms.account.manager %}
+            <td>审批</td>
+            {% endif %}
         </tr>
         {% for app in page %}
         <tr>
@@ -26,6 +29,17 @@
             <td>{{ app.application_time }}</td>
             <td>{% if app.approved %}已批准{% else %}未批准{% endif %}</td>
             <td><a href="{{ modify_url }}?id={{ app.id }}">修改申请表</a></td>
+            {% if perms.account.manager %}
+            <td>
+                <a href="{{ approve_url }}?id={{ app.id }}">
+                {% if app.approved %}
+                    解除通过
+                {% else %}
+                    通过审批
+                {% endif %}
+                </a>
+            </td>
+            {% endif %}
         </tr>
         {% endfor %}
     </table>

@@ -67,11 +67,12 @@ def manage(request):
     org = request.user.organization
     listing = StudentActivityCenterApplication.objects.\
             filter(organization=org).order_by('-pk')
-    paginator = Paginator(listing, 3)
+    print listing
     for app in listing:
         app.date = app.date.strftime('%Y年%m月%d日')
         app.place = [app.place]
         app.time = [app.time]
+    paginator = Paginator(listing, 3)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
