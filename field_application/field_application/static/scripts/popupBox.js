@@ -34,17 +34,17 @@ function appListGen( ary, place ){
 	var appList = document.createElement( 'table' );
 	appList.className = 'app_table';
 
-	var appListTR = appList.insertRow();
+	var appListTR = appList.insertRow( 0 );
 
-	var appListTD = appListTR.insertCell();
+	var appListTD = appListTR.insertCell( 0 );
 	appListTD.className = 'app_table_title';
 	appListTD.appendChild( document.createTextNode( "点击标题查看详细内容" ) );
 
 
 	var i;
 	for( i = 0; i <= ary.length - 1; i++ ){
-		appListTR = appList.insertRow();
-		appListTD = appListTR.insertCell();
+		appListTR = appList.insertRow( -1 );
+		appListTD = appListTR.insertCell( -1 );
 		appListTD.className = 'app_sing_cond';
 
 		var detailLink  = '';
@@ -192,13 +192,13 @@ function genAppInfoTable( detail, place ){
 	for( i = 0; i < iTT.length; i++ ){
 		var appFormTableTD, appFormTableTR;
 
-		appFormTableTR = appFormTable.insertRow();
+		appFormTableTR = appFormTable.insertRow( i );
 
-			appFormTableTD = appFormTableTR.insertCell();
+			appFormTableTD = appFormTableTR.insertCell( -1 );
 			appFormTableTD.className = 'app_info_title';
 		    appFormTableTD.appendChild( document.createTextNode( iTT[i]['text'] + "：" ) );
 
-		    appFormTableTD = appFormTableTR.insertCell();
+		    appFormTableTD = appFormTableTR.insertCell( -1 );
 			appFormTableTD.className = 'app_info_cont';
 
 		    var insertText = '';
