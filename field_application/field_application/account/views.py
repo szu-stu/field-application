@@ -15,6 +15,7 @@ from django.views.generic.edit import UpdateView
 from django.views.generic import DetailView, ListView
 
 from field_application.account.permission import guest_or_redirect
+from field_application.account.permission import check_perms 
 from field_application.account.forms import SignUpForm, SignInForm
 from field_application.account.models import UserActivityLog, get_client_ip
 from field_application.account.models import Organization
@@ -143,7 +144,7 @@ def disable_org(request):
     return HttpResponseRedirect(reverse('account:org_manage'))
 
 
-@permission_required('account.manager')
+@check_perms('account.manager', message='无管理权限')
 def manager_reset_password(request):
     org_id = request.GET.get('id')
     org = Organization.objects.get(id=org_id)
