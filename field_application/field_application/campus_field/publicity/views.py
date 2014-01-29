@@ -76,27 +76,21 @@ def manage(request):
 def get_detail(request):
     app = PublicityApplication.objects.get(
             id=request.GET.get('id'))
-    time = [get_second_key(time, PublicityApplication.TIME) \
-                for time in app.time ]
-    place = [get_second_key(place, PublicityApplication.PLACE) \
-                for place in app.place]
     data = {'organization': app.organization.chinese_name,
-            'place': place, 
+            'place': app.place, 
             'start_date': app.start_date.strftime('%Y年%m月%d日'),
             'end_date': app.end_date.strftime('%Y年%m月%d日'),
-            'time': time,
+            'time': app.time,
             'activity': app.activity,
             'approved': app.approved, 'plan_file': app.plan_file.url,
             'applicant_name': app.applicant_name,
             'applicant_phone_number': app.applicant_phone_number,
-            'application_time': time,
+            'application_time': \
+                app.application_time.strftime('%Y年%m月%d日 %H:%M:%S'),
             'sponsor': app.sponsor, 'sponsorship': app.sponsorship,
             'sponsorship_usage': app.sponsorship_usage,
             'activity_summary': app.activity_summary,
-
-            'activity_type': \
-                    get_second_key(app.activity_type,
-                                   PublicityApplication.ACTIVITY_TYPE),
+            'activity_type': app.activity_type,
             'other_activity_type': app.other_activity_type,
             'remarks': app.remarks}
     return render_json(data)
