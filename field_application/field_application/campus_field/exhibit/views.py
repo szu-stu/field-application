@@ -63,15 +63,15 @@ def manage(request):
     org = request.user.organization
     listing = ExhibitApplication.objects.\
             filter(organization=org).order_by('-pk')
-    paginator = Paginator(listing, 3)
     for app in listing:
         app.date = app.start_date.strftime('%Y年%m月%d日') \
-            + '-' + app.start_date.strftime('%Y年%m月%d日')
+            + '-' + app.end_date.strftime('%Y年%m月%d日')
+    paginator = Paginator(listing, 3)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
         page = paginator.page(1)
-    return render(request, 'campus_field/exhibit/manage.html',
+    return render(request, 'manage.html',
             {'page': page, 'title': u'校园活动露天场地申请',
              'modify_url': reverse('exhibit:modify')})
 
