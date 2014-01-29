@@ -14,7 +14,7 @@ function showAppList( applAry, place ){
 
 	var content = appListGen( applAry, place );
 
-    var artdialog = art.dialog({
+    artDlgBox.dialog({
 		  title: "申请列表",
 		content: content,
 
@@ -48,7 +48,7 @@ function appListGen( ary, place ){
 		appListTD.className = 'app_sing_cond';
 
 		var detailLink  = '';
-			detailLink += '<a href="#" onclick="javascript:showAppForm(\'' + ary[i]['id'] + '\', \'' + place + '\')">';
+			detailLink += '<a href="" onclick="javascript:showAppForm(\'' + ary[i]['id'] + '\', \'' + place + '\'); return false;">';
 			detailLink += ary[i]['title'];
 			detailLink += '</a>';
 		var approvedText = ( ary[i]['approved'] == 'False' ) ? '>未审批' : ' class="app_approved">已审批';
@@ -68,26 +68,19 @@ function showAppForm( appId, place ){
 	catch( err ){
 		console.log( "ArtDialog not found." );
 	}
+	var artDlgBox;
+    try{
+		artDlgBox = art;
+    }
+    catch( err ){
+		console.log( "ArtDialog not found." );	
+    }
 
-	var xmlhttp;
-	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp=new XMLHttpRequest();
-	}
-	else{// code for IE6, IE5
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-
-	xmlhttp.onreadystatechange=function(){
-		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ){
-			var content = genAppInfoTable( xmlhttp.responseText, place );
-
-			var artdialog = art.dialog({
-				     id: "app_info",
+	var dialog = artDlgBox.dialog({
 				  title: "",
-				content: content,
 
 				  width: 500,
-				 height: 300,	
+				 height: 300,
 
 				   lock: true,
 				 button: [{
@@ -95,12 +88,15 @@ function showAppForm( appId, place ){
 				 		callback: function(){ this.close() },
 				 }],
 			});
-		}
-	}
 
-	xmlhttp.open( "GET", "../get_detail/?id=" + appId , false );
-	xmlhttp.send();
-
+	//artDialog built in ajax   
+	$.ajax({
+	    url: '../get_detail/?id=' + appId,
+	    success: function( data ) {
+	        dialog.content( genAppInfoTable( data, place ) );
+	    },
+	    cache: false
+	});
 }
 /***** generate application info table *****/
 function genAppInfoTable( detail, place ){
