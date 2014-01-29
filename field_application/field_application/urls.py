@@ -8,6 +8,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', TemplateView.as_view(template_name='index.html'),
                name='home'),
+    url(r'^deny/$', TemplateView.as_view(template_name='deny.html'),
+               name='deny'),
     url(r'^south_stadium/', include('field_application.south_stadium.urls',
                                     namespace='south_stadium')),
     url(r'^account/', include('field_application.account.urls',

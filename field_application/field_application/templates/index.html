@@ -10,6 +10,9 @@
 <a href="{% url 'account:signout' %}">sign out</a>
 <a href="{% url 'account:signin' %}">sign in</a>
 <a href="{% url 'account:reset_password' %}"> reset password</a>
+<a href="{% if user.is_authenticated %}{% url 'account:edit_profile' user.pk %}{% endif %}"> edit_profile</a>
+<a href="{% if user.is_authenticated %}{% url 'account:profile' user.pk %}{% endif %}"> profile</a>
+<a href="{% url 'account:org_manage' %}">org manage</a>
 <div> -------------- </div>
 <a href="{% url 'student_activity_center:apply' %}"> student_activity_center apply</a>
 <a href="{% url 'student_activity_center:table' %}"> student_activity_center table</a>
@@ -32,11 +35,6 @@
 <a href="{% url 'south_stadium:list' %}"> south_stadium list</a>
 <div> -------------- </div>
 
-
-{% load i18n %}
-<div>
-    {% trans "this is title" %}
-</div>
 </body>
 
 </html>

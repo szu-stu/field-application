@@ -10,10 +10,13 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import PasswordChangeForm
+from django.views.generic.edit import UpdateView
+from django.views.generic import DetailView, ListView
 
 from field_application.account.permission import guest_or_redirect
 from field_application.account.forms import SignUpForm, SignInForm
 from field_application.account.models import UserActivityLog, get_client_ip
+from field_application.account.models import Organization
 
 
 logger = logging.getLogger(__name__)
@@ -103,3 +106,36 @@ class ResetPasswordView(View):
                                        ip_address=get_client_ip(request),
                                        behavior="change password")
         return HttpResponseRedirect(reverse('home'))
+
+
+class EditProfile(UpdateView):
+    model = Organization
+    fields = ['chinese_name', 'org_in_charge',
+              'tutor','tutor_contact_infor',
+              'director', 'director_contact_infor', 'belong_to']
+    template_name = 'account/edit-profile.html'
+    success_url = '/'
+
+
+class Profile(DetailView):
+    model = Organization
+    fields = ['chinese_name', 'org_in_charge',
+              'tutor','tutor_contact_infor',
+              'director', 'director_contact_infor',
+              'belong_to', 'is_banned']
+    template_name = 'account/profile.html'
+    context_object_name = 'organization'
+
+
+class Org_manage(ListView):
+    model = Organization
+    context_object_name = 'list'
+    template_name = 'account/org-manage.html'
+
+
+def disable_org(request):
+    org_id = request.GET.get('id')
+    org = Organization.objects.get(id=org_id)
+    org.is_banned = not org.is_banned
+    org.save()
+    return HttpResponseRedirect(reverse('account:org_manage'))
