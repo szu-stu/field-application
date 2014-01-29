@@ -43,17 +43,16 @@
                 </tr>
                 {% endfor %}
 
-                {% for attribute, apps_every_week in table.items %}
-                    {% if attribute != 'date' %}
+                {% for place, apps_every_week in table.content %}
                         {% for row in 4|get_range %}
                             <tr class="nine">
                             {% if forloop.first %}
-                            <td class="bold_border" rowspan="4">{{ attribute }}</td>
+                            <td class="bold_border" rowspan="4">{{ place }}</td>
                             {% endif %}
 
-                            {% cycle '8' '11' '14' '17' as left silent %}
-                            {% cycle '9' '12' '15' '18' as mid silent %}
-                            {% cycle '10' '13' '16' '19' as right silent %}
+                            {% cycle 0 3 6 9 as left silent %}
+                            {% cycle 1 4 7 10 as mid silent %}
+                            {% cycle 2 5 8 11 as right silent %}
                             {% for apps_every_day in apps_every_week %}
 
                                 {% if apps_every_day|get:left %}
@@ -90,7 +89,6 @@
                             {% endfor %}
                             </tr>
                         {% endfor %}
-                    {% endif %}
                 {% endfor %}
             </table>
 {% endblock %}

@@ -41,7 +41,8 @@ class ExhibitApplicationForm(forms.ModelForm):
             return super(ExhibitApplicationForm, self).clean()
 
         exhibit_board_number = self.cleaned_data['exhibit_board_number']
-        board_num_upper_limit = {'CD': 40, 'A': 30, 'SW': 45, 'LS': 45}
+        board_num_upper_limit = {u'CD座文化长廊': 40, u'A座文化大厅': 30,
+                                 u'西南餐厅前空地': 45, u'荔山餐厅前空地': 45}
         start_date = self.cleaned_data['start_date']
         end_date = self.cleaned_data['end_date']
 

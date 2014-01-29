@@ -44,24 +44,60 @@ class CampusFieldApplication(models.Model):
             Q(start_date__lte=last_day) & Q(end_date__gte=first_day))
         return applications_in_the_next_7days 
 
+    @classmethod
+    def generate_table(cls, offset=0):
+        ''' generate a dict of the structure below
+        table - date : [ 7 date ]
+              - ( place1, [ 7 * [ len(cls.TIME)* [] ] ] )
+              - ( place2, 同上
+              - ( place3, 同上
+        [[], []] 的第一个是早上，二个是下午
+        '''
+        content = { place: [ {time: [] for time, t in cls.TIME} \
+                                for i in range(7)] \
+                                for place, p in cls.PLACE }
+
+        field_used_this_week_applications = \
+                cls.get_applications_a_week(offset)
+        first_day = timezone.now().date() + timedelta(days=7*offset)
+        last_day = first_day + timedelta(days=6)
+        for app in field_used_this_week_applications:
+            for i in range((app.end_date-app.start_date).days+1):
+                d = app.start_date + timedelta(days=i)
+                if d < first_day or d > last_day: 
+                    continue
+                for time in app.time:
+                    for place in app.place:
+                        content[place][(d-first_day).days] \
+                                [time].append(app)
+        # sort in the order of time
+        for place, p in cls.PLACE:
+            for i in range(7):
+                content[place][i] = [content[place][i][time] \
+                                        for time, t in cls.TIME]
+        # sort in the order of place
+        content = [(place, content[place]) for place, p in cls.PLACE]
+        return {'date': gennerate_date_list_7days(offset),
+                'content': content}
+
 
 class ExhibitApplication(CampusFieldApplication):
 
     PLACE = (
-        ('CD', u'CD座文化长廊'),
-        ('A', u'A座文化大厅'),
-        ('SW', u'西南餐厅前空地'),
-        ('LS', u'荔山餐厅前空地'),
+        (u'CD座文化长廊', u'CD座文化长廊'),
+        (u'A座文化大厅', u'A座文化大厅'),
+        (u'西南餐厅前空地', u'西南餐厅前空地'),
+        (u'荔山餐厅前空地', u'荔山餐厅前空地'),
     )
     
     TIME = (
-        ('MOR', u'早上'),
-        ('AFT', u'下午'),
+        (u'早上', u'早上'),
+        (u'下午', u'下午'),
     )
 
     EXHIBITION = (
-        ('PIC', u'图片'),
-        ('POS', u'海报'),
+        (u'图片', u'图片'),
+        (u'海报', u'海报'),
     )
 
     place = MultiSelectField(max_length=200, choices=PLACE)
@@ -71,67 +107,36 @@ class ExhibitApplication(CampusFieldApplication):
                                         blank=True, null=True)
     exhibit_board_number = models.PositiveIntegerField()
 
-    @classmethod
-    def generate_table(cls, offset=0):
-        ''' generate a dict of the structure below
-        table - date : [ 7 date ]
-              - CD座文化长廊   : [ 7 * {'MOR': [], 'AFT': []} ]
-              - A座文化大厅    : [ 7 * {'MOR': [], 'AFT': []} ] 
-              - 西南餐厅前空地 : [ 7 * {'MOR': [], 'AFT': []} ] 
-              - 荔山餐厅前空地 : [ 7 * {'MOR': [], 'AFT': []} ]
-        [] contain all application which contain the same period
-        '''
-        field_used_this_week_applications = cls.get_applications_a_week(offset)
-        first_day = timezone.now().date() + timedelta(days=7*offset)
-        last_day = first_day + timedelta(days=6)
-        table = {}
-        for short_name, full_name in cls.PLACE:
-            table[full_name] = [{'MOR': [], 'AFT': []} for i in range(7)]
-            apps = field_used_this_week_applications.filter(
-                    place__contains=get_first_key(full_name, cls.PLACE))
-            for app in apps:
-                for i in range((app.end_date-app.start_date).days+1):
-                    d = app.start_date + timedelta(days=i)
-                    if d < first_day or d > last_day: 
-                        continue
-                    if 'MOR' in app.time:
-                        table[full_name][(d-first_day).days] \
-                                ['MOR'].append(app)
-                    if 'AFT' in app.time:
-                        table[full_name][(d-first_day).days] \
-                                ['AFT'].append(app)
-        table['date'] = gennerate_date_list_7days(offset)
-        return table
-
 
 class PublicityApplication(CampusFieldApplication):
 
     PLACE = (
-        ('LS', u'荔山餐厅前空地'),
-        ('SW', u'西南餐厅前空地'),
-        ('WS', u'文山湖路口'),
-        ('GM', u'桂庙路口'),
-        ('CD', u'CD座文化长廊'),
-        ('A', u'A座文化大厅'),
+        (u'荔山餐厅前空地', u'荔山餐厅前空地'),
+        (u'西南餐厅前空地', u'西南餐厅前空地'),
+        (u'文山湖路口', u'文山湖路口'),
+        (u'桂庙路口', u'桂庙路口'),
+        (u'CD座文化长廊', u'CD座文化长廊'),
+        (u'A座文化大厅', u'A座文化大厅'),
     )
    
     TIME = (
-        ('8', '8点-9点'),
-        ('9', '9点-10点'),
-        ('10', '10点-11点'),
-        ('11', '11点-12点'),
-        ('12', '12点-13点'),
-        ('13', '13点-14点'),
-        ('14', '14点-15点'),
-        ('15', '15点-16点'),
-        ('16', '16点-17点'),
-        ('17', '17点-18点'),
-        ('18', '18点-19点'),
+        (u'8点-9点', u'8点-9点'),
+        (u'9点-10点', u'9点-10点'),
+        (u'10点-11点', u'10点-11点'),
+        (u'11点-12点', u'11点-12点'),
+        (u'12点-13点', u'12点-13点'),
+        (u'13点-14点', u'13点-14点'),
+        (u'14点-15点', u'14点-15点'),
+        (u'15点-16点', u'15点-16点'),
+        (u'16点-17点', u'16点-17点'),
+        (u'17点-18点', u'17点-18点'),
+        (u'18点-19点', u'18点-19点'),
+        (u' ', u'补够12格'), # 这一个只是为了在生成表格的时候方便
     )
 
     ACTIVITY_TYPE = (
-        ('LEAFLET', '派传单'),
-        ('STAND', '设点'),
+        (u'派传单', u'派传单'),
+        (u'设点', u'设点'),
     )
 
     activity_type = models.CharField(max_length=10, choices=ACTIVITY_TYPE)
@@ -140,34 +145,3 @@ class PublicityApplication(CampusFieldApplication):
     place = MultiSelectField(max_length=200, choices=PLACE)
     time = MultiSelectField(max_length=5, choices=TIME)
 
-    @classmethod
-    def generate_table(cls, offset=0):
-        ''' generate a dict of the structure below
-        table - date : [ 7 date ]
-              - CD座文化长廊   : [ 7 * {'8': [], '9': [], ... '19': []} ]
-              - A座文化大厅    : [ 7 * {'8': [], '9': [], ... '19': []} ] 
-              - 西南餐厅前空地 : [ 7 * {'8': [], '9': [], ... '19': []} ] 
-              - 荔山餐厅前空地 : [ 7 * {'8': [], '9': [], ... '19': []} ]
-              - 文山湖路口     : [ 7 * {'8': [], '9': [], ... '19': []} ] 
-              - 桂庙路口       : [ 7 * {'8': [], '9': [], ... '19': []} ]
-        [] contain all application which contain the same period
-        [] of '19' is empty, adjust to the empty lattice in the table
-        '''
-        field_used_this_week_applications = cls.get_applications_a_week(offset)
-        first_day = timezone.now().date() + timedelta(days=7*offset)
-        last_day = first_day + timedelta(days=6)
-        table = {}
-        for short_name, full_name in cls.PLACE:
-            table[full_name] = [{str(j): [] for j in range(8, 20)} \
-                                                for i in range(7)]
-            apps = field_used_this_week_applications.filter(
-                    place__contains=get_first_key(full_name, cls.PLACE))
-            for app in apps:
-                for i in range((app.end_date-app.start_date).days+1):
-                    d = app.start_date + timedelta(days=i)
-                    if d < first_day or d > last_day: 
-                        continue
-                    for t in app.time:
-                        table[full_name][(d-first_day).days][t].append(app)
-        table['date'] = gennerate_date_list_7days(offset)
-        return table

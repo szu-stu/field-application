@@ -12,7 +12,6 @@ from django.core.paginator import InvalidPage, Paginator
 
 from field_application.campus_field.forms import PublicityApplicationForm
 from field_application.campus_field.models import PublicityApplication
-from field_application.utils.models import get_second_key
 from field_application.utils.ajax import render_json
 
 
@@ -47,7 +46,7 @@ def display_list(request):
     listing = PublicityApplication.objects.all()
     for app in listing:
         app.date = app.start_date.strftime('%Y年%m月%d日') \
-            + '-' + app.start_date.strftime('%Y年%m月%d日')
+            + '-' + app.end_date.strftime('%Y年%m月%d日')
     paginator = Paginator(listing, 3)
     try:
         page = paginator.page(request.GET.get('page'))

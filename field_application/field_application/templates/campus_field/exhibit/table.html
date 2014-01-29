@@ -34,35 +34,27 @@
                     <td>{% cycle '上午' '下午' %}</td>
                     {% endfor %}
                 </tr>
-                {% for attribute, apps_every_week in table.items %}
-                    {% if attribute != 'date' %}
+                {% for place, apps_every_week in table.content %}
                     <tr>
-                        <td class="place">{{ attribute }}</td>
+                        <td class="place">{{ place }}</td>
                         {% for apps_every_day in apps_every_week %}
-
-                            {% if apps_every_day.MOR %}
-                            <td class="{% if apps_every_day.MOR|all_approved %}red{%else%}gray{%endif%}" data-app-id="[{% for app in apps_every_day.MOR %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}' }, {% endfor %}]" onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'exhibit' )">
-                                {# {% for app in apps_every_day.MOR %} #}
-                                {# {{ app.id }} #}
-                                {# {% endfor %} #}
-                            </td>
-                            {% else %}
-                                <td></td>
-                            {% endif %}
-
-                            {% if apps_every_day.AFT %}
-                            <td class="{% if apps_every_day.AFT|all_approved %}red{%else%}gray{%endif%}" data-app-id="[{% for app in apps_every_day.AFT %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}' }, {% endfor %}]" onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'exhibit' )">
-                                {# {% for app in apps_every_day.AFT %} #}
-                                {# {{ app.id }} #}
-                                {# {% endfor %} #}
-                            </td>
-                            {% else %}
-                                <td class="blue"></td>
-                            {% endif %}
+                            {% for apps in apps_every_day %}
+                                {% if apps %}
+                                <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}"
+                                 data-app-id="[
+                                    {% for app in apps %} 
+                                        {id:'{{ app.id }}', title:'{{app.activity}}',
+                                         approved:'{{ app.approved }}' }, 
+                                    {% endfor %}]"
+                                 onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'exhibit' )">
+                                </td>
+                                {% else %}
+                                    <td class="blue"></td>
+                                {% endif %}
+                            {% endfor %}
 
                         {% endfor %}
                     </tr>
-                    {% endif %}
                 {% endfor %}
             </table>
 {% endblock %}
