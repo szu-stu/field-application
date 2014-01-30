@@ -40,3 +40,21 @@ def check_perms(perm, message=u'权限不足'):
             return function(request, *args, **kwargs)
         return wrapped_check
     return decorator
+
+
+def check_ownership(ApplicationModel):
+    ''' Check whether the application is belong to the user '''
+    def decorator(function):
+        def wrapped_check(request, *args, **kwargs):
+            app_id = request.GET.get('id')
+            if not app_id:
+                return render(request, 'deny.html',
+                        {'message': u'非法地址'})
+            app = ApplicationModel.objects.get(id=app_id)
+            if request.user.organization.id != app.organization.id:
+                return render(request, 'deny.html',
+                        {'message': u'不能修改他人申请表'})
+            return function(request, *args, **kwargs)
+        return wrapped_check
+    return decorator
+

@@ -13,7 +13,7 @@ from django.core.paginator import InvalidPage, Paginator
 from field_application.campus_field.forms import PublicityApplicationForm
 from field_application.campus_field.models import PublicityApplication
 from field_application.utils.ajax import render_json
-from field_application.account.permission import check_perms
+from field_application.account.permission import check_perms, check_ownership
 
 
 class ApplyView(View):
@@ -33,7 +33,7 @@ class ApplyView(View):
         app = form.save(commit=False)
         app.organization = request.user.organization
         app.save()
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect(reverse('publicity:manage'))
 
 
 def display_table(request):
@@ -101,6 +101,7 @@ def get_detail(request):
 class ModifyView(View):
 
     @method_decorator(login_required)
+    @method_decorator(check_ownership(PublicityApplication))
     def get(self, request):
         app_id = request.GET.get('id')
         app = PublicityApplication.objects.get(id=app_id)
@@ -111,6 +112,7 @@ class ModifyView(View):
                      reverse('publicity:modify')+'?id='+app_id})
 
     @method_decorator(login_required)
+    @method_decorator(check_ownership(PublicityApplication))
     def post(self, request):
         app_id = request.GET.get('id')
         app = PublicityApplication.objects.get(id=app_id)

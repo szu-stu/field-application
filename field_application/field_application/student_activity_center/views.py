@@ -15,7 +15,7 @@ from field_application.student_activity_center.models \
 from field_application.student_activity_center.models import \
         StudentActivityCenterApplication
 from field_application.utils.ajax import render_json
-from field_application.account.permission import check_perms
+from field_application.account.permission import check_perms, check_ownership
 
 
 class ApplyView(View):
@@ -38,7 +38,7 @@ class ApplyView(View):
         app = form.save(commit=False)
         app.organization = request.user.organization
         app.save()
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect(reverse('student_activity_center:manage'))
 
 
 def display_table(request):
@@ -106,6 +106,7 @@ def get_detail(request):
 class ModifyView(View):
 
     @method_decorator(login_required)
+    @method_decorator(check_ownership(StudentActivityCenterApplication))
     def get(self, request):
         app_id = request.GET.get('id')
         app = StudentActivityCenterApplication.objects.get(id=app_id)
@@ -116,6 +117,7 @@ class ModifyView(View):
                      reverse('student_activity_center:modify')+'?id='+app_id})
 
     @method_decorator(login_required)
+    @method_decorator(check_ownership(StudentActivityCenterApplication))
     def post(self, request):
         app_id = request.GET.get('id')
         app = StudentActivityCenterApplication.objects.get(id=app_id)

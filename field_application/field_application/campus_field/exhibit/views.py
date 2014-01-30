@@ -14,6 +14,7 @@ from field_application.campus_field.forms import ExhibitApplicationForm
 from field_application.campus_field.models import ExhibitApplication
 from field_application.utils.ajax import render_json
 from field_application.account.permission import check_perms
+from field_application.account.permission import check_perms, check_ownership
 
 
 class ApplyView(View):
@@ -35,7 +36,7 @@ class ApplyView(View):
         app = form.save(commit=False)
         app.organization = request.user.organization
         app.save()
-        return HttpResponseRedirect(reverse('exhibit:table'))
+        return HttpResponseRedirect(reverse('exhibit:manage'))
 
 
 def display_table(request):
@@ -104,6 +105,7 @@ def get_detail(request):
 class ModifyView(View):
 
     @method_decorator(login_required)
+    @method_decorator(check_ownership(ExhibitApplication))
     def get(self, request):
         app_id = request.GET.get('id')
         app = ExhibitApplication.objects.get(id=app_id)
@@ -114,6 +116,7 @@ class ModifyView(View):
                      reverse('exhibit:modify')+'?id='+app_id})
 
     @method_decorator(login_required)
+    @method_decorator(check_ownership(ExhibitApplication))
     def post(self, request):
         app_id = request.GET.get('id')
         app = ExhibitApplication.objects.get(id=app_id)

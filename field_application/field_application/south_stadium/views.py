@@ -11,7 +11,7 @@ from django.core.paginator import InvalidPage, Paginator
 from field_application.south_stadium.forms import SouthStadiumApplicationForm
 from field_application.south_stadium.models import SouthStadiumApplication
 from field_application.utils.ajax import render_json
-from field_application.account.permission import check_perms
+from field_application.account.permission import check_perms, check_ownership
 
 
 class ApplyView(View):
@@ -33,7 +33,7 @@ class ApplyView(View):
         app = form.save(commit=False)
         app.organization = request.user.organization
         app.save()
-        return HttpResponseRedirect(reverse('south_stadium:table'))
+        return HttpResponseRedirect(reverse('south_stadium:manage'))
 
 
 def display_table(request):
@@ -79,6 +79,7 @@ def manage(request):
 class ModifyView(View):
 
     @method_decorator(login_required)
+    @method_decorator(check_ownership(SouthStadiumApplication))
     def get(self, request):
         app_id = request.GET.get('id')
         app = SouthStadiumApplication.objects.get(id=app_id)
@@ -88,6 +89,7 @@ class ModifyView(View):
                  'post_url': reverse('south_stadium:modify')+'?id='+app_id})
 
     @method_decorator(login_required)
+    @method_decorator(check_ownership(SouthStadiumApplication))
     def post(self, request):
         app_id = request.GET.get('id')
         app = SouthStadiumApplication.objects.get(id=app_id)

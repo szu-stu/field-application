@@ -6,7 +6,7 @@
 </head>
 
 <body>
-	{{ user.username }}
+{{ user.organization.chinese_name }}
 manager:{{  perms.account.manager }}
 <a href="{% url 'account:signup' %}">sign up</a>
 <a href="{% url 'account:signout' %}">sign out</a>
