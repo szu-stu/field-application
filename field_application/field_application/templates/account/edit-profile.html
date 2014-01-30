@@ -2,12 +2,6 @@
 
 {% block htmltitle %}编辑资料{% endblock %}
 
-{% block base_htmlhead %}
-    <style>
-        a{ display: block; }
-    </style>
-{% endblock %}
-
 {% block main_container %}
     <form action="{% url 'account:edit_profile' user.pk %}" method="POST" >
     {% csrf_token %}

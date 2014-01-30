@@ -2,20 +2,14 @@
 
 {% block htmltitle %}资料{% endblock %}
 
-{% block base_htmlhead %}
-    <style>
-        a{ display: block; }
-    </style>
-{% endblock %}
-
 {% block main_container %}
-	部门英文名称{{ org.user.username }}
-	部门名称{{ org.chinese_name }}
-	主管单位{{ org.org_in_charge }}
-	指导老师{{ org.tutor }}
-	指导老师联系方式{{ org.tutor_contact_infor }}
-	所属部门{{ org.belong_to }}
-	组织负责人{{ org.director }}
-	负责人联系方式{{ org.director_contact_infor }}
-	是否被禁用{{ org.is_banned }}
+	部门英文名称{{ user.username }}<br/>
+	部门名称{{ user.organization.chinese_name }}<br/>
+	主管单位{{ user.organization.org_in_charge }}<br/>
+	指导老师{{ user.organization.tutor }}<br/>
+	指导老师联系方式{{ user.organization.tutor_contact_infor }}<br/>
+	所属部门{{ user.organization.belong_to }}<br/>
+	组织负责人{{ user.organization.director }}<br/>
+	负责人联系方式{{ user.organization.director_contact_infor }}<br/>
+	是否被禁用{{ user.organization.is_banned }}<br/>
 {% endblock %}

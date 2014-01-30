@@ -24,9 +24,9 @@ class SignInForm(AuthenticationForm):
 class SignUpForm(UserCreationForm):
 
     BELONG_TO_CHOICES = (
-        ('OT','其它'),
-        ('AU','社团联合会'),
-        ('SU','校学生会'),
+        ('其它','其它'),
+        ('社团联合会','社团联合会'),
+        ('校学生会','校学生会'),
         )
 
     chinese_name = forms.CharField(max_length=30)
