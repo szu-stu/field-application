@@ -6,6 +6,7 @@ from field_application.student_activity_center.views import display_list
 from field_application.student_activity_center.views import manage
 from field_application.student_activity_center.views import get_detail
 from field_application.student_activity_center.views import ModifyView
+from field_application.student_activity_center.views import manager_approve 
 
 urlpatterns = patterns(
     '',
@@ -15,4 +16,5 @@ urlpatterns = patterns(
     url(r'^get_detail/$', get_detail, name='get_detail'),
     url(r'^manage/$', manage, name='manage'),
     url(r'^modify/$', ModifyView.as_view(), name='modify'),
+    url(r'^manager_approve/$', manager_approve, name='manager_approve'),
  )

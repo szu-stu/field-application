@@ -130,6 +130,7 @@ class Profile(DetailView):
 
 
 class Org_manage(ListView):
+    ''' used by manger '''
     model = Organization
     context_object_name = 'list'
     template_name = 'account/org-manage.html'

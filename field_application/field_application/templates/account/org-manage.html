@@ -12,17 +12,17 @@
 	{% for org in list %}
 	<div>
 	{{ org }}
-		{{ org.user.username }}
-		{{ org.chinese_name }}
-		{{ org.org_in_charge }}
-		{{ org.tutor }}
-		{{ org.tutor_contact_infor }}
-		{{ org.belong_to }}
-		{{ org.director }}
-		{{ org.director_contact_infor }}
-		{{ org.is_banned }}
-		<a href="{% url 'account:disable_org' %}?id={{ org.pk }}">{% if not org.is_banned %}disable{% else %}enable{% endif %}</a>
-		<a href="{% url 'account:manager_reset_password' %}?id={{ org.pk }}">reset pwd</a>
+		部门英文名称{{ org.user.username }}
+		部门名称{{ org.chinese_name }}
+		主管单位{{ org.org_in_charge }}
+		指导老师{{ org.tutor }}
+		指导老师联系方式{{ org.tutor_contact_infor }}
+		所属部门{{ org.belong_to }}
+		组织负责人{{ org.director }}
+		负责人联系方式{{ org.director_contact_infor }}
+		是否被禁用{{ org.is_banned }}
+		禁用帐号<a href="{% url 'account:disable_org' %}?id={{ org.pk }}">{% if not org.is_banned %}disable{% else %}enable{% endif %}</a>
+		重置密码为123456<a href="{% url 'account:manager_reset_password' %}?id={{ org.pk }}">reset pwd</a>
 	</div>
 	{% endfor %}
 {% endblock %}

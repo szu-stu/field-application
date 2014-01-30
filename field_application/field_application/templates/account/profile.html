@@ -9,13 +9,13 @@
 {% endblock %}
 
 {% block main_container %}
-	{{ organization.user.username }}
-	{{ organization.chinese_name }}
-	{{ organization.org_in_charge }}
-	{{ organization.tutor }}
-	{{ organization.tutor_contact_infor }}
-	{{ organization.belong_to }}
-	{{ organization.director }}
-	{{ organization.director_contact_infor }}
-	{{ organization.is_banned }}
+	部门英文名称{{ org.user.username }}
+	部门名称{{ org.chinese_name }}
+	主管单位{{ org.org_in_charge }}
+	指导老师{{ org.tutor }}
+	指导老师联系方式{{ org.tutor_contact_infor }}
+	所属部门{{ org.belong_to }}
+	组织负责人{{ org.director }}
+	负责人联系方式{{ org.director_contact_infor }}
+	是否被禁用{{ org.is_banned }}
 {% endblock %}

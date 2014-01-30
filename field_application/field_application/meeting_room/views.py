@@ -14,6 +14,7 @@ from field_application.account.permission import check_perms
 from field_application.meeting_room.forms import MeetingRoomApplicationForm
 from field_application.meeting_room.models import MeetingRoomApplication
 from field_application.utils.ajax import render_json
+from field_application.account.permission import check_perms, check_ownership
 
 
 class ApplyMeetingRoomView(View):
@@ -38,7 +39,7 @@ class ApplyMeetingRoomView(View):
         app = form.save(commit=False)
         app.organization = request.user.organization
         app.save()
-        return HttpResponseRedirect(reverse('meeting_room:table'))
+        return HttpResponseRedirect(reverse('meeting_room:manage'))
 
 
 def display_table(request):
@@ -77,7 +78,8 @@ def manage(request):
         page = paginator.page(1)
     return render(request, 'manage.html',
             {'page': page, 'title': u'会议室使用申请',
-             'modify_url': reverse('meeting_room:modify')})
+             'modify_url': reverse('meeting_room:modify'),
+             'approve_url': reverse('meeting_room:manager_approve')})
 
  
 def get_detail(request):
@@ -100,6 +102,7 @@ def get_detail(request):
 class ModifyView(View):
 
     @method_decorator(login_required)
+    @method_decorator(check_ownership(MeetingRoomApplication))
     @method_decorator(check_perms('account.youth_league_committee',
                                   '非团委下属组织不能申请会议室'))
     def get(self, request):
@@ -111,6 +114,7 @@ class ModifyView(View):
                  'post_url': reverse('meeting_room:modify')+'?id='+app_id})
 
     @method_decorator(login_required)
+    @method_decorator(check_ownership(MeetingRoomApplication))
     @method_decorator(check_perms('account.youth_league_committee',
                                   '非团委下属组织不能申请会议室'))
     def post(self, request):
@@ -123,4 +127,14 @@ class ModifyView(View):
                  'post_url': reverse('meeting_room:modify')+'?id='+app_id})
         form.save()
         return HttpResponseRedirect(reverse('meeting_room:manage'))
+
+
+@login_required
+@check_perms('account.manager', u'无管理权限')
+def manager_approve(request):
+    app_id = request.GET.get('id')
+    app = MeetingRoomApplication.objects.get(id=app_id)
+    app.approved = not app.approved
+    app.save()
+    return HttpResponseRedirect(reverse('meeting_room:manage'))
 
