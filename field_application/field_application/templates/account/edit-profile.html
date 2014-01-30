@@ -1,11 +1,14 @@
-<html>
-<head>
+{% extends 'base.html' %}
+
+{% block htmltitle %}编辑资料{% endblock %}
+
+{% block base_htmlhead %}
     <style>
         a{ display: block; }
     </style>
-</head>
+{% endblock %}
 
-<body>
+{% block main_container %}
     <form action="{% url 'account:edit_profile' user.pk %}" method="POST" >
     {% csrf_token %}
     部门名称
@@ -47,6 +50,4 @@
                     
         <input type="submit" value="submit" />
     </form>
-</body>
-
-</html>
+{% endblock %}

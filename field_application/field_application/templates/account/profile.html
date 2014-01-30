@@ -1,11 +1,14 @@
-<html>
-<head>
+{% extends 'base.html' %}
+
+{% block htmltitle %}资料{% endblock %}
+
+{% block base_htmlhead %}
     <style>
         a{ display: block; }
     </style>
-</head>
+{% endblock %}
 
-<body>
+{% block main_container %}
 	部门英文名称{{ org.user.username }}
 	部门名称{{ org.chinese_name }}
 	主管单位{{ org.org_in_charge }}
@@ -15,6 +18,4 @@
 	组织负责人{{ org.director }}
 	负责人联系方式{{ org.director_contact_infor }}
 	是否被禁用{{ org.is_banned }}
-</body>
-
-</html>
+{% endblock %}
