@@ -123,7 +123,7 @@ def get_detail(request):
 def manager_approve(request):
     app_id = request.GET.get('id')
     app = SouthStadiumApplication.objects.get(id=app_id)
-    app.approved = True
+    app.approved = not app.approved
     app.save()
     return HttpResponseRedirect(reverse('south_stadium:manage'))
 

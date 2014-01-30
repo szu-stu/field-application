@@ -15,6 +15,7 @@ from field_application.student_activity_center.models \
 from field_application.student_activity_center.models import \
         StudentActivityCenterApplication
 from field_application.utils.ajax import render_json
+from field_application.account.permission import check_perms
 
 
 class ApplyView(View):
@@ -79,7 +80,9 @@ def manage(request):
         page = paginator.page(1)
     return render(request, 'manage.html',
             {'page': page, 'title': u'学生活动中心场地申请',
-             'modify_url': reverse('student_activity_center:modify')})
+             'modify_url': reverse('student_activity_center:modify'),
+             'approve_url': \
+                     reverse('student_activity_center:manager_approve')})
 
  
 def get_detail(request):
@@ -125,4 +128,14 @@ class ModifyView(View):
                      reverse('student_activity_center:modify')+'?id='+app_id})
         form.save()
         return HttpResponseRedirect(reverse('student_activity_center:manage'))
+
+
+@login_required
+@check_perms('account.manager', u'无管理权限')
+def manager_approve(request):
+    app_id = request.GET.get('id')
+    app = StudentActivityCenterApplication.objects.get(id=app_id)
+    app.approved = not app.approved
+    app.save()
+    return HttpResponseRedirect(reverse('student_activity_center:manage'))
 
