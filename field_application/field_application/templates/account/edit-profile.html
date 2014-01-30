@@ -12,12 +12,37 @@
 	                {% for error in form.chinese_name.errors %}
                         {{ error }}&nbsp;
                     {% endfor %}
+                    
 	{{ form.org_in_charge }}
+                    {% for error in form.org_in_charge.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    
 	{{ form.tutor }}
-	{{ form.tutor_contact_infor }}<br>
+                    {% for error in form.tutor.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    
+	{{ form.tutor_contact_infor }}
+                    {% for error in form.tutor_contact_infor.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    
 	{{ form.belong_to }}
+                    {% for error in form.belong_to.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    
 	{{ form.director }}
+                    {% for error in form.director.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    
 	{{ form.director_contact_infor }}
+                    {% for error in form.director_contact_infor.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    
         <input type="submit" value="submit" />
     </form>
 </body>

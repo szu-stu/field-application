@@ -1,20 +1,67 @@
 <html>
 <body>
-
-<a href="{% url 'account:signup' %}">sign up</a>
-<a href="{% url 'account:signout' %}">sign out</a>
-<a href="{% url 'account:signin' %}">sign in</a>
-<a href="{% url 'account:reset_password' %}"> reset password</a>
-
-{% if user.is_authenticated %}
-<h1> has login </h1>
-{% else %}
-<h1> has not login </h1>
-{% endif %}
-
     <form action="{% url 'account:signup' %}" method="POST" >
     {% csrf_token %}
-        {{ form.as_p }}
+        部门名称
+        {{ form.chinese_name }}
+	                {% for error in form.chinese_name.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+
+    	部门英文名称
+        {{ form.username }}
+	                {% for error in form.username.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+
+		密码
+        {{ form.password1 }}
+	                {% for error in form.password1.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    
+        密码确认
+        {{ form.password2 }}
+	                {% for error in form.password2.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+              
+                    
+             主管单位
+        {{ form.org_in_charge }}
+	                {% for error in form.org_in_charge.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    
+                 指导老师
+        {{ form.tutor }}
+	                {% for error in form.tutor.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    
+                    指导老师联系方式
+        {{ form.tutor_contact_infor }}
+	                {% for error in form.tutor_contact_infor.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    
+                    组织负责人
+        {{ form.director }}
+	                {% for error in form.director.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    
+                    负责人联系方式
+        {{ form.director_contact_infor }}
+	                {% for error in form.director_contact_infor.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    
+                    所属部门
+        {{ form.belong_to }}
+	                {% for error in form.belong_to.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
         <input type="submit" value="submit" />
     </form>
 
