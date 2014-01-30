@@ -1,27 +1,28 @@
-<html>
-<head>
+{% extends 'base.html' %}
+
+{% block htmltitle %}管理社团/组织{% endblock %}
+
+{% block base_htmlhead %}
     <style>
         a{ display: block; }
     </style>
-</head>
+{% endblock %}
 
-<body>
-{% for org in list %}
-<div>
-{{ org }}
-	{{ org.user.username }}
-	{{ org.chinese_name }}
-	{{ org.org_in_charge }}
-	{{ org.tutor }}
-	{{ org.tutor_contact_infor }}
-	{{ org.belong_to }}
-	{{ org.director }}
-	{{ org.director_contact_infor }}
-	{{ org.is_banned }}
-	<a href="{% url 'account:disable_org' %}?id={{ org.pk }}">{% if not org.is_banned %}disable{% else %}enable{% endif %}</a>
-	<a href="{% url 'account:manager_reset_password' %}?id={{ org.pk }}">reset pwd</a>
-</div>
-{% endfor %}
-</body>
-
-</html>
+{% block main_container %}
+	{% for org in list %}
+	<div>
+	{{ org }}
+		{{ org.user.username }}
+		{{ org.chinese_name }}
+		{{ org.org_in_charge }}
+		{{ org.tutor }}
+		{{ org.tutor_contact_infor }}
+		{{ org.belong_to }}
+		{{ org.director }}
+		{{ org.director_contact_infor }}
+		{{ org.is_banned }}
+		<a href="{% url 'account:disable_org' %}?id={{ org.pk }}">{% if not org.is_banned %}disable{% else %}enable{% endif %}</a>
+		<a href="{% url 'account:manager_reset_password' %}?id={{ org.pk }}">reset pwd</a>
+	</div>
+	{% endfor %}
+{% endblock %}

@@ -1,25 +1,26 @@
-<html>
-<head>
+{% extends 'base.html' %}
+
+{% block htmltitle %}编辑资料{% endblock %}
+
+{% block base_htmlhead %}
     <style>
         a{ display: block; }
     </style>
-</head>
+{% endblock %}
 
-<body>
+{% block main_container %}
     <form action="{% url 'account:edit_profile' user.pk %}" method="POST" >
     {% csrf_token %}
-	{{ form.chinese_name }}
-	                {% for error in form.chinese_name.errors %}
-                        {{ error }}&nbsp;
-                    {% endfor %}
-	{{ form.org_in_charge }}
-	{{ form.tutor }}
-	{{ form.tutor_contact_infor }}<br>
-	{{ form.belong_to }}
-	{{ form.director }}
-	{{ form.director_contact_infor }}
+    {{ form.chinese_name }}
+        {% for error in form.chinese_name.errors %}
+            {{ error }}&nbsp;
+        {% endfor %}
+    {{ form.org_in_charge }}
+    {{ form.tutor }}
+    {{ form.tutor_contact_infor }}<br>
+    {{ form.belong_to }}
+    {{ form.director }}
+    {{ form.director_contact_infor }}
         <input type="submit" value="submit" />
     </form>
-</body>
-
-</html>
+{% endblock %}

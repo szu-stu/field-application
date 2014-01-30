@@ -1,11 +1,14 @@
-<html>
-<head>
+{% extends 'base.html' %}
+
+{% block htmltitle %}资料{% endblock %}
+
+{% block base_htmlhead %}
     <style>
         a{ display: block; }
     </style>
-</head>
+{% endblock %}
 
-<body>
+{% block main_container %}
 	{{ organization.user.username }}
 	{{ organization.chinese_name }}
 	{{ organization.org_in_charge }}
@@ -15,6 +18,4 @@
 	{{ organization.director }}
 	{{ organization.director_contact_infor }}
 	{{ organization.is_banned }}
-</body>
-
-</html>
+{% endblock %}
