@@ -132,7 +132,7 @@ class ModifyView(View):
 def manager_approve(request):
     app_id = request.GET.get('id')
     app = MeetingRoomApplication.objects.get(id=app_id)
-    app.approved = app.approved
+    app.approved = not app.approved
     app.save()
     return HttpResponseRedirect(reverse('meeting_room:manage'))
 
