@@ -115,6 +115,25 @@ class ExhibitApplicationForm(forms.ModelForm):
         return end_date
 
 
+def check_publicity(place_list,
+        start_date, end_date, time_list):
+    for place in place_list:
+        for i in range((end_date-start_date).days+1):
+            date = start_date + timedelta(days=i)
+            for time in time_list:
+                if PublicityApplication.objects.filter(
+                        Q(start_date__lte=date) & \
+                        Q(end_date__gte=date),
+                        place__contains=place,
+                        time__contains=time).filter(approved=True):
+                    msg = place + \
+                          date.strftime(' %Y-%m-%d ') + \
+                          time + \
+                          u'已经被人使用'
+                    return msg
+    return None
+
+
 class PublicityApplicationForm(forms.ModelForm):
     class Meta:
        model = PublicityApplication
@@ -148,6 +167,7 @@ class PublicityApplicationForm(forms.ModelForm):
         start_date = self.cleaned_data.get('start_date')
         end_date = self.cleaned_data.get('end_date')
 
+        #  检查开始日期和结束日期 
         if start_date and end_date and end_date < start_date:
             msg = u'结束时间不能早于开始时间'
             self._errors['end_date'] = self.error_class([msg])
@@ -158,5 +178,14 @@ class PublicityApplicationForm(forms.ModelForm):
             msg = u'展览时间不得超过3天'
             self._errors['end_date'] = self.error_class([msg])
             del self.cleaned_data['end_date']
+        #  检查场地是否已经存在通过的申请
+        msg = check_publicity(
+                self.cleaned_data['place'],
+                start_date,
+                end_date,
+                self.cleaned_data['time'])
+        if msg:
+            self._errors['time'] = self.error_class([msg])
+            return super(PublicityApplicationForm, self).clean()
         return super(PublicityApplicationForm, self).clean()
 

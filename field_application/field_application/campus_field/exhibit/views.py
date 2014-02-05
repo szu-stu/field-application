@@ -140,11 +140,11 @@ def manager_approve(request):
     #  剩余展板数量放在了form.py
     if not app.approved:
         msg = check_exhibit_board_num(
-                app.place,
-                app.start_date,
-                app.end_date,
-                app.time,
-                app.exhibit_board_number)
+            app.place,
+            app.start_date,
+            app.end_date,
+            app.time,
+            app.exhibit_board_number)
         if msg:
             return render(request, 'deny.html', {'message': msg})
     app.approved = not app.approved

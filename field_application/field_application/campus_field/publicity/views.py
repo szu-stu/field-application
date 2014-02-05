@@ -14,6 +14,7 @@ from field_application.campus_field.forms import PublicityApplicationForm
 from field_application.campus_field.models import PublicityApplication
 from field_application.utils.ajax import render_json
 from field_application.account.permission import check_perms, check_ownership
+from field_application.campus_field.forms import check_publicity
 
 
 class ApplyView(View):
@@ -132,6 +133,14 @@ class ModifyView(View):
 def manager_approve(request):
     app_id = request.GET.get('id')
     app = PublicityApplication.objects.get(id=app_id)
+    if not app.approved:
+        msg = check_publicity(
+            app.place,
+            app.start_date,
+            app.end_date,
+            app.time)
+        if msg:
+            return render(request, 'deny.html', {'message': msg})
     app.approved = not app.approved
     app.save()
     return HttpResponseRedirect(reverse('publicity:manage'))
