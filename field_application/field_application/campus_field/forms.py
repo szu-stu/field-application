@@ -40,12 +40,24 @@ class ExhibitApplicationForm(forms.ModelForm):
             'end_date' not in self.cleaned_data:
             return super(ExhibitApplicationForm, self).clean()
 
+        # check date
+        start_date = self.cleaned_data['start_date']
+        end_date = self.cleaned_data['end_date']
+        if end_date < start_date:
+            msg = u'结束时间不能早于开始时间'
+            self._errors['end_date'] = self.error_class([msg])
+            del self.cleaned_data['end_date']
+            return super(ExhibitApplicationForm, self).clean()
+        if end_date > start_date + timedelta(days=7):
+            msg = u'展览时间不得超过7天'
+            self._errors['end_date'] = self.error_class([msg])
+            del self.cleaned_data['end_date']
+            return super(ExhibitApplicationForm, self).clean()
+
+        # 检查展板是否被申请完
         exhibit_board_number = self.cleaned_data['exhibit_board_number']
         board_num_upper_limit = {u'CD座文化长廊': 40, u'A座文化大厅': 30,
                                  u'西南餐厅前空地': 45, u'荔山餐厅前空地': 45}
-        start_date = self.cleaned_data['start_date']
-        end_date = self.cleaned_data['end_date']
-
         for place in self.cleaned_data['place']:
             for i in range((end_date-start_date).days+1):
                 date = start_date + timedelta(days=i)
@@ -81,9 +93,6 @@ class ExhibitApplicationForm(forms.ModelForm):
             raise forms.ValidationError(u'所填日期已过')
         if end_date > now + timedelta(days=14):
             raise forms.ValidationError(u'申请的场地使用时间距离现在不能超过14天')
-        start_date = self.cleaned_data.get('start_date')
-        if end_date > start_date + timedelta(days=7):
-            raise forms.ValidationError(u'展览时间不得超过7天')
         return end_date
 
 
@@ -119,6 +128,12 @@ class PublicityApplicationForm(forms.ModelForm):
     def clean(self):
         start_date = self.cleaned_data.get('start_date')
         end_date = self.cleaned_data.get('end_date')
+
+        if start_date and end_date and end_date < start_date:
+            msg = u'结束时间不能早于开始时间'
+            self._errors['end_date'] = self.error_class([msg])
+            del self.cleaned_data['end_date']
+            return super(PublicityApplicationForm, self).clean()
         if start_date and end_date \
                 and end_date > start_date + timedelta(days=2):
             msg = u'展览时间不得超过3天'
