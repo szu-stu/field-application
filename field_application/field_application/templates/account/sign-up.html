@@ -100,6 +100,11 @@
                     {{ error }}&nbsp;
                 {% endfor %}
             </label>            
+        </div>
+        <div class="error" style="margin-left:50%">
+            {% for error in form.non_field_errors %}
+                {{ error }}&nbsp;
+            {% endfor %}
         </div>  
         <div class="message_list" >
             <input type="submit" value="提交" style="margin:20px 0px 0px 21%" />
