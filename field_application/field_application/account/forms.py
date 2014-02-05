@@ -51,3 +51,10 @@ class SignUpForm(UserCreationForm):
             belong_to=self.cleaned_data['belong_to'])
         org.save()
         return org
+
+
+class EditForm(forms.ModelForm):
+    class Meta:
+        model = Organization
+        exclude = ('user', 'is_banned')
+

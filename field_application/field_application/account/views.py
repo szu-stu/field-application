@@ -19,6 +19,7 @@ from field_application.account.permission import check_perms
 from field_application.account.forms import SignUpForm, SignInForm
 from field_application.account.models import UserActivityLog, get_client_ip
 from field_application.account.models import Organization
+from field_application.account.forms import EditForm
 
 
 logger = logging.getLogger(__name__)
@@ -112,9 +113,7 @@ class ResetPasswordView(View):
 
 class EditProfile(UpdateView):
     model = Organization
-    fields = ['chinese_name', 'org_in_charge',
-              'tutor','tutor_contact_infor',
-              'director', 'director_contact_infor', 'belong_to']
+    form_class = EditForm
     template_name = 'account/edit-profile.html'
     success_url = '/'
 
