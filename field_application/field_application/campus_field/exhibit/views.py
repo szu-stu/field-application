@@ -15,6 +15,7 @@ from field_application.campus_field.models import ExhibitApplication
 from field_application.utils.ajax import render_json
 from field_application.account.permission import check_perms
 from field_application.account.permission import check_perms, check_ownership
+from field_application.campus_field.forms import check_exhibit_board_num
 
 
 class ApplyView(View):
@@ -136,6 +137,16 @@ class ModifyView(View):
 def manager_approve(request):
     app_id = request.GET.get('id')
     app = ExhibitApplication.objects.get(id=app_id)
+    #  剩余展板数量放在了form.py
+    if not app.approved:
+        msg = check_exhibit_board_num(
+                app.place,
+                app.start_date,
+                app.end_date,
+                app.time,
+                app.exhibit_board_number)
+        if msg:
+            return render(request, 'deny.html', {'message': msg})
     app.approved = not app.approved
     app.save()
     return HttpResponseRedirect(reverse('exhibit:manage'))
