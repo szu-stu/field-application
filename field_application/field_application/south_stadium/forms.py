@@ -42,9 +42,11 @@ class SouthStadiumApplicationForm(forms.ModelForm):
         for time in self.cleaned_data.get('time'):
             if SouthStadiumApplication.objects.filter(
                     date=self.cleaned_data.get('date'),
-                    time=time,
+                    time__contains=time,
                     approved=True).exists():
-                msg = self.strftime('%Y年%m月%d日') + time + u'已有人使用'
+                # strftime does not support unicode
+                msg = self.cleaned_data['date'].strftime('%Y-%m-%d ') \
+                        + time + u'已有人使用'
                 self._errors['date'] = self.error_class([msg])
                 del self.cleaned_data['date']
         return self.cleaned_data

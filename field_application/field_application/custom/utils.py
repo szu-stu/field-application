@@ -30,7 +30,8 @@ def get_applications_a_week(application_model, offset=0):
     last_day = first_day + timedelta(days=6)
     applications_in_the_next_7days = application_model.objects.filter(
         date__gte=first_day,
-        date__lte=last_day)
+        date__lte=last_day,
+        deleted=False)
     return applications_in_the_next_7days 
 
 
@@ -44,5 +45,6 @@ def get_application_this_week(model):
     date_of_next_Monday = date_of_this_Monday + timedelta(days=7)
     application_this_week = model.objects.filter(
         date__gte=date_of_this_Monday,
-        date__lt=date_of_next_Monday)
+        date__lt=date_of_next_Monday,
+        deleted=False)
     return application_this_week
