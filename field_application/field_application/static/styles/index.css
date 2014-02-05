@@ -1,0 +1,57 @@
+*{
+	padding: 0px;
+	margin: 0px;
+}
+body{font-family: "黑体";background-color:  #e2ebfe;}
+.main{
+	width:798px;
+	position: relative;
+	overflow: hidden;
+	margin-top: 5px;
+	margin: 0 auto;
+}
+.style{
+	font-family:"宋体";
+	background-color:#F6F6F6;
+	/*color:#000000;*/
+	font-size:24px;
+}
+.main li{
+	height: 111px;
+	line-height: 111px;
+	vertical-align: middle;
+	margin: 0 auto;
+	border: 2px solid #ffffff;
+	display: block;
+	position: relative;
+	overflow: hidden;
+	margin: 0 auto;
+	text-align:center
+	
+}
+ul{list-style: none;
+    border: 2px;
+	border-collapse: separate;
+	border-spacing: 2px;
+	border-color: #ffffff; 
+	text-align:center
+}
+a{text-decoration: none;color: #000000;padding: 0 5px;}
+.main a:hover{color:#00ccff}
+.left{
+	display: block;
+	padding: 0px;
+	float: left;
+	width: 70%;
+	text-align: center;
+}
+.right{
+	display: block;
+	padding: 0px;
+	float: right;
+	width: 30%;
+	text-align: left;
+	color: #ff0000;
+}
+
+

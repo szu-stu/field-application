@@ -1,47 +1,82 @@
-{% extends 'base.html' %}
+{% extends 'account/account_base.html' %}
 
 {% block htmltitle %}编辑资料{% endblock %}
 
+{% block base_htmlhead %}
+    {% load html_tools %}
+    {{ 'account/account.css' | as_css }}
+{% endblock %}
+
 {% block main_container %}
+<div class="container">
     <form action="{% url 'account:edit_profile' user.pk %}" method="POST" >
     {% csrf_token %}
-    部门名称
-	{{ form.chinese_name }}
-	                {% for error in form.chinese_name.errors %}
-                        {{ error }}&nbsp;
-                    {% endfor %}
-
-    主管单位 
-	{{ form.org_in_charge }}
-                    {% for error in form.org_in_charge.errors %}
-                        {{ error }}&nbsp;
-                    {% endfor %}
-    指导老师                
-	{{ form.tutor }}
-                    {% for error in form.tutor.errors %}
-                        {{ error }}&nbsp;
-                    {% endfor %}
-    指导老师联系方式                
-	{{ form.tutor_contact_infor }}
-                    {% for error in form.tutor_contact_infor.errors %}
-                        {{ error }}&nbsp;
-                    {% endfor %}
-    所属部门                
-	{{ form.belong_to }}
-                    {% for error in form.belong_to.errors %}
-                        {{ error }}&nbsp;
-                    {% endfor %}
-    组织负责人                
-	{{ form.director }}
-                    {% for error in form.director.errors %}
-                        {{ error }}&nbsp;
-                    {% endfor %}
-    负责人联系方式                
-	{{ form.director_contact_infor }}
-                    {% for error in form.director_contact_infor.errors %}
-                        {{ error }}&nbsp;
-                    {% endfor %}
-                    
-        <input type="submit" value="submit" />
+        <div class="message_list">
+            <label class="item">部门名称</label>
+            {{ form.chinese_name }}
+            <label class="error">
+                {% for error in form.chinese_name.errors %}
+                    {{ error }}&nbsp;
+                {% endfor %}
+            </label>              
+        </div>
+        <div class="message_list">
+            <label class="item">主管单位</label>
+            {{ form.org_in_charge }}
+            <label class="error">
+                {% for error in form.org_in_charge.errors %}
+                    {{ error }}&nbsp;
+                {% endfor %}
+            </label>            
+        </div>
+        <div class="message_list">
+            <label class="item">指导老师</label>
+            {{ form.tutor }}
+            <label class="error">
+                {% for error in form.tutor.errors %}
+                    {{ error }}&nbsp;
+                {% endfor %}
+            </label>            
+        </div>            
+        <div class="message_list">
+            <label class="item">指导老师联系方式</label>
+            {{ form.tutor_contact_infor }}
+            <label class="error">
+                {% for error in form.tutor_contact_infor.errors %}
+                    {{ error }}&nbsp;
+                {% endfor %}
+            </label>            
+        </div>   
+        <div class="message_list">
+            <label class="item">所属部门</label>
+            {{ form.belong_to }}
+            <label class="error">
+                {% for error in form.belong_to.errors %}
+                    {{ error }}&nbsp;
+                {% endfor %}
+            </label>            
+        </div>  
+        <div class="message_list">
+            <label class="item">组织负责人</label>
+            {{ form.director }}
+            <label class="error">
+                {% for error in form.director.errors %}
+                    {{ error }}&nbsp;
+                {% endfor %}
+            </label>            
+        </div>      
+        <div class="message_list">
+            <label class="item">负责人联系方式</label>
+            {{ form.director_contact_infor }}
+            <label class="error">
+                {% for error in form.director_contact_infor.errors %}
+                    {{ error }}&nbsp;
+                {% endfor %}
+            </label>            
+        </div>        
+        <div class="message_list" >
+            <input type="submit" value="提交" style="margin:20px 0px 0px 21%" />
+        </div>       
     </form>
+</div> 
 {% endblock %}

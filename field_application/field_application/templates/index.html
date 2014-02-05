@@ -1,42 +1,66 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <style>
-        a{ display: block; }
-    </style>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+	<meta http-equiv="Content-Language" content="zh-CN">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="深圳大学,深大,荔园,学子天地,场地申请,首页">
+    <meta name="description" content="深圳大学资讯传媒社区, 荔园信息聚集平台">
+    <title>场地申请首页</title>
+	{% load html_tools %}
+    {{ 'index.css' | as_css }}
 </head>
-
 <body>
-{{ user.organization.chinese_name }}
-manager:{{  perms.account.manager }}
-<a href="{% url 'account:signup' %}">sign up</a>
-<a href="{% url 'account:signout' %}">sign out</a>
-<a href="{% url 'account:signin' %}">sign in</a>
-<a href="{% url 'account:reset_password' %}"> reset password</a>
-<a href="{% if user.is_authenticated %}{% url 'account:edit_profile' user.pk %}{% endif %}"> edit_profile</a>
-<a href="{% if user.is_authenticated %}{% url 'account:profile' user.pk %}{% endif %}"> profile</a>
-<a href="{% url 'account:org_manage' %}">org manage</a>
-<div> -------------- </div>
-<a href="{% url 'student_activity_center:apply' %}"> student_activity_center apply</a>
-<a href="{% url 'student_activity_center:table' %}"> student_activity_center table</a>
-<a href="{% url 'student_activity_center:list' %}"> student_activity_center list</a>
-<div> -------------- </div>
-<a href="{% url 'exhibit:apply' %}"> campus_field apply exhibition</a>
-<a href="{% url 'exhibit:table' %}"> exhibit table</a>
-<a href="{% url 'exhibit:list' %}"> exhibit list</a>
-<div> -------------- </div>
-<a href="{% url 'publicity:apply' %}"> campus_field apply publicity</a>
-<a href="{% url 'publicity:table' %}"> publicity table</a>
-<a href="{% url 'publicity:list' %}"> publicity list</a>
-<div> -------------- </div>
-<a href="{% url 'meeting_room:apply' %}"> meeting room apply</a>
-<a href="{% url 'meeting_room:table' %}"> meeting room table</a>
-<a href="{% url 'meeting_room:list' %}"> meeting room list</a>
-<div> -------------- </div>
-<a href="{% url 'south_stadium:apply' %}"> south_stadium room apply</a>
-<a href="{% url 'south_stadium:table' %}"> south_stadium table</a>
-<a href="{% url 'south_stadium:list' %}"> south_stadium list</a>
-<div> -------------- </div>
-
-</body>
-
+	<div class="main">
+		<ul>
+			<li class="style" style="height:50px;line-height:50px" >
+				{% if user.is_authenticated %}
+					{{ user.organization.chinese_name }}
+					<a href="{% url 'account:signout' %}">注销</a>
+					<a href="{% url 'account:reset_password' %}">修改密码</a>
+					<a href="{% url 'account:edit_profile' user.pk %}">编辑资料</a>
+					<a href="{% url 'account:profile' user.pk %}">查看资料</a>
+					{% if perms.account.manager %}
+					<a href="{% url 'account:org_manage' %}">管理组织</a>
+					{% endif %}
+				{% else %}
+					<a href="{% url 'account:signin' %}">登录</a>
+					<a href="{% url 'account:signup' %}">注册</a>
+				{% endif %}
+			</li>
+			<li style="background-color:#E3EAF0;color:#D00000;font-size:42px;font-weight:bold;">
+				校园各场地申请
+			</li>
+			<li style="background-color:#E3EAF0;color:#000000;font-size:24px;font-weight:bold;">
+				<a href="http://www.szu.edu.cn/board/view.asp?id=259620">重申遵守教室管理规定</a>
+			</li>
+			<li class="style">
+				<a href="{% url 'south_stadium:table' %}" class="left">南区运动广场二楼平台</a>
+				<a href="{% url 'south_stadium:apply' %}" class="right">网上申请</a>
+			</li>
+			<li class="style">
+				<a href="{% url 'student_activity_center:table' %}" class="left">学生活动中心场地申请</a>
+				<a href="{% url 'student_activity_center:apply' %}" class="right">网上申请</a>
+			</li>
+			<li class="style">
+				<a href="{% url 'exhibit:table' %}" class="left">校园展览场地申请</a>
+				<a href="{% url 'exhibit:apply' %}" class="right">网上申请</a>
+			</li>
+			<li class="style">
+				<a href="{% url 'publicity:table' %}" class="left">校园露天场地申请</a>
+				<a href="{% url 'publicity:apply' %}" class="right">网上申请</a>
+			</li>
+			<li class="style">
+				<a href="{% url 'meeting_room:table' %}" class="left">会议室申请</a>
+				<a href="{% url 'meeting_room:apply' %}" class="right">网上申请</a>
+			</li>
+			<li class="style">
+				<a href="http://stu.szu.edu.cn:8080/web/tabledown.asp">表格下载</a>
+			</li>
+			<li class="style" style="font-weight:bold;">
+				<a href="#">深圳大学学子天地</a><span style="font-family:宋体;font-size:12px;color:#999999;">( 办公室：学活308 联系电话：13530399014（610597）)</span>
+			</li>
+		</ul>
+	</div>
+	</body>
 </html>

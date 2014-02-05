@@ -15,7 +15,7 @@
     <div class="container">
         <div class="header">
             <a href="/"><img src="/static/images/szu_logo.png" class="logo"></a>
-            {% block top_title %}<h1>校园场地申请</h1>{% endblock %}
+            {% block top_title %}<h1>组织资料管理</h1>{% endblock %}
             <div class="line"></div>
         </div>
         <div class="main">
@@ -30,8 +30,6 @@
                 <a href="{% url 'account:org_manage' %}">管理组织</a>
                 {% endif %}
                 <a href="/">【返回场地申请主页】</a>
-                <a href="../manage/">【管理场地申请】</a>
-                <a href="../table/">【查看场地申请情况】</a>
             </div>
             {% endif %}
             {% block main_container %}

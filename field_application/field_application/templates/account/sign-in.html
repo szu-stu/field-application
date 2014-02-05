@@ -1,22 +1,44 @@
-{% extends 'base.html' %}
+{% extends 'account_base.html' %}
 
 {% block htmltitle %}登陆{% endblock %}
 
+{% block base_htmlhead %}
+    {% load html_tools %}
+    {{ 'account/account.css' | as_css }}
+{% endblock %}
+
 {% block main_container %}
-{% if next %}
-<form action="{% url 'account:signin' %}?next={{ next }}" method="POST" >
-{% else %}
-<form action="{% url 'account:signin' %}" method="POST" >
-{% endif %}
+<div class="container" style="margin:150px 0px;">
+    {% if next %}
+    <form action="{% url 'account:signin' %}?next={{ next }}" method="POST" >
+    {% else %}
+    <form action="{% url 'account:signin' %}" method="POST" >
+    {% endif %}
     {% csrf_token %}
-        {{ form.username }}
-	                {% for error in form.username.errors %}
-                        {{ error }}&nbsp;
-                    {% endfor %}
-        {{ form.password }}
-	                {% for error in form.password.errors %}
-                        {{ error }}&nbsp;
-                    {% endfor %}
-        <input type="submit" value="submit" />
+        <div class="line_container">
+            <label class="sign_in_label">部门</label>
+            {{ form.username }}
+        </div>
+        <div class="error" style="margin-left:50%">
+            {% for error in form.username.errors %}
+                {{ error }}&nbsp;
+            {% endfor %}
+        </div>
+        <div class="line_container">
+            <label class="sign_in_label">密码</label>
+            {{ form.password }}
+        </div> 
+        <div class="error" style="margin-left:50%">
+            {% for error in form.password.errors %}
+                {{ error }}&nbsp;
+            {% endfor %}
+        </div>
+        <div class="error" style="margin-left:50%">
+            {% for error in form.non_field_errors %}
+                {{ error }}&nbsp;
+            {% endfor %}
+        </div>
+        <input type="submit" value="提交" style="margin:20px 0px 0px 455px" /> 
     </form>
+</div> 
 {% endblock %}

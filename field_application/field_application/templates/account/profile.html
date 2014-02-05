@@ -1,15 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'account/account_base.html' %}
 
 {% block htmltitle %}资料{% endblock %}
 
+{% block base_htmlhead %}
+    {% load html_tools %}
+    {{ 'account/account.css' | as_css }}
+{% endblock %}
+
 {% block main_container %}
-	部门英文名称{{ user.username }}<br/>
-	部门名称{{ user.organization.chinese_name }}<br/>
-	主管单位{{ user.organization.org_in_charge }}<br/>
-	指导老师{{ user.organization.tutor }}<br/>
-	指导老师联系方式{{ user.organization.tutor_contact_infor }}<br/>
-	所属部门{{ user.organization.belong_to }}<br/>
-	组织负责人{{ user.organization.director }}<br/>
-	负责人联系方式{{ user.organization.director_contact_infor }}<br/>
-	是否被禁用{{ user.organization.is_banned }}<br/>
+<p class="message_show">
+    <label class="pro_item">部门英文名称</label>{{ user.username }}<br/>
+    <label class="pro_item">部门名称</label>{{ user.organization.chinese_name }}<br/>
+    <label class="pro_item">主管单位</label>{{ user.organization.org_in_charge }}<br/>
+    <label class="pro_item">指导老师</label>{{ user.organization.tutor }}<br/>
+    <label class="pro_item">指导老师联系方式</label>{{ user.organization.tutor_contact_infor }}<br/>
+    <label class="pro_item">所属部门</label>{{ user.organization.belong_to }}<br/>
+    <label class="pro_item">组织负责人</label>{{ user.organization.director }}<br/>
+    <label class="pro_item">负责人联系方式</label>{{ user.organization.director_contact_infor }}<br/>
+    <label class="pro_item">是否被禁用</label>{{ user.organization.is_banned }}<br/>
+</p>
 {% endblock %}

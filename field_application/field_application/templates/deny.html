@@ -1,7 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'account/account_base.html' %}
 
 {% block htmltitle %}管理{% endblock %}
 
+{% block base_htmlhead %}
+    {% load html_tools %}
+    {{ 'account/account.css' | as_css }}
+{% endblock %}
+
 {% block main_container %}
-	{{ message }}
+<h1 class="has_margin" style="color: #ff0000; text-align: center;">
+    {{ message }}
+</h1>
 {% endblock %}

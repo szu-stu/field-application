@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 class Organization(models.Model):
     class Meta:
         permissions = (
-            ('manager', 'Can disable other org and approve application'),
-            ('youth_league_committee', 'can use meeting room'),
+            ('manager', u'可以管理其他组织和审核申请'),
+            ('youth_league_committee', u'可以使用会议室'),
         )
     user = models.OneToOneField(User)
     chinese_name = models.CharField(max_length=30, unique=True)

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block base_htmlhead %}
+    {% load html_tools %}
+    {{ 'list/list.css' | as_css }}
+    {% block htmlhead %}{% endblock %}
+{% endblock %}
+
+{% block main_container %}
+    {% block main_content %}
+    {% endblock %}
+{% endblock %}
