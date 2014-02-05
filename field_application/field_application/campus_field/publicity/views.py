@@ -119,7 +119,7 @@ class ModifyView(View):
         form = PublicityApplicationForm(
                 request.POST, request.FILES, instance=app)
         if not form.is_valid():
-            return render(request, 'campus_field/form.html', 
+            return render(request, 'campus_field/publicity/form.html', 
                 {'form': form, 'app_id': app_id,
                  'post_url': \
                      reverse('publicity:modify')+'?id='+app_id})

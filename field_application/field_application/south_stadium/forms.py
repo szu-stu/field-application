@@ -35,6 +35,9 @@ class SouthStadiumApplicationForm(forms.ModelForm):
         return date
 
     def clean(self):
+        if 'time' not in self.cleaned_data or \
+           'date' not in self.cleaned_data:
+            return super(SouthStadiumApplicationForm, self).clean()
         super(SouthStadiumApplicationForm, self).clean()
         for time in self.cleaned_data.get('time'):
             if SouthStadiumApplication.objects.filter(
