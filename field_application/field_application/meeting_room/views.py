@@ -137,6 +137,7 @@ def manager_approve(request):
     if not app.approved:
         for time in app.time:
             if MeetingRoomApplication.objects.filter(
+                place=app.place,
                 date=app.date,
                 time__contains=time,
                 approved=True).exists():

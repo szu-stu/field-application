@@ -137,6 +137,14 @@ class ModifyView(View):
 def manager_approve(request):
     app_id = request.GET.get('id')
     app = StudentActivityCenterApplication.objects.get(id=app_id)
+    if not app.approved \
+            and StudentActivityCenterApplication.objects.filter(
+            place=app.place,
+            date=app.date,
+            time=app.time,
+            approved=True).exists():
+        msg = u'该时间段已经有通过审批的申请'
+        return render(request, 'deny.html', {'message': msg})
     app.approved = not app.approved
     app.save()
     return HttpResponseRedirect(reverse('student_activity_center:manage'))

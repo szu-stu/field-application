@@ -36,6 +36,9 @@ class StudentActivityCenterApplicationForm(ModelForm):
                 date=self.cleaned_data.get('date'),
                 time=self.cleaned_data.get('time'),
                 approved=True).exists():
-            raise forms.ValidationError(u'该场地已有人使用')
+            msg = self.cleaned_data['date'].strftime('%Y-%m-%d ') \
+                    + self.cleaned_data['time'] + u'已有人使用'
+            self._errors['date'] = self.error_class([msg])
+            del self.cleaned_data['date']
         return self.cleaned_data
 
