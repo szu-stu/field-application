@@ -134,6 +134,14 @@ class ModifyView(View):
 def manager_approve(request):
     app_id = request.GET.get('id')
     app = MeetingRoomApplication.objects.get(id=app_id)
+    if not app.approved:
+        for time in app.time:
+            if MeetingRoomApplication.objects.filter(
+                date=app.date,
+                time__contains=time,
+                approved=True).exists():
+                msg = u'该时间段已经有通过审批的申请'
+                return render(request, 'deny.html', {'message': msg})
     app.approved = not app.approved
     app.save()
     return HttpResponseRedirect(reverse('meeting_room:manage'))
