@@ -76,7 +76,7 @@ class ExhibitApplicationForm(forms.ModelForm):
             self._errors['end_date'] = self.error_class([msg])
             del self.cleaned_data['end_date']
             return super(ExhibitApplicationForm, self).clean()
-        if end_date > start_date + timedelta(days=7):
+        if end_date > start_date + timedelta(days=6):
             msg = u'展览时间不得超过7天'
             self._errors['end_date'] = self.error_class([msg])
             del self.cleaned_data['end_date']

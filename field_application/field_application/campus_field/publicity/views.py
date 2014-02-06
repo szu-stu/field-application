@@ -64,7 +64,7 @@ def manage(request):
             filter(organization=org).order_by('-pk')
     for app in listing:
         app.date = app.start_date.strftime('%Y年%m月%d日') \
-            + '-' + app.start_date.strftime('%Y年%m月%d日')
+            + '-' + app.end_date.strftime('%Y年%m月%d日')
     paginator = Paginator(listing, 3)
     try:
         page = paginator.page(request.GET.get('page'))
