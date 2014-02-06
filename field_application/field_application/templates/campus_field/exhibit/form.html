@@ -189,6 +189,12 @@
                 </td>
             </tr>
         </table>
+
+        <div class="error" style="margin-left:50%">
+            {% for error in form.non_field_errors %}
+                {{ error }}&nbsp;
+            {% endfor %}
+        </div>        
         <div class="button_container">
             <input type="submit" value="提交" />
             <input type="reset" value="重置" style="margin-left:100px;"/>
