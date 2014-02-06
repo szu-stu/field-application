@@ -9,7 +9,7 @@ from field_application.account.models import Organization
 from field_application.custom.utils import gennerate_date_list_7days 
 from field_application.custom.utils import get_applications_a_week 
 from field_application.utils.models import file_save_path
-from field_application.utils.models import get_second_key
+from field_application.custom.validators import validate_file_extension
 
 
 class StudentActivityCenterApplication(models.Model):
@@ -35,7 +35,8 @@ class StudentActivityCenterApplication(models.Model):
     approved = models.BooleanField(default=False)
     application_time = models.DateTimeField(auto_now_add=True)
     plan_file = models.FileField(
-            upload_to=file_save_path('student_activity_center'))
+            upload_to=file_save_path('student_activity_center'),
+            validators=[validate_file_extension])
 
     applicant_name = models.CharField(max_length=10)
     applicant_phone_number = models.CharField(max_length=30)

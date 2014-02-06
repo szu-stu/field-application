@@ -11,6 +11,7 @@ from field_application.custom.utils import gennerate_date_list_7days
 from field_application.custom.utils import get_applications_a_week 
 from field_application.utils.models import file_save_path
 from field_application.utils.models import get_second_key, get_first_key
+from field_application.custom.validators import validate_file_extension
 
 
 class SouthStadiumApplication(models.Model):
@@ -28,7 +29,8 @@ class SouthStadiumApplication(models.Model):
     approved = models.BooleanField(default=False)
     application_time = models.DateTimeField(auto_now_add=True)
 
-    plan_file = models.FileField(upload_to=file_save_path('south_stadium'))
+    plan_file = models.FileField(upload_to=file_save_path('south_stadium'),
+                                 validators=[validate_file_extension])
     applicant_name = models.CharField(max_length=10)
     applicant_phone_number = models.CharField(max_length=30)
     activity_summary = models.CharField(max_length=200)

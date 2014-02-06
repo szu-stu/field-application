@@ -164,6 +164,11 @@ class PublicityApplicationForm(forms.ModelForm):
         return end_date
 
     def clean(self):
+        if 'place' not in self.cleaned_data or \
+                'start_date' not in self.cleaned_data or \
+                'end_date' not in self.cleaned_data or \
+                'time' not in self.cleaned_data:
+            return super(PublicityApplicationForm, self).clean()
         start_date = self.cleaned_data.get('start_date')
         end_date = self.cleaned_data.get('end_date')
 

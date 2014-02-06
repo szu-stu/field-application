@@ -10,6 +10,7 @@ from field_application.custom.model_field import MultiSelectField
 from field_application.custom.utils import gennerate_date_list_7days 
 from field_application.custom.utils import get_applications_a_week 
 from field_application.utils.models import get_second_key, get_first_key
+from field_application.custom.validators import validate_file_extension
 
 
 def generate_time_table():

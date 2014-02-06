@@ -12,6 +12,7 @@ from field_application.custom.utils import gennerate_date_list_7days
 from field_application.custom.utils import get_application_this_week
 from field_application.utils.models import file_save_path
 from field_application.utils.models import get_first_key
+from field_application.custom.validators import validate_file_extension
 
 
 class CampusFieldApplication(models.Model):
@@ -23,7 +24,8 @@ class CampusFieldApplication(models.Model):
     approved = models.BooleanField(default=False)
     application_time = models.DateTimeField(auto_now_add=True)
 
-    plan_file = models.FileField(upload_to=file_save_path('campus_field'))
+    plan_file = models.FileField(upload_to=file_save_path('campus_field'),
+                                 validators=[validate_file_extension])
     applicant_name = models.CharField(max_length=10)
     applicant_phone_number = models.CharField(max_length=30)
     activity_summary = models.CharField(max_length=200)
