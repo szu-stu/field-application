@@ -127,7 +127,6 @@
       });
       this.dropdownList.mouseup(function(event) {
         self.pickSelected();
-        self.focusAndHide();
       });
       this.dropdown.mouseover(function(event) {
         self.dropdownMouseover = true;
@@ -144,12 +143,11 @@
           case 13: // return
             event.preventDefault();
             self.pickSelected();
-            self.focusAndHide();
             break;
           case 27: // esc
             event.preventDefault();
             self.reset();
-            self.focusAndHide();
+            self.hide();
             break;
           default:
             self.filterResults();
@@ -167,7 +165,6 @@
         switch (event.keyCode) {
           case 9:  // tab
             self.pickSelected();
-            self.hide();
             break;
           case 33: // pgup
             event.preventDefault();
@@ -208,6 +205,8 @@
         this.score = LiquidMetal.score(this.name, abbreviation);
         if (this.score > 0.0) results.push(this);
       });
+      if(results.length == 0)
+        results = [{name:"没有匹配项",value:"",score:-1}];
       this.results = results;
 
       if (this.settings.sortBy == 'score')
@@ -277,10 +276,14 @@
 
     pickSelected: function() {
       var selected = this.results[this.selectedIndex];
+      if(selected.score<0){
+        return false;
+      }
       if (selected) {
         this.input.val(selected.name);
         this.setValue(selected.value);
         this.picked = true;
+        this.hide()
       } else if (this.settings.allowMismatch) {
         this.setValue.val("");
       } else {
