@@ -4,7 +4,13 @@
 
 {% block base_htmlhead %}
     {% load html_tools %}
+
     {{ 'account/account.css' | as_css }}
+    {{ 'flexSelect/flexselect.css' | as_css }}
+
+    {{ 'jQuery/jquery-1.11.0.min.js' | as_js }}
+    {{ 'flexSelect/liquidmetal.js' | as_js }}
+    {{ 'flexSelect/jquery.flexselect.js' | as_js }}
 {% endblock %}
 
 {% block main_container %}
@@ -42,4 +48,10 @@
         <input type="submit" value="提交" style="margin:20px 0px 0px 455px" /> 
     </form>
 </div> 
+<script>
+    $('#id_username').addClass('flexselect');
+    jQuery(document).ready(function() {
+      $("#id_username").flexselect();
+    });
+</script>
 {% endblock %}
