@@ -22,9 +22,6 @@ class SouthStadiumApplicationForm(forms.ModelForm):
            'remarks': Textarea(),
        }
 
-    # def clean_time(self):
-    #     raise Exception(self.cleaned_data['time'])
-
     def clean_date(self):
         date = self.cleaned_data.get('date')
         now = timezone.now().date()

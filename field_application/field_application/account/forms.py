@@ -11,7 +11,7 @@ from field_application.account.models import Organization
 
 class SignInForm(AuthenticationForm):
     username = forms.ModelChoiceField(queryset=Organization.objects.all(),
-                                      empty_label='请选择组织')
+                                      empty_label=u'')
 
     def clean_username(self):
         ''' change Organization.chinese_name to User.username '''
@@ -36,6 +36,12 @@ class SignUpForm(UserCreationForm):
     director = forms.CharField(max_length=20)
     director_contact_infor = forms.CharField(max_length=30)
     belong_to = forms.ChoiceField(choices=BELONG_TO_CHOICES)
+
+    def clean_chinese_name(self):
+        chinese_name = self.cleaned_data.get('chinese_name')
+        if Organization.objects.filter(chinese_name=chinese_name).exists():
+            raise forms.ValidationError(u'该中文名已被注册')
+        return chinese_name
 
     # force model to save
     def save(self):
