@@ -57,15 +57,6 @@ class SignInView(View):
         if request.GET.get('next'):
             return HttpResponseRedirect(request.GET.get('next'))
         else:
-            error_message = '''现在的设计是,网站内没有一个可以进入登录界面的
-            链接.这个错误信息出现,说明有人直接通过url进入到登录页面,或者有人
-            在网站内增加了通向登录界面的链接.
-            现在进入登录界面的方式都是靠重定向,这个时候会获取next值,
-            也就是在登录成功后需要重定向的url.
-            当前,如果next值没有给出,将重定向到首页.
-            如果后来新加了可以通向登录界面的链接,请根据你的需求修改这段代码.
-            '''
-            logger.error(error_message)
             return HttpResponseRedirect(reverse('home'))
 
 
@@ -107,7 +98,7 @@ class ResetPasswordView(View):
         form.save()
         UserActivityLog.objects.create(user=request.user,
                                        ip_address=get_client_ip(request),
-                                       behavior="change password")
+                                       behavior=u"修改密码")
         return HttpResponseRedirect(reverse('home'))
 
 

@@ -77,6 +77,11 @@ class CampusFieldApplication(models.Model):
             for i in range(7):
                 content[place][i] = [content[place][i][time] \
                                         for time, t in cls.TIME]
+                # 特殊处理PublicityApplication的情况，
+                # 由于表格要求十二个格子，
+                # TIME只有11个，加一个空的补足12
+                if len(content[place][i]) == 11:
+                    content[place][i].append([])
         # sort in the order of place
         content = [(place, content[place]) for place, p in cls.PLACE]
         return {'date': gennerate_date_list_7days(offset),
@@ -104,7 +109,8 @@ class ExhibitApplication(CampusFieldApplication):
 
     place = MultiSelectField(max_length=200, choices=PLACE)
     time = MultiSelectField(max_length=10, choices=TIME)
-    exhibition = models.CharField(max_length=20, choices=EXHIBITION)
+    exhibition = models.CharField(max_length=20, choices=EXHIBITION,
+                                  blank=True, null=True)
     other_exhibition = models.CharField(max_length=20,
                                         blank=True, null=True)
     exhibit_board_number = models.PositiveIntegerField()
@@ -133,7 +139,6 @@ class PublicityApplication(CampusFieldApplication):
         (u'16点-17点', u'16点-17点'),
         (u'17点-18点', u'17点-18点'),
         (u'18点-19点', u'18点-19点'),
-        (u' ', u'补够12格'), # 这一个只是为了在生成表格的时候方便
     )
 
     ACTIVITY_TYPE = (
@@ -141,7 +146,8 @@ class PublicityApplication(CampusFieldApplication):
         (u'设点', u'设点'),
     )
 
-    activity_type = models.CharField(max_length=10, choices=ACTIVITY_TYPE)
+    activity_type = models.CharField(max_length=10, choices=ACTIVITY_TYPE,
+                                     blank=True, null=True)
     other_activity_type = models.CharField(max_length=10,
                                            blank=True, null=True)
     place = MultiSelectField(max_length=200, choices=PLACE)
