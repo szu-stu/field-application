@@ -10,6 +10,14 @@ from field_application.account.models import Organization
 
 
 class SignInForm(AuthenticationForm):
+
+    # 由于这部分django没有翻译，所以直接重写错误信息
+    # 注意这不是文档中有说明的接口，当前版本是1.5.1，可能会在新版本失效
+    error_messages = {
+        'invalid_login': u'请输入正确的组织名和密码',
+        'inactive': u'该帐号处于停用状态',
+    }
+
     username = forms.ModelChoiceField(queryset=Organization.objects.all(),
                                       empty_label=u'')
 
