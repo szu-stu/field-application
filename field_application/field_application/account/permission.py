@@ -21,7 +21,8 @@ def check_user_pk(function=None):
         if not kwargs.get('pk'):
             raise Exception('url in urls.py need "(?P<pk>\d+)"')
         if request.user.pk != int(kwargs.get('pk')):
-            return HttpResponseRedirect(reverse('deny'))
+            return render(request, 'deny.html',
+                    {'message': u'url上的id并非你的帐号'})
         kwargs['pk'] = request.user.organization.pk
         return function(request, *args, **kwargs)
     return login_required(wrapped_check)

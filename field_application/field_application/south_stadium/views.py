@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
 from django.views.generic import View
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -82,7 +82,7 @@ class ModifyView(View):
     @method_decorator(check_ownership(SouthStadiumApplication))
     def get(self, request):
         app_id = request.GET.get('id')
-        app = SouthStadiumApplication.objects.get(id=app_id)
+        app = get_object_or_404(SouthStadiumApplication, id=app_id)
         form = SouthStadiumApplicationForm(instance=app)
         return render(request, 'south_stadium/form.html', 
                 {'form': form, 'app_id': app_id,
@@ -92,7 +92,7 @@ class ModifyView(View):
     @method_decorator(check_ownership(SouthStadiumApplication))
     def post(self, request):
         app_id = request.GET.get('id')
-        app = SouthStadiumApplication.objects.get(id=app_id)
+        app = get_object_or_404(SouthStadiumApplication, id=app_id)
         form = SouthStadiumApplicationForm(request.POST, request.FILES,
                                            instance=app)
         if not form.is_valid():
@@ -104,7 +104,8 @@ class ModifyView(View):
 
 
 def get_detail(request):
-    app = SouthStadiumApplication.objects.get(id=request.GET.get('id'))
+    app_id = request.GET.get('id')
+    app = get_object_or_404(SouthStadiumApplication, id=app_id)
     data = {'organization': app.organization.chinese_name,
             'date': app.date.strftime('%Y年%m月%d日'),
             'time': app.time, 'activity': app.activity,
@@ -124,7 +125,7 @@ def get_detail(request):
 @check_perms('account.manager', u'无管理权限')
 def manager_approve(request):
     app_id = request.GET.get('id')
-    app = SouthStadiumApplication.objects.get(id=app_id)
+    app = get_object_or_404(SouthStadiumApplication, id=app_id)
     if not app.approved:
         for time in app.time:
             if SouthStadiumApplication.objects.filter(

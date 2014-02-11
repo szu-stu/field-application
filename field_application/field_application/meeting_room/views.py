@@ -3,7 +3,7 @@ import logging
 
 from django.views.generic import View
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -83,7 +83,8 @@ def manage(request):
 
  
 def get_detail(request):
-    app = MeetingRoomApplication.objects.get(id=request.GET.get('id'))
+    app_id=request.GET.get('id')
+    app = get_object_or_404(MeetingRoomApplication, id=app_id)
     data = {'organization': app.organization.chinese_name,
             'place': app.place,
             'date': app.date.strftime('%Y年%m月%d日'),
@@ -107,7 +108,7 @@ class ModifyView(View):
                                   '非团委下属组织不能申请会议室'))
     def get(self, request):
         app_id = request.GET.get('id')
-        app = MeetingRoomApplication.objects.get(id=app_id)
+        app = get_object_or_404(MeetingRoomApplication, id=app_id)
         form = MeetingRoomApplicationForm(instance=app)
         return render(request, 'meeting_room/form.html', 
                 {'form': form, 'app_id': app_id,
@@ -119,7 +120,7 @@ class ModifyView(View):
                                   '非团委下属组织不能申请会议室'))
     def post(self, request):
         app_id = request.GET.get('id')
-        app = MeetingRoomApplication.objects.get(id=app_id)
+        app = get_object_or_404(MeetingRoomApplication, id=app_id)
         form = MeetingRoomApplicationForm(request.POST, instance=app)
         if not form.is_valid():
             return render(request, 'meeting_room/form.html', 
@@ -133,7 +134,7 @@ class ModifyView(View):
 @check_perms('account.manager', u'无管理权限')
 def manager_approve(request):
     app_id = request.GET.get('id')
-    app = MeetingRoomApplication.objects.get(id=app_id)
+    app = get_object_or_404(MeetingRoomApplication, id=app_id)
     if not app.approved:
         for time in app.time:
             if MeetingRoomApplication.objects.filter(

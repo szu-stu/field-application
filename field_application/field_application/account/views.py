@@ -3,7 +3,7 @@ import logging
 
 from django.views.generic import View
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -129,7 +129,7 @@ class Org_manage(ListView):
 @permission_required('account.manager')
 def disable_org(request):
     org_id = request.GET.get('id')
-    org = Organization.objects.get(id=org_id)
+    org = get_object_or_404(Organization, id=org_id)
     org.is_banned = not org.is_banned
     org.save()
     return HttpResponseRedirect(reverse('account:org_manage'))
@@ -138,7 +138,7 @@ def disable_org(request):
 @check_perms('account.manager', message='无管理权限')
 def manager_reset_password(request):
     org_id = request.GET.get('id')
-    org = Organization.objects.get(id=org_id)
+    org = get_object_or_404(Organization, id=org_id)
     org.user.set_password('123456')
     org.user.save()
     return HttpResponseRedirect(reverse('account:org_manage'))

@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
 from django.views.generic import View
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -86,8 +86,8 @@ def manage(request):
 
  
 def get_detail(request):
-    app = StudentActivityCenterApplication.objects.get(
-            id=request.GET.get('id'))
+    app_id = request.GET.get('id')
+    app = get_object_or_404(StudentActivityCenterApplication, id=app_id)
     data = {'organization': app.organization.chinese_name,
             'place': app.place,
             'date': app.date.strftime('%Y年%m月%d日'),
@@ -109,7 +109,7 @@ class ModifyView(View):
     @method_decorator(check_ownership(StudentActivityCenterApplication))
     def get(self, request):
         app_id = request.GET.get('id')
-        app = StudentActivityCenterApplication.objects.get(id=app_id)
+        app = get_object_or_404(StudentActivityCenterApplication, id=app_id)
         form = StudentActivityCenterApplicationForm(instance=app)
         return render(request, 'student_activity_center/form.html', 
                 {'form': form, 'app_id': app_id,
@@ -120,7 +120,7 @@ class ModifyView(View):
     @method_decorator(check_ownership(StudentActivityCenterApplication))
     def post(self, request):
         app_id = request.GET.get('id')
-        app = StudentActivityCenterApplication.objects.get(id=app_id)
+        app = get_object_or_404(StudentActivityCenterApplication, id=app_id)
         form = StudentActivityCenterApplicationForm(
                 request.POST, request.FILES, instance=app)
         if not form.is_valid():
@@ -136,7 +136,7 @@ class ModifyView(View):
 @check_perms('account.manager', u'无管理权限')
 def manager_approve(request):
     app_id = request.GET.get('id')
-    app = StudentActivityCenterApplication.objects.get(id=app_id)
+    app = get_object_or_404(StudentActivityCenterApplication, id=app_id)
     if not app.approved \
             and StudentActivityCenterApplication.objects.filter(
             place=app.place,

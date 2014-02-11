@@ -3,7 +3,7 @@ import logging
 
 from django.views.generic import View
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -81,8 +81,8 @@ def manage(request):
 
  
 def get_detail(request):
-    app = ExhibitApplication.objects.get(
-            id=request.GET.get('id'))
+    app_id = ExhibitApplication.objects.get('id')
+    app = get_object_or_404(ExhibitApplication, id=app_id)
     data = {'organization': app.organization.chinese_name,
             'place': app.place, 
             'start_date': app.start_date.strftime('%Y年%m月%d日'),
@@ -108,8 +108,8 @@ class ModifyView(View):
     @method_decorator(login_required)
     @method_decorator(check_ownership(ExhibitApplication))
     def get(self, request):
-        app_id = request.GET.get('id')
-        app = ExhibitApplication.objects.get(id=app_id)
+        app_id = ExhibitApplication.objects.get('id')
+        app = get_object_or_404(ExhibitApplication, id=app_id)
         form = ExhibitApplicationForm(instance=app)
         return render(request, 'campus_field/exhibit/form.html', 
                 {'form': form, 'app_id': app_id,
@@ -119,8 +119,8 @@ class ModifyView(View):
     @method_decorator(login_required)
     @method_decorator(check_ownership(ExhibitApplication))
     def post(self, request):
-        app_id = request.GET.get('id')
-        app = ExhibitApplication.objects.get(id=app_id)
+        app_id = ExhibitApplication.objects.get('id')
+        app = get_object_or_404(ExhibitApplication, id=app_id)
         form = ExhibitApplicationForm(
                 request.POST, request.FILES, instance=app)
         if not form.is_valid():
@@ -135,8 +135,8 @@ class ModifyView(View):
 @login_required
 @check_perms('account.manager', u'无管理权限')
 def manager_approve(request):
-    app_id = request.GET.get('id')
-    app = ExhibitApplication.objects.get(id=app_id)
+    app_id = ExhibitApplication.objects.get('id')
+    app = get_object_or_404(ExhibitApplication, id=app_id)
     #  剩余展板数量放在了form.py
     if not app.approved:
         msg = check_exhibit_board_num(
