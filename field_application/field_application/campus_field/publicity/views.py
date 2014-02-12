@@ -2,8 +2,8 @@
 import logging
 
 from django.views.generic import View
-from django.shortcuts import render, render_to_response
-from django.http import HttpResponseRedirect, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -77,7 +77,7 @@ def manage(request):
 
  
 def get_detail(request):
-    app_id = request.GET.ger('id')
+    app_id = request.GET.get('id')
     app = get_object_or_404(PublicityApplication, id=app_id)
     data = {'organization': app.organization.chinese_name,
             'place': app.place, 
@@ -93,8 +93,7 @@ def get_detail(request):
             'sponsor': app.sponsor, 'sponsorship': app.sponsorship,
             'sponsorship_usage': app.sponsorship_usage,
             'activity_summary': app.activity_summary,
-            'activity_type': app.activity_type,
-            'other_activity_type': app.other_activity_type,
+            'activity_type': app.activity_type or app.other_activity_type,
             'remarks': app.remarks}
     return render_json(data)
 
@@ -104,7 +103,7 @@ class ModifyView(View):
     @method_decorator(login_required)
     @method_decorator(check_ownership(PublicityApplication))
     def get(self, request):
-        app_id = request.GET.ger('id')
+        app_id = request.GET.get('id')
         app = get_object_or_404(PublicityApplication, id=app_id)
         form = PublicityApplicationForm(instance=app)
         return render(request, 'campus_field/publicity/form.html', 
@@ -115,7 +114,7 @@ class ModifyView(View):
     @method_decorator(login_required)
     @method_decorator(check_ownership(PublicityApplication))
     def post(self, request):
-        app_id = request.GET.ger('id')
+        app_id = request.GET.get('id')
         app = get_object_or_404(PublicityApplication, id=app_id)
         form = PublicityApplicationForm(
                 request.POST, request.FILES, instance=app)
@@ -131,7 +130,7 @@ class ModifyView(View):
 @login_required
 @check_perms('account.manager', u'无管理权限')
 def manager_approve(request):
-    app_id = request.GET.ger('id')
+    app_id = request.GET.get('id')
     app = get_object_or_404(PublicityApplication, id=app_id)
     if not app.approved:
         msg = check_publicity(

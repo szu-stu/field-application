@@ -28,7 +28,7 @@ class StudentActivityCenterApplication(models.Model):
     )
 
     organization = models.ForeignKey(Organization)
-    place = models.CharField(max_length=20, choices=PLACE)
+    place = models.CharField(max_length=50, choices=PLACE)
     date = models.DateField()
     time = models.CharField(max_length=10, choices=TIME)
     activity = models.CharField(max_length=30)

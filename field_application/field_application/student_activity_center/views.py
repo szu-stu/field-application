@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
 from django.views.generic import View
-from django.shortcuts import render, render_to_response
-from django.http import HttpResponseRedirect, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required

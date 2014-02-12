@@ -2,8 +2,8 @@
 import logging
 
 from django.views.generic import View
-from django.shortcuts import render, render_to_response
-from django.http import HttpResponseRedirect, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -81,7 +81,7 @@ def manage(request):
 
  
 def get_detail(request):
-    app_id = ExhibitApplication.objects.get('id')
+    app_id = request.GET.get('id')
     app = get_object_or_404(ExhibitApplication, id=app_id)
     data = {'organization': app.organization.chinese_name,
             'place': app.place, 
@@ -108,7 +108,7 @@ class ModifyView(View):
     @method_decorator(login_required)
     @method_decorator(check_ownership(ExhibitApplication))
     def get(self, request):
-        app_id = ExhibitApplication.objects.get('id')
+        app_id = request.GET.get('id')
         app = get_object_or_404(ExhibitApplication, id=app_id)
         form = ExhibitApplicationForm(instance=app)
         return render(request, 'campus_field/exhibit/form.html', 
@@ -119,7 +119,7 @@ class ModifyView(View):
     @method_decorator(login_required)
     @method_decorator(check_ownership(ExhibitApplication))
     def post(self, request):
-        app_id = ExhibitApplication.objects.get('id')
+        app_id = request.GET.get('id')
         app = get_object_or_404(ExhibitApplication, id=app_id)
         form = ExhibitApplicationForm(
                 request.POST, request.FILES, instance=app)

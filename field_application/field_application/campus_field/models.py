@@ -108,7 +108,7 @@ class ExhibitApplication(CampusFieldApplication):
     )
 
     place = MultiSelectField(max_length=200, choices=PLACE)
-    time = MultiSelectField(max_length=10, choices=TIME)
+    time = MultiSelectField(max_length=100, choices=TIME)
     exhibition = models.CharField(max_length=20, choices=EXHIBITION,
                                   blank=True, null=True)
     other_exhibition = models.CharField(max_length=20,
@@ -151,5 +151,5 @@ class PublicityApplication(CampusFieldApplication):
     other_activity_type = models.CharField(max_length=10,
                                            blank=True, null=True)
     place = MultiSelectField(max_length=200, choices=PLACE)
-    time = MultiSelectField(max_length=5, choices=TIME)
+    time = MultiSelectField(max_length=300, choices=TIME)
 

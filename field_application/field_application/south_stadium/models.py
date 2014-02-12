@@ -24,7 +24,7 @@ class SouthStadiumApplication(models.Model):
 
     organization = models.ForeignKey(Organization)
     date = models.DateField()
-    time = MultiSelectField(max_length=10, choices=TIME)
+    time = MultiSelectField(max_length=100, choices=TIME)
     activity = models.CharField(max_length=30)
     approved = models.BooleanField(default=False)
     application_time = models.DateTimeField(auto_now_add=True)
