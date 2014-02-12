@@ -60,8 +60,11 @@ def display_list(request):
 @login_required
 def manage(request):
     org = request.user.organization
-    listing = SouthStadiumApplication.objects.\
-            filter(organization=org).order_by('-pk')
+    if org.user.has_perm('account.manager'):
+        listing = SouthStadiumApplication.objects.all().order_by('-pk')
+    else:
+        listing = SouthStadiumApplication.objects.\
+                filter(organization=org).order_by('-pk')
     for app in listing:
         app.place = ['南区体育馆']
         app.date = app.date.strftime('%Y年%m月%d日')

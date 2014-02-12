@@ -60,8 +60,11 @@ def display_list(request):
 @login_required
 def manage(request):
     org = request.user.organization
-    listing = PublicityApplication.objects.\
-            filter(organization=org).order_by('-pk')
+    if org.user.has_perm('account.manager'):
+        listing = PublicityApplication.objects.all().order_by('-pk')
+    else:
+        listing = PublicityApplication.objects.\
+                filter(organization=org).order_by('-pk')
     for app in listing:
         app.date = app.start_date.strftime('%Y年%m月%d日') \
             + '-' + app.end_date.strftime('%Y年%m月%d日')

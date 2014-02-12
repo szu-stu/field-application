@@ -12,15 +12,6 @@
     <form action="{% url 'account:edit_profile' user.pk %}" method="POST" >
     {% csrf_token %}
         <div class="message_list">
-            <label class="item">部门名称</label>
-            {{ form.chinese_name }}
-            <label class="error">
-                {% for error in form.chinese_name.errors %}
-                    {{ error }}&nbsp;
-                {% endfor %}
-            </label>              
-        </div>
-        <div class="message_list">
             <label class="item">主管单位</label>
             {{ form.org_in_charge }}
             <label class="error">
@@ -46,16 +37,7 @@
                     {{ error }}&nbsp;
                 {% endfor %}
             </label>            
-        </div>   
-        <div class="message_list">
-            <label class="item">所属部门</label>
-            {{ form.belong_to }}
-            <label class="error">
-                {% for error in form.belong_to.errors %}
-                    {{ error }}&nbsp;
-                {% endfor %}
-            </label>            
-        </div>  
+        </div>
         <div class="message_list">
             <label class="item">组织负责人</label>
             {{ form.director }}

@@ -66,8 +66,12 @@ def display_list(request):
 @login_required
 def manage(request):
     org = request.user.organization
-    listing = StudentActivityCenterApplication.objects.\
-            filter(organization=org).order_by('-pk')
+    if org.user.has_perm('account.manager'):
+        listing = \
+            StudentActivityCenterApplication.objects.all().order_by('-pk')
+    else:
+        listing = StudentActivityCenterApplication.objects.\
+                filter(organization=org).order_by('-pk')
     print listing
     for app in listing:
         app.date = app.date.strftime('%Y年%m月%d日')

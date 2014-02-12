@@ -64,8 +64,11 @@ def display_list(request):
 @login_required
 def manage(request):
     org = request.user.organization
-    listing = ExhibitApplication.objects.\
-            filter(organization=org).order_by('-pk')
+    if org.user.has_perm('account.manager'):
+        listing = ExhibitApplication.objects.all().order_by('-pk')
+    else:
+        listing = ExhibitApplication.objects.\
+                filter(organization=org).order_by('-pk')
     for app in listing:
         app.date = app.start_date.strftime('%Y年%m月%d日') \
             + '-' + app.end_date.strftime('%Y年%m月%d日')
@@ -135,7 +138,7 @@ class ModifyView(View):
 @login_required
 @check_perms('account.manager', u'无管理权限')
 def manager_approve(request):
-    app_id = ExhibitApplication.objects.get('id')
+    app_id = request.GET.get('id')
     app = get_object_or_404(ExhibitApplication, id=app_id)
     #  剩余展板数量放在了form.py
     if not app.approved:

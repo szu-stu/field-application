@@ -70,5 +70,5 @@ class SignUpForm(UserCreationForm):
 class EditForm(forms.ModelForm):
     class Meta:
         model = Organization
-        exclude = ('user', 'is_banned')
+        exclude = ('chinese_name', 'user', 'is_banned', 'belong_to')
 
