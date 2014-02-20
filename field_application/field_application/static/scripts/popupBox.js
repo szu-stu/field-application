@@ -164,7 +164,7 @@ function genAppInfoTable( detail, place ){
 		{ index: "organization"           , 'text': "申请部门"	 	 },
 		{ index: "applicant_name"         , 'text': "申请人姓名" 	 },
 		{ index: "applicant_phone_number" , 'text': "联系电话" 		 },
-		{ index: "exhibit_type"           , 'text': "活动类型" 		 },
+		{ index: "activity_type"          , 'text': "活动类型" 		 },
 		{ index: "place"                  , 'text': "活动地址"       },
 		{ index: "start_date"             , 'text': "活动开始时间"   },
 		{ index: "end_date"               , 'text': "活动结束时间"   },
@@ -207,9 +207,6 @@ function genAppInfoTable( detail, place ){
 		    		break;
 		    	case 'approved':
 		    		detail['approved'] = ( detail['approved'] == true ) ? "已审批": "未审批";
-		    		break;
-		    	case 'exhibit_type':
-		    		detail['exhibit_type'] = '展览';
 		    		break;
 		    }
 		    insertText = detail[iTT[i]['index']];
