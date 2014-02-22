@@ -11,10 +11,14 @@
     {{ 'jQuery/jquery-1.11.0.min.js' | as_js }}
     {{ 'flexSelect/liquidmetal.js' | as_js }}
     {{ 'flexSelect/jquery.flexselect.js' | as_js }}
+
+    {{ 'artDialog/v4/artDialog.js'    | as_js  }}
+    {{ 'artDialog/v4/skins/opera.css' | as_css }}
+    {{ 'artDialog/popupBox.css'       | as_css }}
 {% endblock %}
 
 {% block main_container %}
-<div class="container" style="margin:150px 0px;">
+<div class="container" style="margin:50px 0px;">
     {% if next %}
     <form action="{% url 'account:signin' %}?next={{ next }}" method="POST" >
     {% else %}
@@ -45,13 +49,39 @@
                 {{ error }}&nbsp;
             {% endfor %}
         </div>
-        <input type="submit" value="提交" style="margin:20px 0px 0px 455px" /> 
+        <input type="submit" value="登陆" style="margin:20px 0px 0px 455px" /> 
+        &nbsp;
+        <a href="{% url 'account:signup' %}">还没有帐号？</a>
+        &nbsp;
+        <a href="javascript: ;" id="forgetPass">忘记密码？</a>
     </form>
 </div> 
 <script>
-    $('#id_username').addClass('flexselect');
-    jQuery(document).ready(function() {
-      $("#id_username").flexselect();
+    $(function() {
+      $("#id_username").addClass('flexselect').flexselect();
+      $('#forgetPass').click(function(){
+        var artDlgBox;
+        try{
+            artDlgBox = art;
+        }
+        catch( err ){
+            console.log( "ArtDialog not found." );  
+        }
+
+        var dialog = artDlgBox.dialog({
+                      title: "忘记密码肿么办？",
+                    content: "请到&nbsp;学生活动中心1楼-学生事物服务中心，寻找&nbsp;<b><u>刘帅&nbsp;老师</u></b>&nbsp;重置密码。",
+
+                      width: 400,
+                     height: 200,
+
+                       lock: true,
+                     button: [{
+                                name: "我知道了",
+                            callback: function(){ this.close() },
+                     }],
+                });
+      });
     });
 </script>
 {% endblock %}

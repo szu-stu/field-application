@@ -6,6 +6,12 @@
     <h1>会议室使用申请</h1>
 {% endblock %}
 
+{% block htmlhead %}
+    {% load html_tools %}
+    {{ 'jQuery/jquery-1.11.0.min.js'  | as_js  }}
+    {{ 'checkMonday.js'  | as_js  }}
+{% endblock %}
+
 {% block main_content %}
     <h6 style="color:red;text-align:center;line-height:300%">石头坞一楼会议室周一12：00-14：00暂停申请，谢谢合作!</h6>
     <form method="POST" enctype="multipart/form-data" action="{{ post_url }}">
