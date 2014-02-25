@@ -13,17 +13,16 @@
 <body>
 	<div class="main">
 		<ul>
-			<li class="style" style="height:50px;line-height:50px" >
 				{% if user.is_authenticated %}
-					{{ user.organization.chinese_name }}
+				<li class="style" style="height:50px;line-height:50px"><strong>{{ user.organization.chinese_name }}</strong></li>
+				<li class="style" style="height:50px;line-height:50px" >
 					<a href="{% url 'account:signout' %}">注销</a>
 					<a href="{% url 'account:reset_password' %}">修改密码</a>
 					<a href="{% url 'account:edit_profile' user.pk %}">编辑资料</a>
 					<a href="{% url 'account:profile' user.pk %}">查看资料</a>
-					{% if perms.account.manager %}
 					<a href="{% url 'account:org_manage' %}">管理组织</a>
-					{% endif %}
 				{% else %}
+				<li class="style" style="height:50px;line-height:50px" >
 					<a href="{% url 'account:signin' %}">登录</a>
 					<a href="{% url 'account:signup' %}">注册</a>
 				{% endif %}
@@ -58,7 +57,7 @@
 				<a href="http://stu.szu.edu.cn:8080/web/tabledown.asp">表格下载</a>
 			</li>
 			<li class="style" style="font-weight:bold;">
-				<a href="http://stu.szu.edu.cn">深圳大学学子天地</a><span style="font-family:宋体;font-size:12px;color:#999999;">( 办公室：学活308 联系电话：13530399014（610597）)</span>
+				<a href="#">深圳大学学子天地</a><span style="font-family:宋体;font-size:12px;color:#999999;">( 办公室：学活308 联系电话：13530399014（610597）)</span>
 			</li>
 		</ul>
 	</div>

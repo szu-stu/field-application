@@ -17,7 +17,7 @@ class Organization(models.Model):
     director = models.CharField(max_length=20)
     director_contact_infor = models.CharField(max_length=30)
     belong_to = models.CharField(max_length=10)
-    is_banned = models.BooleanField(default=False)
+    is_banned = models.BooleanField(default=True)
 
     def __unicode__(self):
         '''  used in account.SignUpForm to display username '''
