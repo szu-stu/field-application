@@ -68,13 +68,6 @@ function showAppForm( appId, place ){
 	catch( err ){
 		console.log( "ArtDialog not found." );
 	}
-	var artDlgBox;
-    try{
-		artDlgBox = art;
-    }
-    catch( err ){
-		console.log( "ArtDialog not found." );	
-    }
 
 	var dialog = artDlgBox.dialog({
 				  title: "",
@@ -185,8 +178,8 @@ function genAppInfoTable( detail, place ){
 
 	var i;
 	var iTT = indexToText[place];
+	var appFormTableTR, appFormTableTD;
 	for( i = 0; i < iTT.length; i++ ){
-		var appFormTableTD, appFormTableTR;
 
 		appFormTableTR = appFormTable.insertRow( i );
 
@@ -213,6 +206,15 @@ function genAppInfoTable( detail, place ){
 		    appFormTableTD.innerHTML = insertText;
 
 		//end inserting row
+	}
+
+	if( detail['user_is_manager'] === true ){
+		appFormTableTR = appFormTable.insertRow( i );
+		appFormTableTD = appFormTableTR.insertCell( -1 );
+		appFormTableTD.colSpan = 2;
+		var linkAdd = '/' + place + '/manager_approve/?id=' + detail['id'];
+		var linkText = ( detail['approved'] == true ) ? "解除通过": "通过审批"
+		appFormTableTD.innerHTML = '<a href="' + linkAdd + '">' + linkText + '</a>';
 	}
 	
 	return appFormTable;
