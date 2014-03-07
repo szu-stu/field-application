@@ -104,7 +104,9 @@ def get_detail(request):
                     app.application_time.strftime('%Y年%m月%d日 %H:%M:%S'),
             'sponsor': app.sponsor, 'sponsorship': app.sponsorship,
             'sponsorship_usage': app.sponsorship_usage,
-            'activity_summary': app.activity_summary}
+            'activity_summary': app.activity_summary,
+            'id': app_id,
+            'user_is_manager': request.user.has_perm('account.manager')}
     return render_json(data)
 
 class ModifyView(View):

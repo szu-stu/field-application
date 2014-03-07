@@ -120,7 +120,9 @@ def get_detail(request):
             'sponsor': app.sponsor, 'sponsorship': app.sponsorship,
             'sponsorship_usage': app.sponsorship_usage,
             'activity_summary': app.activity_summary,
-            'remarks': app.remarks }
+            'remarks': app.remarks,
+            'id': app_id,
+            'user_is_manager': request.user.has_perm('account.manager') }
     return render_json(data)
 
 

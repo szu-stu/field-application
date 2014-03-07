@@ -102,7 +102,9 @@ def get_detail(request):
             'activity_summary': app.activity_summary,
             'exhibit_board_number': app.exhibit_board_number,
             'exhibition': app.exhibition,
-            'remarks': app.remarks}
+            'remarks': app.remarks,
+            'id': app_id,
+            'user_is_manager': request.user.has_perm('account.manager')}
     return render_json(data)
 
 
