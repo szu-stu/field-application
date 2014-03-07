@@ -61,12 +61,12 @@ class MeetingRoomApplication(models.Model):
         ''' generate table
         table - date : [ 7 * date ]
               - time_list : [ 30 * time ]
-              - content - 石头坞一楼会议室      : [ 7*[ 30*app ] ]
-                        - 石头坞二楼会议室      : [ 7*[ 30*app ] ] 
-                        - 学生活动中心305会议室 : [ 7*[ 30*app ] ] 
-                        - 学生活动中心307会议室 : [ 7*[ 30*app ] ] 
+              - content - 石头坞一楼会议室      : [ 7*[ 30*[] ] ]
+                        - 石头坞二楼会议室      : [ 7*[ 30*[] ] ] 
+                        - 学生活动中心305会议室 : [ 7*[ 30*[] ] ] 
+                        - 学生活动中心307会议室 : [ 7*[ 30*[] ] ] 
         '''
-        content = { place: [ {time: None for time, t in cls.TIME} \
+        content = { place: [ {time: [] for time, t in cls.TIME} \
                         for j in range(7)] \
                     for place, p in cls.PLACE}
         apps_whose_field_used_within_7days \
@@ -74,7 +74,7 @@ class MeetingRoomApplication(models.Model):
         first_day = date.today() + timedelta(days=offset*7)
         for app in apps_whose_field_used_within_7days:
             for t in app.time:
-                content[app.place][(app.date-first_day).days][t] = app
+                content[app.place][(app.date-first_day).days][t].append(app)
         # sort in the order of TIME
         for place in content:
             for day in range(7):

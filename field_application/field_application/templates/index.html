@@ -20,7 +20,9 @@
 					<a href="{% url 'account:reset_password' %}">修改密码</a>
 					<a href="{% url 'account:edit_profile' user.pk %}">编辑资料</a>
 					<a href="{% url 'account:profile' user.pk %}">查看资料</a>
+					{% if perms.account.manager %}
 					<a href="{% url 'account:org_manage' %}">管理组织</a>
+					{% endif %}
 				{% else %}
 				<li class="style" style="height:50px;line-height:50px" >
 					<a href="{% url 'account:signin' %}">登录</a>

@@ -25,7 +25,7 @@ class SignInForm(AuthenticationForm):
         ''' change Organization.chinese_name to User.username '''
         org = Organization.objects.get(
                 chinese_name=self.cleaned_data['username'])
-        if org.is_banned:
+        if org.is_banned and not org.user.has_perm('account.manager'):
             raise forms.ValidationError(u'该用户已被禁止使用')
         return org.user.username
 

@@ -27,6 +27,7 @@
         <td>{{ time }}</td>
         {% endfor %}
     </tr>
+    {% load all_approved %}
     {% for app_every_day in apps_every_place %}      
     {% cycle table.date.0 table.date.1 table.date.2 table.date.3 table.date.4 table.date.5 table.date.6 as date silent %}   
     <tr>
@@ -34,9 +35,9 @@
         <td rowspan="7">{{ place }}</td>
         {% endif %}
         <td>{{ date | date:"n月d日" }}</td>
-        {% for app in app_every_day %}
-            {% if app %}
-            <td class="{% if app.approved %}red{%else%}gray{%endif%}" data-app-id="{{ app.id }}" onclick="javascript:showAppForm( this.getAttribute('data-app-id'), 'meeting_room')"></td>
+        {% for apps in app_every_day %}
+            {% if apps %}
+            <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}" data-app-id="[{% for app in apps %} {{ app.id }} {% endfor %}]" onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'meeting_room' )"></td>
             {% else %}
             <td></td>
             {% endif %}
