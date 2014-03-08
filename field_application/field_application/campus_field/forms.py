@@ -100,6 +100,9 @@ class ExhibitApplicationForm(forms.ModelForm):
         now = timezone.now().date()
         if start_date < now:
             raise forms.ValidationError(u'所填日期已过')
+        if start_date == now:
+            raise forms.ValidationError(
+                    u'不能申请当天的场地，需至少提前一天申请')
         if start_date > now + timedelta(days=14):
             raise forms.ValidationError(
                     u'申请的场地使用时间距离现在不能超过14天')
@@ -150,6 +153,9 @@ class PublicityApplicationForm(forms.ModelForm):
         now = timezone.now().date()
         if start_date < now:
             raise forms.ValidationError(u'所填日期已过')
+        if start_date == now:
+            raise forms.ValidationError(
+                    u'不能申请当天的场地，需至少提前一天申请')
         if start_date > now + timedelta(days=14):
             raise forms.ValidationError(u'申请的场地使用时间距离现在不能超过14天')
         return start_date

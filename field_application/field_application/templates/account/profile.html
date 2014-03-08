@@ -1,4 +1,4 @@
-{% extends 'account/account_base.html' %}
+{% extends 'base.html' %}
 
 {% block htmltitle %}资料{% endblock %}
 
@@ -8,15 +8,20 @@
 {% endblock %}
 
 {% block main_container %}
-<p class="message_show">
-    <label class="pro_item">部门英文名称</label>{{ user.username }}<br/>
-    <label class="pro_item">部门名称</label>{{ user.organization.chinese_name }}<br/>
-    <label class="pro_item">主管单位</label>{{ user.organization.org_in_charge }}<br/>
-    <label class="pro_item">指导老师</label>{{ user.organization.tutor }}<br/>
-    <label class="pro_item">指导老师联系方式</label>{{ user.organization.tutor_contact_infor }}<br/>
-    <label class="pro_item">所属部门</label>{{ user.organization.belong_to }}<br/>
-    <label class="pro_item">组织负责人</label>{{ user.organization.director }}<br/>
-    <label class="pro_item">负责人联系方式</label>{{ user.organization.director_contact_infor }}<br/>
-    <label class="pro_item">是否被禁用</label>{{ user.organization.is_banned }}<br/>
-</p>
+<div class="message_show">
+    <h2>组织资料</h2>
+    <div class="line_show"></div>
+    <li><label>部门英文名称</label>{{ user.username }}</li>
+    <li><label>部门名称</label>{{ user.organization.chinese_name }}</li>
+    <div class="line_show"></div>
+    <li><label>主管单位</label>{{ user.organization.org_in_charge }}</li>
+    <li><label>指导老师</label>{{ user.organization.tutor }}</li>
+    <li><label>指导老师联系方式</label>{{ user.organization.tutor_contact_infor }}</li>
+    <div class="line_show"></div>
+    <li><label>所属部门</label>{{ user.organization.belong_to }}</li>
+    <li><label>组织负责人</label>{{ user.organization.director }}</li>
+    <li><label>负责人联系方式</label>{{ user.organization.director_contact_infor }}</li>
+    <div class="line_show"></div>
+    <li><label>是否被禁用</label>{{ user.organization.is_banned }}</li>
+</div>
 {% endblock %}

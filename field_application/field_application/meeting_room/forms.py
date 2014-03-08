@@ -27,8 +27,12 @@ class MeetingRoomApplicationForm(forms.ModelForm):
         now = timezone.now().date()
         if date < now:
             raise forms.ValidationError(u'所填日期已过')
+        if date == now:
+            raise forms.ValidationError(
+                    u'不能申请当天的场地，需至少提前一天申请')
         if date > now + timedelta(days=14):
-            raise forms.ValidationError(u'申请的场地使用时间距离现在不能超过14天')
+            raise forms.ValidationError(
+                    u'申请的场地使用时间距离现在不能超过14天')
         return date
 
     def clean(self):
@@ -37,13 +41,24 @@ class MeetingRoomApplicationForm(forms.ModelForm):
                 'place' not in self.cleaned_data:
             return super(MeetingRoomApplicationForm, self).clean()
         super(MeetingRoomApplicationForm, self).clean()
+
         for time in self.cleaned_data['time']:
             if MeetingRoomApplication.objects.filter(
                     place=self.cleaned_data.get('place'),
                     date=self.cleaned_data.get('date'),
                     time__contains=time,
                     approved=True).exists():
-                msg = u'该时间段已有人申请'
+                msg = time + u'已有人申请'
+                self._errors['time'] = self.error_class([msg])
+                del self.cleaned_data['time']
+                return self.cleaned_data
+
+        for time in self.cleaned_data['time']:
+            if len(MeetingRoomApplication.objects.filter(
+                    place=self.cleaned_data.get('place'),
+                    date=self.cleaned_data.get('date'),
+                    time__contains=time)) > 2:
+                msg = time + u'已有过多人申请'
                 self._errors['time'] = self.error_class([msg])
                 del self.cleaned_data['time']
                 break

@@ -25,6 +25,9 @@ class StudentActivityCenterApplicationForm(ModelForm):
         now = timezone.now().date()
         if date < now:
             raise forms.ValidationError(u'所填日期已过')
+        if date == now:
+            raise forms.ValidationError(
+                    u'不能申请当天的场地，需至少提前一天申请')
         if date > now + timedelta(days=14):
             raise forms.ValidationError(u'申请的场地使用时间距离现在不能超过14天')
         return date

@@ -22,13 +22,36 @@ body{
     line-height: 300%;
 }
 .message_show{
-    width: 40%;
+    /*width: 80%;*/
     background: #ffffff;
     border: solid #cccccc 1px;
     position: relative;
-    margin: 0 auto;
+    /*margin: 0 auto;*/
     overflow: hidden;
     line-height: 300%;
+    padding: 25px 100px;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+}
+.message_show h2{
+    font-family: "Microsoft Yahei";
+    font-size: 18px;
+    line-height: 200%;
+    text-indent: 20px;
+}
+.line_show{
+    width: 100%;
+    border-top: solid 1px #e5e5e5;
+    margin: 5px 0px;
+}
+.message_show li{
+    list-style: none;
+}
+.message_show label{
+    display: inline-block;
+    width: 20%;
+    text-indent: 20px;
+    text-align: left;
 }
 .org_list{
     background: #ffffff;
