@@ -99,7 +99,9 @@ def get_detail(request):
             'application_time': \
                     app.application_time.strftime('%Y年%m月%d日 %H:%M:%S'),
             'meeting_summary': app.meeting_summary,
-            'remarks': app.remarks }
+            'remarks': app.remarks,
+            'id': app_id,
+            'user_is_manager': request.user.has_perm('account.manager') }
     return render_json(data)
 
 
