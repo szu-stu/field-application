@@ -14,6 +14,7 @@ from field_application.campus_field.forms import PublicityApplicationForm
 from field_application.campus_field.models import PublicityApplication
 from field_application.utils.ajax import render_json
 from field_application.account.permission import check_perms, check_ownership
+from field_application.account.permission import check_not_approved
 from field_application.campus_field.forms import check_publicity
 
 
@@ -107,6 +108,7 @@ class ModifyView(View):
 
     @method_decorator(login_required)
     @method_decorator(check_ownership(PublicityApplication))
+    @method_decorator(check_not_approved(PublicityApplication))
     def get(self, request):
         app_id = request.GET.get('id')
         app = get_object_or_404(PublicityApplication, id=app_id)
@@ -118,6 +120,7 @@ class ModifyView(View):
 
     @method_decorator(login_required)
     @method_decorator(check_ownership(PublicityApplication))
+    @method_decorator(check_not_approved(PublicityApplication))
     def post(self, request):
         app_id = request.GET.get('id')
         app = get_object_or_404(PublicityApplication, id=app_id)

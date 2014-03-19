@@ -59,3 +59,20 @@ def check_ownership(ApplicationModel):
         return wrapped_check
     return decorator
 
+
+def check_not_approved(ApplicationModel):
+    ''' Check whether the application is already approved'''
+    def decorator(function):
+        def wrapped_check(request, *args, **kwargs):
+            app_id = request.GET.get('id')
+            if not app_id:
+                return render(request, 'deny.html',
+                        {'message': u'非法地址'})
+            app = ApplicationModel.objects.get(id=app_id)
+            if app.approved:
+                return render(request, 'deny.html',
+                        {'message': u'不能修改已通过审批的申请表'})
+            return function(request, *args, **kwargs)
+        return wrapped_check
+    return decorator
+

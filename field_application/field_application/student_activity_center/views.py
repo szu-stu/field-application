@@ -16,6 +16,7 @@ from field_application.student_activity_center.models import \
         StudentActivityCenterApplication
 from field_application.utils.ajax import render_json
 from field_application.account.permission import check_perms, check_ownership
+from field_application.account.permission import check_not_approved
 
 
 class ApplyView(View):
@@ -113,6 +114,7 @@ class ModifyView(View):
 
     @method_decorator(login_required)
     @method_decorator(check_ownership(StudentActivityCenterApplication))
+    @method_decorator(check_not_approved(StudentActivityCenterApplication))
     def get(self, request):
         app_id = request.GET.get('id')
         app = get_object_or_404(StudentActivityCenterApplication, id=app_id)
@@ -124,6 +126,7 @@ class ModifyView(View):
 
     @method_decorator(login_required)
     @method_decorator(check_ownership(StudentActivityCenterApplication))
+    @method_decorator(check_not_approved(StudentActivityCenterApplication))
     def post(self, request):
         app_id = request.GET.get('id')
         app = get_object_or_404(StudentActivityCenterApplication, id=app_id)

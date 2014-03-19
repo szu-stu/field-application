@@ -40,7 +40,11 @@
                 </a>
             </td>
             {% else %}
-            <td><a href="{{ modify_url }}?id={{ app.id }}">修改申请表</a></td>
+                {% if not app.approved %}
+                    <td><a href="{{ modify_url }}?id={{ app.id }}">修改申请表</a></td>
+                {% else %}
+                    <td><span style="color: #aaaaaa;">修改申请表</span></td>
+                {% endif %}
             {% endif %}
         </tr>
         {% endfor %}

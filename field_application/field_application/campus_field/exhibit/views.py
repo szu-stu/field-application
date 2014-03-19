@@ -13,8 +13,8 @@ from django.core.paginator import InvalidPage, Paginator
 from field_application.campus_field.forms import ExhibitApplicationForm
 from field_application.campus_field.models import ExhibitApplication
 from field_application.utils.ajax import render_json
-from field_application.account.permission import check_perms
 from field_application.account.permission import check_perms, check_ownership
+from field_application.account.permission import check_not_approved
 from field_application.campus_field.forms import check_exhibit_board_num
 
 
@@ -112,6 +112,7 @@ class ModifyView(View):
 
     @method_decorator(login_required)
     @method_decorator(check_ownership(ExhibitApplication))
+    @method_decorator(check_not_approved(ExhibitApplication))
     def get(self, request):
         app_id = request.GET.get('id')
         app = get_object_or_404(ExhibitApplication, id=app_id)
@@ -123,6 +124,7 @@ class ModifyView(View):
 
     @method_decorator(login_required)
     @method_decorator(check_ownership(ExhibitApplication))
+    @method_decorator(check_not_approved(ExhibitApplication))
     def post(self, request):
         app_id = request.GET.get('id')
         app = get_object_or_404(ExhibitApplication, id=app_id)

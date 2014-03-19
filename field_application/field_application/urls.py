@@ -17,8 +17,6 @@ urlpatterns = patterns('',
                name='table_download'),
     url(r'^deny/$', TemplateView.as_view(template_name='deny.html'),
                name='deny'),
-    url(r'^south_stadium/', include('field_application.south_stadium.urls',
-                                    namespace='south_stadium')),
     url(r'^account/', include('field_application.account.urls',
                               namespace='account')),
     url(r'^student_activity_center/',
@@ -35,6 +33,10 @@ urlpatterns = patterns('',
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+
+    # not used now
+    #url(r'^south_stadium/', include('field_application.south_stadium.urls',
+    #                                namespace='south_stadium')),
 )
 
 # serve media file when using developing server

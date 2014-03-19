@@ -15,6 +15,7 @@ from field_application.meeting_room.forms import MeetingRoomApplicationForm
 from field_application.meeting_room.models import MeetingRoomApplication
 from field_application.utils.ajax import render_json
 from field_application.account.permission import check_perms, check_ownership
+from field_application.account.permission import check_not_approved
 
 
 class ApplyMeetingRoomView(View):
@@ -109,6 +110,7 @@ class ModifyView(View):
 
     @method_decorator(login_required)
     @method_decorator(check_ownership(MeetingRoomApplication))
+    @method_decorator(check_not_approved(MeetingRoomApplication))
     @method_decorator(check_perms('account.youth_league_committee',
                                   '非团委下属组织不能申请会议室'))
     def get(self, request):
@@ -121,6 +123,7 @@ class ModifyView(View):
 
     @method_decorator(login_required)
     @method_decorator(check_ownership(MeetingRoomApplication))
+    @method_decorator(check_not_approved(MeetingRoomApplication))
     @method_decorator(check_perms('account.youth_league_committee',
                                   '非团委下属组织不能申请会议室'))
     def post(self, request):
