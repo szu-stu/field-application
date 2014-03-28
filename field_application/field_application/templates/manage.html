@@ -14,11 +14,10 @@
             <td>使用时间</td>
             <td>申请时间</td>
             <td>是否审批</td>
-            {% if perms.account.manager %}
-            <td>审批</td>
-            {% else %}
             <td>修改申请表</td>
             <td>删除申请</td>
+            {% if perms.account.manager %}
+            <td>审批</td>
             {% endif %}
         </tr>
         {% for app in page %}
@@ -29,7 +28,22 @@
             <td>{{ app.date }}</td>
             <td>{% for time in app.time %} {{ time }} {% endfor %}</td>
             <td>{{ app.application_time }}</td>
-            <td>{% if app.approved %}已批准{% else %}未批准{% endif %}</td>
+            <td>
+                {% if app.approved %}
+                    <span style="color: #ff0000;">已批准</span>
+                {% else %}
+                    未批准
+                {% endif %}
+            </td>
+
+            {% if not app.approved %}
+                <td><a href="{{ modify_url }}?id={{ app.id }}">修改申请表</a></td>
+                <td><a href="{{ delete_url }}?id={{ app.id }}">删除申请</a></td>
+            {% else %}
+                <td><span style="color: #aaaaaa;">修改申请表</span></td>
+                <td><span style="color: #aaaaaa;">删除申请</span></td>
+            {% endif %}
+
             {% if perms.account.manager %}
             <td>
                 <a href="{{ approve_url }}?id={{ app.id }}">
@@ -40,14 +54,6 @@
                 {% endif %}
                 </a>
             </td>
-            {% else %}
-                {% if not app.approved %}
-                    <td><a href="{{ modify_url }}?id={{ app.id }}">修改申请表</a></td>
-                    <td><a href="{{ delete_url }}?id={{ app.id }}">删除申请</a></td>
-                {% else %}
-                    <td><span style="color: #aaaaaa;">修改申请表</span></td>
-                    <td><span style="color: #aaaaaa;">删除申请</span></td>
-                {% endif %}
             {% endif %}
         </tr>
         {% endfor %}

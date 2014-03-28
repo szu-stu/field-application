@@ -33,7 +33,7 @@
 		<td>{{ org.director }}</td>
 		<td>{{ org.director_contact_infor }}</td>
 		<td>{{ org.is_banned }}</td>
-		<td><a href="{% url 'account:disable_org' %}?id={{ org.pk }}">{% if not org.is_banned %}禁用{% else %}可用{% endif %}</a></td>
+		<td><a href="{% url 'account:disable_org' %}?id={{ org.pk }}">{% if not org.is_banned %}设置为禁用{% else %}设置为可用{% endif %}</a></td>
 		<td><a href="{% url 'account:manager_reset_password' %}?id={{ org.pk }}">重置</a></td>
 	</tr>
 	{% endfor %}

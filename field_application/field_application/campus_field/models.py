@@ -93,8 +93,6 @@ class ExhibitApplication(CampusFieldApplication):
     PLACE = (
         (u'CD座文化长廊', u'CD座文化长廊'),
         (u'A座文化大厅', u'A座文化大厅'),
-        (u'西南餐厅前空地', u'西南餐厅前空地'),
-        (u'荔山餐厅前空地', u'荔山餐厅前空地'),
     )
     
     TIME = (
@@ -121,10 +119,8 @@ class PublicityApplication(CampusFieldApplication):
     PLACE = (
         (u'荔山餐厅前空地', u'荔山餐厅前空地'),
         (u'西南餐厅前空地', u'西南餐厅前空地'),
-        (u'文山湖路口', u'文山湖路口'),
-        (u'桂庙路口', u'桂庙路口'),
-        (u'CD座文化长廊', u'CD座文化长廊'),
-        (u'A座文化大厅', u'A座文化大厅'),
+        (u'南区天桥', u'南区天桥'),
+        (u'南区食堂前空地', u'南区食堂前空地'),
     )
    
     TIME = (

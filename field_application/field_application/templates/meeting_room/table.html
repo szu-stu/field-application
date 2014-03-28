@@ -32,7 +32,18 @@
     {% cycle table.date.0 table.date.1 table.date.2 table.date.3 table.date.4 table.date.5 table.date.6 as date silent %}   
     <tr>
         {% if forloop.first %}
-        <td rowspan="7">{{ place }}</td>
+        <td rowspan="7">
+            {{ place }}
+            <div style="color: #ff0000;">
+            {% if place == '石头坞一楼会议室' %}
+                (学生会托管)
+            {% elif place == '石头坞二楼会议室' %}
+                (社联托管)
+            {% elif place == '学生活动中心305会议室' %}
+                (暂时作为仓库，短期内不启用)
+            {% endif %}
+            </div>
+        </td>
         {% endif %}
         <td>{{ date | date:"n月d日" }}</td>
         {% for apps in app_every_day %}
