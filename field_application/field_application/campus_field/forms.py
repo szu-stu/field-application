@@ -13,6 +13,7 @@ from field_application.campus_field.models import ExhibitApplication
 from field_application.campus_field.models import PublicityApplication
 
 
+# not necessary now
 def check_exhibit_board_num(place_list, start_date, end_date,
         time_list, exhibit_board_number):
 
@@ -82,17 +83,6 @@ class ExhibitApplicationForm(forms.ModelForm):
             del self.cleaned_data['end_date']
             return super(ExhibitApplicationForm, self).clean()
 
-        # 检查展板是否被申请完
-        msg = check_exhibit_board_num(
-                self.cleaned_data['place'],
-                start_date,
-                end_date,
-                self.cleaned_data['time'],
-                self.cleaned_data['exhibit_board_number'])
-        if msg:
-            self._errors['exhibit_board_number'] = \
-                                self.error_class([msg])
-            return super(ExhibitApplicationForm, self).clean()
         return super(ExhibitApplicationForm, self).clean()
 
     def clean_start_date(self):
@@ -100,10 +90,7 @@ class ExhibitApplicationForm(forms.ModelForm):
         now = timezone.now().date()
         if start_date < now:
             raise forms.ValidationError(u'所填日期已过')
-        if start_date == now:
-            raise forms.ValidationError(
-                    u'不能申请当天的场地，需至少提前一天申请')
-        if start_date > now + timedelta(days=14):
+        if start_date >= now + timedelta(days=14):
             raise forms.ValidationError(
                     u'申请的场地使用时间距离现在不能超过14天')
         return start_date
@@ -113,7 +100,7 @@ class ExhibitApplicationForm(forms.ModelForm):
         now = timezone.now().date()
         if end_date < now:
             raise forms.ValidationError(u'所填日期已过')
-        if end_date > now + timedelta(days=14):
+        if end_date >= now + timedelta(days=14):
             raise forms.ValidationError(u'申请的场地使用时间距离现在不能超过14天')
         return end_date
 
@@ -153,10 +140,7 @@ class PublicityApplicationForm(forms.ModelForm):
         now = timezone.now().date()
         if start_date < now:
             raise forms.ValidationError(u'所填日期已过')
-        if start_date == now:
-            raise forms.ValidationError(
-                    u'不能申请当天的场地，需至少提前一天申请')
-        if start_date > now + timedelta(days=14):
+        if start_date >= now + timedelta(days=14):
             raise forms.ValidationError(u'申请的场地使用时间距离现在不能超过14天')
         return start_date
 
@@ -165,7 +149,7 @@ class PublicityApplicationForm(forms.ModelForm):
         now = timezone.now().date()
         if end_date < now:
             raise forms.ValidationError(u'所填日期已过')
-        if end_date > now + timedelta(days=14):
+        if end_date >= now + timedelta(days=14):
             raise forms.ValidationError(u'申请的场地使用时间距离现在不能超过14天')
         return end_date
 
