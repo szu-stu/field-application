@@ -77,7 +77,8 @@ def manage(request):
     return render(request, 'manage.html',
                 {'page': page, 'title': u'校园文化活动露天场地申请',
                  'modify_url': reverse('publicity:modify'),
-                 'approve_url': reverse('publicity:manager_approve')})
+                 'approve_url': reverse('publicity:manager_approve'),
+                 'delete_url': reverse('publicity:delete')})
 
  
 def get_detail(request):
@@ -135,6 +136,16 @@ class ModifyView(View):
         return HttpResponseRedirect(reverse('publicity:manage'))
 
 
+@login_required
+@check_ownership(PublicityApplication)
+@check_not_approved(PublicityApplication)
+def delete(request):
+    app_id = request.GET.get('id')
+    app = get_object_or_404(PublicityApplication, id=app_id)
+    app.delete()
+    return HttpResponseRedirect(reverse('publicity:manage'))
+
+            
 @login_required
 @check_perms('account.manager', u'无管理权限')
 def manager_approve(request):

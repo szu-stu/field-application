@@ -87,7 +87,9 @@ def manage(request):
             {'page': page, 'title': u'学生活动中心场地申请',
              'modify_url': reverse('student_activity_center:modify'),
              'approve_url': \
-                     reverse('student_activity_center:manager_approve')})
+                     reverse('student_activity_center:manager_approve'),
+             'delete_url': \
+                     reverse('student_activity_center:delete')})
 
  
 def get_detail(request):
@@ -139,6 +141,16 @@ class ModifyView(View):
                      reverse('student_activity_center:modify')+'?id='+app_id})
         form.save()
         return HttpResponseRedirect(reverse('student_activity_center:manage'))
+
+
+@login_required
+@check_ownership(StudentActivityCenterApplication)
+@check_not_approved(StudentActivityCenterApplication)
+def delete(request):
+    app_id = request.GET.get('id')
+    app = get_object_or_404(StudentActivityCenterApplication, id=app_id)
+    app.delete()
+    return HttpResponseRedirect(reverse('student_activity_center:manage'))
 
 
 @login_required

@@ -80,7 +80,8 @@ def manage(request):
     return render(request, 'manage.html',
             {'page': page, 'title': u'校园活动露天场地申请',
              'modify_url': reverse('exhibit:modify'),
-             'approve_url': reverse('exhibit:manager_approve')})
+             'approve_url': reverse('exhibit:manager_approve'),
+             'delete_url': reverse('exhibit:delete')})
 
  
 def get_detail(request):
@@ -138,6 +139,15 @@ class ModifyView(View):
         form.save()
         return HttpResponseRedirect(reverse('exhibit:manage'))
 
+
+@login_required
+@check_ownership(ExhibitApplication)
+@check_not_approved(ExhibitApplication)
+def delete(request):
+    app_id = request.GET.get('id')
+    app = get_object_or_404(ExhibitApplication, id=app_id)
+    app.delete()
+    return HttpResponseRedirect(reverse('exhibit:manage'))
 
 @login_required
 @check_perms('account.manager', u'无管理权限')

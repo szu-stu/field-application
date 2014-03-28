@@ -18,6 +18,7 @@
             <td>审批</td>
             {% else %}
             <td>修改申请表</td>
+            <td>删除申请</td>
             {% endif %}
         </tr>
         {% for app in page %}
@@ -42,8 +43,10 @@
             {% else %}
                 {% if not app.approved %}
                     <td><a href="{{ modify_url }}?id={{ app.id }}">修改申请表</a></td>
+                    <td><a href="{{ delete_url }}?id={{ app.id }}">删除申请</a></td>
                 {% else %}
                     <td><span style="color: #aaaaaa;">修改申请表</span></td>
+                    <td><span style="color: #aaaaaa;">删除申请</span></td>
                 {% endif %}
             {% endif %}
         </tr>
