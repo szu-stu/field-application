@@ -45,6 +45,26 @@
                 </td>
             </tr>
             <tr>
+                <td class="title">申请人学号</td>
+                <td>
+                    {{ form.applicant_stu_id }}
+                    <div class="error">
+                    {% for error in form.applicant_stu_id.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    </div>
+                </td>
+                <td class="title">申请人学院</td>
+                <td>
+                    {{ form.applicant_college }}
+                    <div class="error">
+                    {% for error in form.applicant_college.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
                 <td class="title">活动类型</td>
                 <td colspan="3">
                     <input type="radio" disabled="disabled" checked="checked" />
