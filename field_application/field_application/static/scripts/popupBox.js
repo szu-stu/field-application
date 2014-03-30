@@ -136,7 +136,6 @@ function genAppInfoTable( detail, place ){
 		{ index: "organization"           , 'text': "申请部门"       },
 		{ index: "applicant_name"         , 'text': "申请人姓名"     },
 		{ index: "applicant_phone_number" , 'text': "联系电话"       },
-		{ index: "exhibit_type"           , 'text': "活动类型"       },
 		{ index: "exhibition"             , 'text': "展览内容"       },
 		{ index: "exhibit_board_number"   , 'text': "使用展板"       },
 		{ index: "place"                  , 'text': "活动地址"       },

@@ -21,14 +21,14 @@
             {% endif %}
         </tr>
         {% for app in page %}
-        <tr>
-            <td>{{ app.organization }}</td>
-            <td>{{ app.activity }}</td> 
-            <td>{% for place in app.place %} {{ place }} {% endfor %}</td>
-            <td>{{ app.date }}</td>
-            <td>{% for time in app.time %} {{ time }} {% endfor %}</td>
-            <td>{{ app.application_time }}</td>
-            <td>
+        <tr class="app">
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{{ app.organization }}</td>
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{{ app.activity }}</td> 
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{% for place in app.place %} {{ place }} {% endfor %}</td>
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{{ app.date }}</td>
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{% for time in app.time %} {{ time }} {% endfor %}</td>
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{{ app.application_time }}</td>
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">
                 {% if app.approved %}
                     <span style="color: #ff0000;">已批准</span>
                 {% else %}
@@ -40,8 +40,8 @@
                 <td><a href="{{ modify_url }}?id={{ app.id }}">修改申请表</a></td>
                 <td><a href="{{ delete_url }}?id={{ app.id }}">删除申请</a></td>
             {% else %}
-                <td><span style="color: #aaaaaa;">修改申请表</span></td>
-                <td><span style="color: #aaaaaa;">删除申请</span></td>
+                <td onclick="javascript:showAppForm({{ app.id }}, plc)"><span style="color: #aaaaaa;">修改申请表</span></td>
+                <td onclick="javascript:showAppForm({{ app.id }}, plc)"><span style="color: #aaaaaa;">删除申请</span></td>
             {% endif %}
 
             {% if perms.account.manager %}

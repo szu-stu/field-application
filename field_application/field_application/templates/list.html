@@ -16,14 +16,14 @@
             <td>是否审批</td>
         </tr>
         {% for app in page %}
-        <tr>
-            <td>{{ app.organization }}</td>
-            <td>{{ app.activity }}</td> 
-            <td>{% for place in app.place %} {{ place }} {% endfor %}</td>
-            <td>{{ app.date }}</td>
-            <td>{% for time in app.time %} {{ time }} {% endfor %}</td>
-            <td>{{ app.application_time }}</td>
-            <td>{% if app.approved %}已批准{% else %}未批准{% endif %}</td>
+        <tr class="app">
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{{ app.organization }}</td>
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{{ app.activity }}</td> 
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{% for place in app.place %} {{ place }} {% endfor %}</td>
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{{ app.date }}</td>
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{% for time in app.time %} {{ time }} {% endfor %}</td>
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{{ app.application_time }}</td>
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{% if app.approved %}已批准{% else %}未批准{% endif %}</td>
         </tr>
         {% endfor %}
     </table>

@@ -3,6 +3,29 @@
 {% block base_htmlhead %}
     {% load html_tools %}
     {{ 'list/list.css' | as_css }}
+
+    {{ 'artDialog/v4/artDialog.js'    | as_js  }}
+    {{ 'artDialog/v4/skins/opera.css' | as_css }}
+    {{ 'artDialog/popupBox.css'       | as_css }}
+
+    {{ 'popupBox.js'  | as_js  }}
+    <style>
+        table.app_table {
+            border-collapse: collapse;
+            color: #000000;
+            font-size: 12px;
+            text-align: center;
+        }
+        table.app_table td {
+            border: 2px solid #FFFFFF;
+        }
+        tr.app td{
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        var plc = location.pathname.split('/')[1];
+    </script>
     {% block htmlhead %}{% endblock %}
 {% endblock %}
 

@@ -24,3 +24,7 @@
     color: #4d6ff7;
     text-decoration: none;
 }
+.page a:hover,.table a:hover{
+    color: #384783;
+    text-decoration: none;
+}
