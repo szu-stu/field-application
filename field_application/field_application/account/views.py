@@ -119,11 +119,10 @@ class Profile(DetailView):
     context_object_name = 'organization'
 
 
-class Org_manage(ListView):
-    ''' used by manger '''
-    model = Organization
-    context_object_name = 'list'
-    template_name = 'account/org-manage.html'
+def org_manage(request):
+    orgs = Organization.objects.all().order_by('-pk')
+    return render(request, 'account/org-manage.html',
+            {'list': orgs})
 
 
 @permission_required('account.manager')
