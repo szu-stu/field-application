@@ -123,6 +123,7 @@ class PublicityApplication(CampusFieldApplication):
         (u'西南餐厅前空地', u'西南餐厅前空地'),
         (u'南区天桥', u'南区天桥'),
         (u'南区食堂前空地', u'南区食堂前空地'),
+        (u'其它', u'其它'),
     )
    
     TIME = (

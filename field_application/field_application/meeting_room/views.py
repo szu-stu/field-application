@@ -52,7 +52,7 @@ def display_table(request):
 
 def display_list(request):
     listing = MeetingRoomApplication.objects.all()
-    paginator = Paginator(listing, 3)
+    paginator = Paginator(listing, 40)
     for app in listing:
         app.date = app.date.strftime('%Y年%m月%d日')
         app.activity = app.meeting_topic
@@ -75,7 +75,7 @@ def manage(request):
     for app in listing:
         app.date = app.date.strftime('%Y年%m月%d日')
         app.activity = app.meeting_topic
-    paginator = Paginator(listing, 3)
+    paginator = Paginator(listing, 40)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:

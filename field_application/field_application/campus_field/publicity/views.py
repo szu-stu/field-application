@@ -50,7 +50,7 @@ def display_list(request):
     for app in listing:
         app.date = app.start_date.strftime('%Y年%m月%d日') \
             + '-' + app.end_date.strftime('%Y年%m月%d日')
-    paginator = Paginator(listing, 3)
+    paginator = Paginator(listing, 40)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
@@ -69,7 +69,7 @@ def manage(request):
     for app in listing:
         app.date = app.start_date.strftime('%Y年%m月%d日') \
             + '-' + app.end_date.strftime('%Y年%m月%d日')
-    paginator = Paginator(listing, 3)
+    paginator = Paginator(listing, 40)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:

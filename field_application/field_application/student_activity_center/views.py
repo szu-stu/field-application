@@ -55,7 +55,7 @@ def display_list(request):
         app.date = app.date.strftime('%Y年%m月%d日')
         app.place = [app.place]
         app.time = [app.time]
-    paginator = Paginator(listing, 3)
+    paginator = Paginator(listing, 40)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
@@ -78,7 +78,7 @@ def manage(request):
         app.date = app.date.strftime('%Y年%m月%d日')
         app.place = [app.place]
         app.time = [app.time]
-    paginator = Paginator(listing, 3)
+    paginator = Paginator(listing, 40)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
@@ -103,7 +103,7 @@ def get_detail(request):
             'approved': app.approved, 'plan_file': app.plan_file.url,
             'applicant_name': app.applicant_name,
             'applicant_phone_number': app.applicant_phone_number,
-            'applicant_stu_id ': app.applicant_stu_id,
+            'applicant_stu_id': app.applicant_stu_id,
             'applicant_college': app.applicant_college,
             'application_time': \
                     app.application_time.strftime('%Y年%m月%d日 %H:%M:%S'),
