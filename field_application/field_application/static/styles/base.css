@@ -5,6 +5,7 @@
 body{
 	background-color: #e2ebfe;
 	font-family: "宋体";
+    word-break: break-all;
 }
 .container{
 	width: 1000px;	
