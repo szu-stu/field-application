@@ -136,7 +136,7 @@
                 <td class="title">活动策划<br />文件上传</td>
                 <td colspan="3">
                     {{ form.plan_file }}
-                    <span>(注：只能上传doc、txt格式文件)</span>
+                    <span>(注：只能上传doc、txt格式文件,上传文件大小不能超过10M)</span>
                     <div class="error">
                     {% for error in form.plan_file.errors %}
                         {{ error }}&nbsp;

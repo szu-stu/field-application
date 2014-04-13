@@ -112,15 +112,36 @@ function genAppInfoTable( detail, place ){
 		{ index: "plan_file"              , 'text': "策划文件"       },
 	  //{ index: "remarks"                , 'text': "备注"           },
 
-	  //{ index: "sponsor"                , 'text': "赞助商"         },
-	  //{ index: "sponsorship"            , 'text': "赞助金额及物品" },
-	  //{ index: "sponsorship_usage"      , 'text': "赞助财物用途"   },
+	    { index: "sponsor"                , 'text': "赞助商"         },
+	    { index: "sponsorship"            , 'text': "赞助金额及物品" },
+	    { index: "sponsorship_usage"      , 'text': "赞助财物用途"   },
 
 	  //{ index: "approved"               , 'text': "审批情况"       },
 	  //{ index: "application_time"       , 'text': "申请时间"       },
 	];
 
-	indexToText['student_activity_center'] = indexToText['south_stadium'];
+	indexToText['student_activity_center'] = [
+		{ index: "activity"               , 'text': "活动项目"       },
+		{ index: "organization"           , 'text': "申请部门"       },
+		{ index: "applicant_name"         , 'text': "申请人姓名"     },
+		{ index: "applicant_stu_id"       , 'text': "申请人学号"     },
+		{ index: "applicant_college"      , 'text': "申请人学院"     },
+		{ index: "applicant_name"         , 'text': "申请人姓名"     },
+		{ index: "applicant_phone_number" , 'text': "联系电话"       },
+		
+		{ index: "date"                   , 'text': "使用日期"       },	
+		{ index: "time"                   , 'text': "使用时间"       },
+		{ index: "activity_summary"       , 'text': "活动简介"       },
+		{ index: "plan_file"              , 'text': "策划文件"       },
+
+	    { index: "sponsor"                , 'text': "赞助商"         },
+	    { index: "sponsorship"            , 'text': "赞助金额及物品" },
+	    { index: "sponsorship_usage"      , 'text': "赞助财物用途"   },
+
+	    { index: "approved"               , 'text': "审批情况"       },
+	    { index: "application_time"       , 'text': "申请时间"       },
+	];
+
 	indexToText['meeting_room'] = [
 		{ index: "meeting_topic"          , 'text': "会议主题"   },
 		{ index: "organization"           , 'text': "申请部门"   },
@@ -150,9 +171,10 @@ function genAppInfoTable( detail, place ){
 		{ index: "end_date"               , 'text': "活动结束时间"   },
 		{ index: "time"                   , 'text': "活动时段"       },
 
-	  //{ index: "sponsor"                , 'text': "赞助商"          },
-	  //{ index: "sponsorship"            , 'text': "赞助金额及物品"  },
-	  //{ index: "sponsorship_usage"      , 'text': "赞助财物用途"    },
+	    { index: "sponsor"                , 'text': "赞助商"          },
+	    { index: "sponsorship"            , 'text': "赞助金额及物品"  },
+	    { index: "sponsorship_usage"      , 'text': "赞助财物用途"    },
+
 		{ index: "activity_summary" , 'text': "活动简介"              },
 		{ index: "remarks" , 'text': "备注" },
 		{ index: "plan_file" , 'text': "策划文件" },
