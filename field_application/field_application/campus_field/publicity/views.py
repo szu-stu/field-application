@@ -55,7 +55,7 @@ def display_list(request):
     except InvalidPage:
         page = paginator.page(1)
     return render(request, 'list.html',
-                {'page': page, 'title': u'校园文化活动露天场地申请'})
+                {'page': page, 'title': u'校园露天场地申请'})
 
 @login_required
 def manage(request):
@@ -74,7 +74,7 @@ def manage(request):
     except InvalidPage:
         page = paginator.page(1)
     return render(request, 'manage.html',
-                {'page': page, 'title': u'校园文化活动露天场地申请',
+                {'page': page, 'title': u'校园露天场地申请',
                  'modify_url': reverse('publicity:modify'),
                  'approve_url': reverse('publicity:manager_approve'),
                  'delete_url': reverse('publicity:delete')})
