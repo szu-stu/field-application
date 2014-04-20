@@ -19,8 +19,8 @@
             <div class="line"></div>
         </div>
         <div class="main">
-            {% if user.is_authenticated %}
             <div class="user-nav">
+            {% if user.is_authenticated %}
                 <span style="color:red">已登录</sopan>
                 <a href="{% url 'account:signout' %}">退出登录</a>
                 <a href="{% url 'account:reset_password' %}">修改密码</a>
@@ -29,11 +29,11 @@
                 {% if perms.account.manager %}
                 <a href="{% url 'account:org_manage' %}">管理组织</a>
                 {% endif %}
+            {% endif %}
                 <a href="/">【返回场地申请主页】</a>
                 <a href="../manage/">【管理场地申请】</a>
                 <a href="../table/">【查看场地申请情况】</a>
             </div>
-            {% endif %}
             {% block main_container %}
             {% endblock %}
         </div>

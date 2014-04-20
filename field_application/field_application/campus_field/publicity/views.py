@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 import logging
+import datetime
 
 from django.views.generic import View
 from django.shortcuts import render, render_to_response, get_object_or_404
@@ -152,6 +153,10 @@ def delete(request):
 def manager_approve(request):
     app_id = request.GET.get('id')
     app = get_object_or_404(PublicityApplication, id=app_id)
+    today = datetime.date.today()
+    if not app.approved and (app.start_date < today or app.end_date < today):
+        return render(request, 'deny.html',
+                {'message': u'所申请的使用时间已过'})
     app.approved = not app.approved
     app.save()
     return HttpResponseRedirect(reverse('publicity:manage'))

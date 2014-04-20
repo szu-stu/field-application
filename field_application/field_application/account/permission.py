@@ -2,7 +2,7 @@
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.shortcuts import render 
+from django.shortcuts import render, get_object_or_404
 
 
 def guest_or_redirect(function=None):
@@ -53,7 +53,7 @@ def check_ownership(ApplicationModel):
             if not app_id:
                 return render(request, 'deny.html',
                         {'message': u'非法地址'})
-            app = ApplicationModel.objects.get(id=app_id)
+            app = get_object_or_404(ApplicationModel, id=app_id)
             if request.user.organization.id != app.organization.id \
                     and not request.user.has_perm('account.manager'):
                 return render(request, 'deny.html',
@@ -71,7 +71,7 @@ def check_not_approved(ApplicationModel):
             if not app_id:
                 return render(request, 'deny.html',
                         {'message': u'非法地址'})
-            app = ApplicationModel.objects.get(id=app_id)
+            app = get_object_or_404(ApplicationModel, id=app_id)
             if app.approved:
                 return render(request, 'deny.html',
                         {'message': u'不能修改已通过审批的申请表'})
