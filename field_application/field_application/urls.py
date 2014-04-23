@@ -6,15 +6,11 @@ from django.contrib import admin
 
 from field_application import settings
 
-
 admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', TemplateView.as_view(template_name='index.html'),
                name='home'),
-    url(r'^table_download$',
-        TemplateView.as_view(template_name='table_download.html'),
-               name='table_download'),
     url(r'^deny/$', TemplateView.as_view(template_name='deny.html'),
                name='deny'),
     url(r'^account/', include('field_application.account.urls',
@@ -31,11 +27,15 @@ urlpatterns = patterns('',
         include('field_application.campus_field.publicity.urls',
                                    namespace='publicity')),
 
+    url(r'^document/',
+        include('field_application.document.urls',
+                                   namespace='document')),
+
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
     # not used now
-    #url(r'^south_stadium/', include('field_application.south_stadium.urls',
+   #url(r'^south_stadium/', include('field_application.south_stadium.urls',
     #                                namespace='south_stadium')),
 )
 
