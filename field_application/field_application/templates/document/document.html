@@ -23,11 +23,34 @@
 		<p>暂无文件</p>
 	       	{% endif %}	
 </div>
-	<form  enctype="multipart/form-data" action="/document/" method="post" >
+<br>
+	<form  enctype="multipart/form-data" action="{% url 'document:doc_upload' %}" method="post" >
             {% csrf_token %}
  
-             {{form}}
-         <p><input type="submit" value="Upload" /></p>
+             <table>
+            <tr>
+                <td style="font-size: 15px;">选择文件</td>
+                <td>
+                    {{ form.docfile }}
+                    <div class="error"  >
+                    {% for error in form.docfile.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="font-size: 15px;">文件名</td>
+                <td>
+                    {{ form.docname }}
+                </td>
+            </tr>
+            
+         
+ 	</table>
+ 	<div style="text-align:center;">
+	<p ><input type="submit" value="提交" /></p>
+ 	</div>
          </form>
 
 {% endblock %}

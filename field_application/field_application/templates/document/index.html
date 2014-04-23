@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block htmltitle %}表格下载{% endblock %}
+ 
+{% block base_htmlhead %}
+{% endblock %}
+ 
+{% block top_title %}<h1>表格下载</h1>{% endblock %}
+
+{% block main_container %}
+<div style="text-align:center;">
+	{% if doc_list %}
+	 <ul>
+		{% for Documents in doc_list %}
+		<li>
+		<a href="{{ Documents.docfile.url }}">{{ Documents.docname }}</a>
+		</li>
+
+		{% endfor %}	
+	</ul>
+            	{% else %}	
+		<p>暂无文件</p>
+	       	{% endif %}	
+
+	<a href="{% url 'document:doc_upload' %}">修改文件</a>
+</div>
+	
+
+{% endblock %}
