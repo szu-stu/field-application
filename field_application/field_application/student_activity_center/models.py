@@ -4,6 +4,8 @@ from datetime import datetime, timedelta, date
 
 from django.utils import timezone
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 from field_application.account.models import Organization
 from field_application.custom.utils import gennerate_date_list_7days 
@@ -78,3 +80,7 @@ class StudentActivityCenterApplication(models.Model):
         return {'date': gennerate_date_list_7days(offset),
                 'content': content}
 
+@receiver(post_delete, sender=StudentActivityCenterApplication)
+def Plan_file_delete(sender, instance, **kwargs):
+    if instance.plan_file:
+        instance.plan_file.delete(False)
