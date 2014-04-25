@@ -157,6 +157,6 @@ class PublicityApplication(CampusFieldApplication):
 @receiver(post_delete, sender=CampusFieldApplication)
 def Plan_file_delete(sender, instance, **kwargs):
     if instance.plan_file :
-        instance.plan_file .delete(False)
+        instance.plan_file.delete(False)
 
 
