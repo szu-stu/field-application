@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
 from django.views.generic import View
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from field_application.document.models import Document
 from field_application.document.forms import DocumentForm
@@ -13,7 +14,8 @@ def index(request):
     return render(request, 'document/index.html', {'doc_list':doc_list})
 
 class UploadFileView(View):
-    @method_decorator(check_perms('account.manager'))
+    @method_decorator(login_required)
+    @method_decorator(check_perms('account.manager', u'无管理权限'))
     def post(self, request):
         doc_list = Document.objects.all()
         form = DocumentForm(request.POST, request.FILES)
@@ -22,7 +24,8 @@ class UploadFileView(View):
         form.save()
         return HttpResponseRedirect('/document/modify')
 
-    @method_decorator(check_perms('account.manager'))
+    @method_decorator(login_required)
+    @method_decorator(check_perms('account.manager', u'无管理权限'))
     def get(self, request):
         form = DocumentForm()
         doc_list = Document.objects.all()
