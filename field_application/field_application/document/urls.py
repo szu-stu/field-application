@@ -4,8 +4,8 @@ from django.conf.urls.static import static
 from field_application.document.views import UploadFileView,delete,index
 
 urlpatterns = patterns('',
-    url(r'^$',  index, name='doc_index'),
+    url(r'^$',  index, name='index'),
     url(r'^delete/$', delete, name='delete'),
-    url(r'^modify/$', UploadFileView.as_view(), name='doc_upload'),
+    url(r'^modify/$', UploadFileView.as_view(), name='upload'),
 
 )+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

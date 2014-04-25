@@ -4,6 +4,7 @@ from django.shortcuts import render,get_object_or_404
 from django.views.generic import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 
 from field_application.document.models import Document
 from field_application.document.forms import DocumentForm
@@ -22,7 +23,7 @@ class UploadFileView(View):
         if not form.is_valid():
             return render(request, 'document/document.html', {'form':form, 'doc_list':doc_list})
         form.save()
-        return HttpResponseRedirect('/document/modify')
+        return HttpResponseRedirect(reverse('document:upload'))
 
     @method_decorator(login_required)
     @method_decorator(check_perms('account.manager', u'无管理权限'))
@@ -36,4 +37,4 @@ def delete(request):
     doc_id = request.GET.get('id')
     doc = get_object_or_404(Document, id=doc_id)
     doc.delete()
-    return HttpResponseRedirect('/document/modify')
+    return HttpResponseRedirect(reverse('document:upload'))
