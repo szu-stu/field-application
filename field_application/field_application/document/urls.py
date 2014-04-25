@@ -8,4 +8,4 @@ urlpatterns = patterns('',
     url(r'^delete/$', delete, name='delete'),
     url(r'^modify/$', UploadFileView.as_view(), name='upload'),
 
-)+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+)
