@@ -1,34 +1,36 @@
 #-*- coding: utf-8 -*-
 from django.http import HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
+from django.views.generic import View
+from django.utils.decorators import method_decorator
 
-from models import Document
-from forms import DocumentForm
-
+from field_application.document.models import Document
+from field_application.document.forms import DocumentForm
 from field_application.account.permission import check_perms
 
 def index(request):
-    doc_list=Document.objects.all()
-    return render(request,'document/index.html',{'doc_list':doc_list})
+    doc_list = Document.objects.all()
+    return render(request, 'document/index.html', {'doc_list':doc_list})
 
-@check_perms('account.manager', u'无管理权限')
-def Upload_File(request):
-    form=DocumentForm()
-    doc_list=Document.objects.all()
-
-    if request.method=='POST':
-        form=DocumentForm(request.POST,request.FILES)
+class UploadFileView(View):
+    @method_decorator(check_perms('account.manager'))
+    def post(self, request):
+        doc_list = Document.objects.all()
+        form = DocumentForm(request.POST, request.FILES)
         if not form.is_valid():
-            return render(request,'document/document.html',{'form':form, 'doc_list':doc_list})
+            return render(request, 'document/document.html', {'form':form, 'doc_list':doc_list})
         form.save()
         return HttpResponseRedirect('/document/modify')
 
-    else:
-        return render(request,'document/document.html',{'form':form,'doc_list':doc_list})
+    @method_decorator(check_perms('account.manager'))
+    def get(self, request):
+        form = DocumentForm()
+        doc_list = Document.objects.all()
+        return render(request, 'document/document.html', {'form':form, 'doc_list':doc_list})
 
 @check_perms('account.manager', u'无管理权限')
-def del_doc(request):
-    doc_id=request.GET.get('id')
-    doc=get_object_or_404(Document, id=doc_id)
+def delete(request):
+    doc_id = request.GET.get('id')
+    doc = get_object_or_404(Document, id=doc_id)
     doc.delete()
     return HttpResponseRedirect('/document/modify')

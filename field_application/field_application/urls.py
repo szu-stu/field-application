@@ -26,11 +26,9 @@ urlpatterns = patterns('',
     url(r'^publicity/',
         include('field_application.campus_field.publicity.urls',
                                    namespace='publicity')),
-
     url(r'^document/',
         include('field_application.document.urls',
                                    namespace='document')),
-
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
@@ -42,6 +40,6 @@ urlpatterns = patterns('',
 # serve media file when using developing server
 if settings.DEBUG:
     urlpatterns += patterns('',
-        url(r'^uploaded_file/(?P<path>.*)$', 'django.views.static.serve',
+        url(r'^uploaded-file/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': settings.MEDIA_ROOT,}),
         )
