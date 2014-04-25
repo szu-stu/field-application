@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block htmltitle %}表格下载{% endblock %}
+ 
+{% block base_htmlhead %}
+{% endblock %}
+ 
+{% block top_title %}<h1>表格下载</h1>{% endblock %}
+
+{% block main_container %}
+<div style="text-align:center;">
+    {% if doc_list %}
+    <ul>
+        {% for Documents in doc_list %}
+        <li>
+            <a href="{{ Documents.docfile.url }}">{{ Documents.docname }}</a>
+            <a href="{% url 'document:delete' %}?id={{ Documents.id }}">删除文件</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>暂无文件</p>
+    {% endif %}	
+</div>
+<br>
+<form  enctype="multipart/form-data" action="{% url 'document:upload' %}" method="post" >
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td style="font-size: 15px;">选择文件</td>
+            <td>
+                {{ form.docfile }}
+                <div class="error"  >
+                    {% for error in form.docfile.errors %}
+                    {{ error }}&nbsp;
+                    {% endfor %}
+                </div></td></tr>
+        <tr>
+            <td style="font-size: 15px;">文件名</td>
+            <td>
+                {{ form.docname }}
+                <div class="error"  >
+                    {% for error in form.docname.errors %}
+                    {{ error }}&nbsp;
+                    {% endfor %}
+                </div></td></tr>
+    </table>
+    <div style="text-align:center;">
+        <p ><input type="submit" value="提交" /></p>
+    </div>
+</form>
+
+{% endblock %}
