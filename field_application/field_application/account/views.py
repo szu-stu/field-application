@@ -72,7 +72,7 @@ class SignUpView(View):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(reverse('signin'))
 
         return render(request, 'account/sign-up.html', {'form': form})
 

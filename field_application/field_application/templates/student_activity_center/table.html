@@ -1,6 +1,6 @@
 {% extends 'table_base.html' %}
 
-{% block htmltitle %}学生活动中心场所申请{% endblock %}
+{% block htmltitle %}学生活动中心场地申请{% endblock %}
 
 {% block htmlhead %}
     {% load html_tools %}
@@ -33,7 +33,7 @@
             {% endfor %}
     	</tr>
 
-        {% load all_approved %}
+        {% load check_approved %}
         {% for place, apps_a_week in table.content %}
     	<tr>
             <td class="place">{{ place }}</td>

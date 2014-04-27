@@ -1,28 +1,47 @@
-{% extends 'base.html' %}
+{% extends 'account/account_base.html' %}
 
 {% block htmltitle %}表格下载{% endblock %}
  
 {% block base_htmlhead %}
+<style type="text/css">
+	a{
+    	color: #000000;
+    	text-decoration: none;
+    	list-style: none;
+	}
+	.docs-list{
+        margin: 20px;
+        line-height: 20px;
+        overflow: hidden;
+        text-align: center;
+    }
+    .docs-list li{
+        list-style: none;
+        margin: 20px;
+        overflow: hidden;
+    }
+</style>
 {% endblock %}
  
 {% block top_title %}<h1>表格下载</h1>{% endblock %}
 
 {% block main_container %}
-<div style="text-align:center;">
+<div class="docs-list">
 	{% if doc_list %}
 	 <ul>
 		{% for Documents in doc_list %}
 		<li>
-		<a href="{{ Documents.docfile.url }}">{{ Documents.docname }}</a>
+			<a href="{{ Documents.docfile.url }}">{{ Documents.docname }}</a>
 		</li>
-
 		{% endfor %}	
 	</ul>
-            	{% else %}	
-		<p>暂无文件</p>
-	       	{% endif %}	
+    {% else %}	
+	<p>暂无文件</p>
+	{% endif %}	
 
-	<a href="{% url 'document:upload' %}">修改文件</a>
+	{% if perms.account.manager %}
+	<a href="{% url 'document:upload' %}" style="color: #ff0000;">修改文件</a>
+	{% endif %}
 </div>
 	
 

@@ -27,7 +27,7 @@
         <td>{{ time }}</td>
         {% endfor %}
     </tr>
-    {% load all_approved %}
+    {% load check_approved %}
     {% for app_every_day in apps_every_place %}      
     {% cycle table.date.0 table.date.1 table.date.2 table.date.3 table.date.4 table.date.5 table.date.6 as date silent %}   
     <tr>
@@ -48,7 +48,14 @@
         <td>{{ date | date:"n月d日" }}</td>
         {% for apps in app_every_day %}
             {% if apps %}
-            <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}" data-app-id="[{% for app in apps %} {id:'{{ app.id }}', title:'{{app.meeting_topic}}', approved:'{{ app.approved }}' }, {% endfor %}]" onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'meeting_room' )"></td>
+            <td class="{% if apps|approved_exist %}
+                            red
+                        {%else%}
+                            gray
+                        {%endif%}" 
+                        data-app-id="[{% for app in apps %} {id:'{{ app.id }}', title:'{{app.meeting_topic}}', approved:'{{ app.approved }}' }, {% endfor %}]" 
+                        onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'meeting_room' )">
+            </td>
             {% else %}
             <td></td>
             {% endif %}

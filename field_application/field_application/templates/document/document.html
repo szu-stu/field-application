@@ -1,20 +1,49 @@
 {% extends 'base.html' %}
 
-{% block htmltitle %}表格下载{% endblock %}
+{% block htmltitle %}表格下载管理{% endblock %}
  
 {% block base_htmlhead %}
+<style type="text/css">
+    a{
+        color: #000000;
+        text-decoration: none;
+    }
+    .docs-list{
+        margin: 20px;
+        line-height: 20px;
+        overflow: hidden;
+    }
+    .docs-list li{
+        list-style: none;
+        margin: 20px;
+        overflow: hidden;
+    }
+    .new-file{
+        overflow: hidden;
+        margin: 0 auto; 
+        margin-top: 30px;
+        width: 200px;
+    }
+    .new-file div{
+        margin-top: 20px;
+    }
+</style>
 {% endblock %}
  
-{% block top_title %}<h1>表格下载</h1>{% endblock %}
+{% block top_title %}<h1>表格下载管理</h1>{% endblock %}
 
 {% block main_container %}
-<div style="text-align:center;">
+<div class="docs-list">
     {% if doc_list %}
     <ul>
         {% for Documents in doc_list %}
         <li>
-            <a href="{{ Documents.docfile.url }}">{{ Documents.docname }}</a>
-            <a href="{% url 'document:delete' %}?id={{ Documents.id }}">删除文件</a>
+            <a href="{{ Documents.docfile.url }}" style="float: left;">
+                {{ Documents.docname }}
+            </a>
+            <a href="{% url 'document:delete' %}?id={{ Documents.id }}" style="color: #ff0000; float: right;">
+                删除文件
+            </a>
         </li>
         {% endfor %}
     </ul>
@@ -22,32 +51,29 @@
     <p>暂无文件</p>
     {% endif %}	
 </div>
-<br>
-<form  enctype="multipart/form-data" action="{% url 'document:upload' %}" method="post" >
-    {% csrf_token %}
-    <table>
-        <tr>
-            <td style="font-size: 15px;">选择文件</td>
-            <td>
-                {{ form.docfile }}
-                <div class="error"  >
-                    {% for error in form.docfile.errors %}
-                    {{ error }}&nbsp;
-                    {% endfor %}
-                </div></td></tr>
-        <tr>
-            <td style="font-size: 15px;">文件名</td>
-            <td>
-                {{ form.docname }}
-                <div class="error"  >
-                    {% for error in form.docname.errors %}
-                    {{ error }}&nbsp;
-                    {% endfor %}
-                </div></td></tr>
-    </table>
-    <div style="text-align:center;">
-        <p ><input type="submit" value="提交" /></p>
+
+<div class="new-file">
+    <h2>上传新文件</h2>
+    <form  enctype="multipart/form-data" action="{% url 'document:upload' %}" method="post" >
+        {% csrf_token %}
+        <div>选择文件</div>
+        {{ form.docfile }}
+        <div class="error"  >
+            {% for error in form.docfile.errors %}
+                {{ error }}&nbsp;
+            {% endfor %}
+        </div>
+        <div>文件名</div>
+        {{ form.docname }}
+        <div class="error"  >
+            {% for error in form.docname.errors %}
+                {{ error }}&nbsp;
+            {% endfor %}
+        </div>
+    <div>
+        <input type="submit" value="提交" />
     </div>
 </form>
+</div>
 
 {% endblock %}

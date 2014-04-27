@@ -19,8 +19,8 @@ function checkMonday(){
             }
         }
 		if(isMonday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked){
-			bannedTimeChkBoxs.attr( 'disabled', 'disabled' );
 			timeErrorBox.text( '石头坞一楼会议室周一12：00-14：00暂停申请，谢谢合作!' );
+			alert('石头坞一楼会议室周一12：00-14：00暂停申请，谢谢合作!')
 			return false;
 		}
 		else{

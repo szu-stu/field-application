@@ -23,7 +23,7 @@
 		<td>重置密码为123456</td>
 	</tr>
 	{% for org in list %}
-	<tr>
+	<tr {% if org.is_banned %} style="background-color: #aaaaaa;" {% endif %}>
 		<td>{{ org.user.username }}</td>
 		<td>{{ org.chinese_name }}</td>
 		<td>{{ org.org_in_charge }}</td>
