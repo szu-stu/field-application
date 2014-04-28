@@ -73,7 +73,6 @@ def manage(request):
     else:
         listing = StudentActivityCenterApplication.objects.\
                 filter(organization=org).order_by('-pk')
-    print listing
     for app in listing:
         app.date = app.date.strftime('%Y年%m月%d日')
         app.place = [app.place]
@@ -160,14 +159,6 @@ def delete(request):
 def manager_approve(request):
     app_id = request.GET.get('id')
     app = get_object_or_404(StudentActivityCenterApplication, id=app_id)
-    if not app.approved \
-            and StudentActivityCenterApplication.objects.filter(
-            place=app.place,
-            date=app.date,
-            time=app.time,
-            approved=True).exists():
-        msg = u'该时间段已经有通过审批的申请'
-        return render(request, 'deny.html', {'message': msg})
     app.approved = not app.approved
     app.save()
     return HttpResponseRedirect(reverse('student_activity_center:manage'))

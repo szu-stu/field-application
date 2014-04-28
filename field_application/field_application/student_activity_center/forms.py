@@ -29,16 +29,3 @@ class StudentActivityCenterApplicationForm(ModelForm):
             raise forms.ValidationError(u'申请的场地使用时间距离现在不能超过14天')
         return date
 
-    def clean(self):
-        super(StudentActivityCenterApplicationForm, self).clean()
-        if StudentActivityCenterApplication.objects.filter(
-                place=self.cleaned_data.get('place'),
-                date=self.cleaned_data.get('date'),
-                time=self.cleaned_data.get('time'),
-                approved=True).exists():
-            msg = self.cleaned_data['date'].strftime('%Y-%m-%d ') \
-                    + self.cleaned_data['time'] + u'已有人使用'
-            self._errors['date'] = self.error_class([msg])
-            del self.cleaned_data['date']
-        return self.cleaned_data
-
