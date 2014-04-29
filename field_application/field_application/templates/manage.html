@@ -7,17 +7,17 @@
 {% block main_content %}
     <table class="table">
         <tr>
-            <td>申请组织</td>
-            <td>活动主题</td>
-            <td>使用场地</td>
-            <td>使用日期</td>
-            <td>使用时间</td>
-            <td>申请时间</td>
-            <td>是否审批</td>
-            <td>修改申请表</td>
-            <td>删除申请</td>
+            <td style="min-width:100px">申请组织</td>
+            <td style="min-width:100px">活动主题</td>
+            <td style="min-width:150px">使用场地</td>
+            <td style="width:95px">使用日期</td>
+            <td style="min-width:100px">使用时间</td>
+            <td style="width:90px">申请时间</td>
+            <td style="width:40px">是否<br />审批</td>
+            <td style="width:40px">修改<br />申请表</td>
+            <td style="width:25px">删除申请</td>
             {% if perms.account.manager %}
-            <td>审批</td>
+            <td style="width:25px">审批</td>
             {% endif %}
         </tr>
         {% for app in page %}
@@ -37,10 +37,10 @@
             </td>
 
             {% if not app.approved %}
-                <td><a href="{{ modify_url }}?id={{ app.id }}">修改申请表</a></td>
+                <td><a href="{{ modify_url }}?id={{ app.id }}">修改<br />申请表</a></td>
                 <td><a href="{{ delete_url }}?id={{ app.id }}">删除申请</a></td>
             {% else %}
-                <td onclick="javascript:showAppForm({{ app.id }}, plc)"><span style="color: #aaaaaa;">修改申请表</span></td>
+                <td onclick="javascript:showAppForm({{ app.id }}, plc)"><span style="color: #aaaaaa;">修改<br />申请表</span></td>
                 <td onclick="javascript:showAppForm({{ app.id }}, plc)"><span style="color: #aaaaaa;">删除申请</span></td>
             {% endif %}
 

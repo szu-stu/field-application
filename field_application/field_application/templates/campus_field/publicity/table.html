@@ -31,12 +31,12 @@
                 </tr>
 
                 {% for j in 4|get_range %}
-                <tr>
-                    {% cycle '8点--9点' '11点--12点' '14点--15点' '17点--18点' as left silent %}
-                    {% cycle '9点--10点' '12点--13点' '15点--16点' '18点--19点' as mid silent %}
-                    {% cycle '10点--11点' '13点--14点' '16点--17点' ''  as right silent %}
+                <tr style="text-align:left">
+                    {% cycle '8点--<br />9点' '11点--<br />12点' '14点--<br />15点' '17点--<br />18点' as left silent %}
+                    {% cycle '9点--<br />10点' '12点--<br />13点' '15点--<br />16点' '18点--<br />19点' as mid silent %}
+                    {% cycle '10点--<br />11点' '13点--<br />14点' '16点--<br />17点' ''  as right silent %}
                     {% for i in 7|get_range %}
-                        <td>{{ left }}</td>
+                        <td >{{ left }}</td>
                         <td>{{ mid }}</td>
                         <td class="bold_border_right">{{ right }}</td>
                     {% endfor %}
