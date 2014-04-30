@@ -50,11 +50,11 @@ def display_table(request):
 
 
 def display_list(request):
-    listing = StudentActivityCenterApplication.objects.all().order_by('pk')
+    listing = StudentActivityCenterApplication.objects.all().order_by('-pk')
     for app in listing:
         app.date = app.date.strftime('%Y年%m月%d日')
         app.place = [app.place]
-        app.time = [app.time]
+        app.time = app.time
     paginator = Paginator(listing, 40)
     try:
         page = paginator.page(request.GET.get('page'))
@@ -76,7 +76,7 @@ def manage(request):
     for app in listing:
         app.date = app.date.strftime('%Y年%m月%d日')
         app.place = [app.place]
-        app.time = [app.time]
+        app.time = app.time
     paginator = Paginator(listing, 40)
     try:
         page = paginator.page(request.GET.get('page'))

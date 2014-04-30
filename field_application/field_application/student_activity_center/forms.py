@@ -2,8 +2,8 @@
 from datetime import timedelta
 
 from django import forms
-from django.utils import timezone
 from django.forms import ModelForm
+from datetime import datetime
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms import Textarea
 
@@ -22,7 +22,7 @@ class StudentActivityCenterApplicationForm(ModelForm):
 
     def clean_date(self):
         date = self.cleaned_data.get('date')
-        now = timezone.now().date()
+        now = datetime.now().date()
         if date < now:
             raise forms.ValidationError(u'所填日期已过')
         if date >= now + timedelta(days=14):

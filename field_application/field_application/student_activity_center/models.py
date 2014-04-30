@@ -11,6 +11,7 @@ from field_application.custom.utils import gennerate_date_list_7days
 from field_application.custom.utils import get_applications_a_week 
 from field_application.utils.models import file_save_path
 from field_application.custom.validators import validate_file_extension
+from field_application.custom.model_field import MultiSelectField
 
 
 class StudentActivityCenterApplication(models.Model):
@@ -31,7 +32,7 @@ class StudentActivityCenterApplication(models.Model):
     organization = models.ForeignKey(Organization)
     place = models.CharField(max_length=50, choices=PLACE)
     date = models.DateField()
-    time = models.CharField(max_length=10, choices=TIME)
+    time = MultiSelectField(max_length=50, choices=TIME)
     activity = models.CharField(max_length=30)
     approved = models.BooleanField(default=False)
     application_time = models.DateTimeField(auto_now_add=True)
@@ -68,7 +69,8 @@ class StudentActivityCenterApplication(models.Model):
                                 for place, p in cls.PLACE }
         first_day = date.today() + timedelta(days=offset*7)
         for app in field_used_this_week_applications:
-            content[app.place][(app.date-first_day).days][app.time].append(app)
+            for time in app.time:
+                content[app.place][(app.date-first_day).days][time].append(app)
         # sort in the order of time
         for place in content:
             for day in range(7):
