@@ -51,7 +51,7 @@ def display_table(request):
 
 
 def display_list(request):
-    listing = MeetingRoomApplication.objects.all()
+    listing = MeetingRoomApplication.objects.all().order_by('-pk')
     paginator = Paginator(listing, 40)
     for app in listing:
         app.date = app.date.strftime('%Y年%m月%d日')

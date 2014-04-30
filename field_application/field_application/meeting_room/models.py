@@ -2,7 +2,6 @@
 import os
 from datetime import datetime, timedelta, date
 
-from django.utils import timezone
 from django.db import models
 
 from field_application.account.models import Organization

@@ -46,7 +46,7 @@ def display_table(request):
 
 
 def display_list(request):
-    listing = PublicityApplication.objects.all()
+    listing = PublicityApplication.objects.all().order_by('pk')
     for app in listing:
         app.date = app.start_date.strftime('%Y年%m月%d日') \
             + '-' + app.end_date.strftime('%Y年%m月%d日')

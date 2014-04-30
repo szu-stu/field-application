@@ -50,7 +50,7 @@ def display_table(request):
 
 
 def display_list(request):
-    listing = StudentActivityCenterApplication.objects.all()
+    listing = StudentActivityCenterApplication.objects.all().order_by('pk')
     for app in listing:
         app.date = app.date.strftime('%Y年%m月%d日')
         app.place = [app.place]

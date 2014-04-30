@@ -2,7 +2,6 @@
 import os
 from datetime import datetime, timedelta
 
-from django.utils import timezone
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_delete
@@ -43,7 +42,7 @@ class CampusFieldApplication(models.Model):
     def get_applications_a_week(cls, offset=0):
         ''' most are the same as custom.utils.get_application_a_week
             except the filter logic '''
-        now = timezone.now().date()
+        now = datetime.now().date()
         first_day = now + timedelta(days=7*offset)
         last_day = first_day + timedelta(days=6)
         applications_in_the_next_7days = cls.objects.filter(
@@ -65,7 +64,7 @@ class CampusFieldApplication(models.Model):
 
         field_used_this_week_applications = \
                 cls.get_applications_a_week(offset)
-        first_day = timezone.now().date() + timedelta(days=7*offset)
+        first_day = datetime.now().date() + timedelta(days=7*offset)
         last_day = first_day + timedelta(days=6)
         for app in field_used_this_week_applications:
             for i in range((app.end_date-app.start_date).days+1):
