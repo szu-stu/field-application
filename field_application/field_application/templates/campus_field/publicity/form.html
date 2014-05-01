@@ -85,11 +85,25 @@
             <tr>
                 <td class="title">活动地点</td>
                 <td colspan="3">
-                    {{ form.place }}
+                    <style type="text/css">
+                        ul{
+                            display: inline;
+                        }
+                        li{
+                            display: inline;
+                        }
+                    </style>
+                    {{ form.place }}{{ form.other_place }}
                     <div class="error">
                     {% for error in form.place.errors %}
                         {{ error }}&nbsp;
                     {% endfor %}
+                    {% for error in form.other_place.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    </div>
+                    <div style="margin-left: 10px;">
+                        若以上选项没有你要申请的场地，请选择“其它”并在后面的输入框输入要申请的场地
                     </div>
                 </td>
             </tr>

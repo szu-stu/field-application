@@ -50,6 +50,9 @@ def display_list(request):
     for app in listing:
         app.date = app.start_date.strftime('%Y年%m月%d日') \
             + '-' + app.end_date.strftime('%Y年%m月%d日')
+        if u'其它' in app.place:
+            app.place.append(app.other_place)
+            app.place.remove(u'其它')
     paginator = Paginator(listing, 40)
     try:
         page = paginator.page(request.GET.get('page'))
@@ -69,6 +72,9 @@ def manage(request):
     for app in listing:
         app.date = app.start_date.strftime('%Y年%m月%d日') \
             + '-' + app.end_date.strftime('%Y年%m月%d日')
+        if u'其它' in app.place:
+            app.place.append(app.other_place)
+            app.place.remove(u'其它')
     paginator = Paginator(listing, 40)
     try:
         page = paginator.page(request.GET.get('page'))
@@ -84,6 +90,9 @@ def manage(request):
 def get_detail(request):
     app_id = request.GET.get('id')
     app = get_object_or_404(PublicityApplication, id=app_id)
+    if u'其它' in app.place:
+        app.place.append(app.other_place)
+        app.place.remove(u'其它')
     data = {'organization': app.organization.chinese_name,
             'place': app.place, 
             'start_date': app.start_date.strftime('%Y年%m月%d日'),

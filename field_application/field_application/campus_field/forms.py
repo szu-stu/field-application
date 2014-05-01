@@ -175,5 +175,15 @@ class PublicityApplicationForm(forms.ModelForm):
             msg = u'展览时间不得超过3天'
             self._errors['end_date'] = self.error_class([msg])
             del self.cleaned_data['end_date']
+
+        place = self.cleaned_data.get('place')
+        other_place = self.cleaned_data.get('other_place')
+        if u'其它' in place and not other_place:
+            msg = u"选择‘其它’场地时请在右栏输入框填入所申请的场地"
+            self._errors['place'] = self.error_class([msg])
+        elif not u'其它' in place and other_place:
+            msg = u"若要申请其它场地,请勾选‘其它’,否则右边输入框请留空"
+            self._errors['place'] = self.error_class([msg])
+
         return super(PublicityApplicationForm, self).clean()
 

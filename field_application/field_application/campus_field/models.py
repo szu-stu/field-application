@@ -151,6 +151,7 @@ class PublicityApplication(CampusFieldApplication):
     other_activity_type = models.CharField(max_length=10,
                                            blank=True, null=True)
     place = MultiSelectField(max_length=200, choices=PLACE)
+    other_place = models.CharField(max_length=30, null=True, blank=True)
     time = MultiSelectField(max_length=300, choices=TIME)
 
 @receiver(post_delete, sender=CampusFieldApplication)
