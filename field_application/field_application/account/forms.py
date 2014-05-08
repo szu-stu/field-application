@@ -9,6 +9,12 @@ from django.forms import HiddenInput
 from field_application.account.models import Organization
 
 
+BELONG_TO_CHOICES = (
+    ('其它','其它'),
+    ('社团联合会','社团联合会'),
+    ('校学生会','校学生会'),
+    )
+
 class SignInForm(AuthenticationForm):
 
     # 由于这部分django没有翻译，所以直接重写错误信息
@@ -30,12 +36,6 @@ class SignInForm(AuthenticationForm):
         return org.user.username
 
 class SignUpForm(UserCreationForm):
-
-    BELONG_TO_CHOICES = (
-        ('其它','其它'),
-        ('社团联合会','社团联合会'),
-        ('校学生会','校学生会'),
-        )
 
     chinese_name = forms.CharField(max_length=30)
     org_in_charge = forms.CharField(max_length=30)
@@ -68,7 +68,8 @@ class SignUpForm(UserCreationForm):
 
 
 class EditForm(forms.ModelForm):
+    belong_to = forms.ChoiceField(choices=BELONG_TO_CHOICES)
     class Meta:
         model = Organization
-        exclude = ('chinese_name', 'user', 'is_banned', 'belong_to')
+        exclude = ('chinese_name', 'user', 'is_banned')
 

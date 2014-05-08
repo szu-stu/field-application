@@ -56,6 +56,15 @@
                 {% endfor %}
             </label>            
         </div>
+        <div class="message_list">
+            <label class="item">所属组织</label>
+            {{ form.belong_to }}
+            <label class="error">
+                {% for error in form.belong_to.errors %}
+                    {{ error }}&nbsp;
+                {% endfor %}
+            </label>            
+        </div>
         
         <div class="error" style="margin-left:50%">
             {% for error in form.non_field_errors %}

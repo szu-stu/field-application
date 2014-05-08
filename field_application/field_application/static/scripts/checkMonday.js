@@ -2,6 +2,8 @@ $(function(){
 	$('#id_date_month, #id_date_day, #id_date_year').change(checkMonday);
 	$('[id^="id_place_"]').change(checkMonday);
 	$('form').submit(checkMonday);
+	$('#id_date_month, #id_date_day, #id_date_year').change(checkSunday);
+	$('form').submit(checkSunday);
 
 });
 
@@ -29,6 +31,31 @@ function checkMonday(){
 		}
 }
 
+function checkSunday(){
+		var bannedPlaceBox = $('#id_place_0');
+		var bannedTimeChkBoxs = $( '#id_time_24, #id_time_25, #id_time_26, #id_time_27, #id_time_28, #id_time_29 ' );
+		var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
+
+        var bannedTimeChecked = false;
+        for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
+            if(bannedTimeChkBoxs[i].checked)
+            {
+                bannedTimeChecked = true;
+                break;
+            }
+        }
+        
+		if(isSunday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked){
+			timeErrorBox.text( '307会议室周日20：00-23：00暂停申请，谢谢合作!' );
+			alert('307会议室周日20：00-23：00暂停申请，谢谢合作!')
+			return false;
+		}
+		else{
+			bannedTimeChkBoxs.removeAttr( 'disabled' );
+			timeErrorBox.text('');
+		}
+}
+
 function isMonday(){
 	if( $( '#id_date_year'  ).val() == '' ||
 	    $( '#id_date_month' ).val() == '' || 
@@ -38,6 +65,21 @@ function isMonday(){
 	
 	var applDay = new Date( $( '#id_date_year'  ).val(), $( '#id_date_month' ).val()-1, $( '#id_date_day'   ).val() );
 	if( applDay.getDay() == 1 ){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+function isSunday(){
+	if( $( '#id_date_year'  ).val() == '' ||
+	    $( '#id_date_month' ).val() == '' || 
+	    $( '#id_date_day'   ).val() == '' ){
+		return;
+	}
+	var applDay = new Date( $( '#id_date_year'  ).val(), $( '#id_date_month' ).val()-1, $( '#id_date_day'   ).val() );
+	if( applDay.getDay() == 0 ){
 		return true;
 	}
 	else{
