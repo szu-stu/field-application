@@ -5,6 +5,36 @@
 {% block top_title %}<h1>{{ title }}</h1>{% endblock %}
 
 {% block main_content %}
+    <div class="search">
+        <form action="" method="post">
+            <a href="."><input type="button" value="显示全部" /></a>
+            {% csrf_token %}
+
+            {{ form.search_type }}
+            <span class="error">
+            {% for error in form.search_type.errors %}
+                {{ error }}&nbsp;
+            {% endfor %}
+            </span>
+
+            {{ form.search_value }}
+            <span class="error">
+            {% for error in form.search_value.errors %}
+                {{ error }}&nbsp;
+            {% endfor %}
+            </span>
+
+            {{ form.approved }}
+            <span class="error">
+            {% for error in form.approved.errors %}
+                {{ error }}&nbsp;
+            {% endfor %}
+            </span>
+
+            <input type="submit" value="提交" />
+        </form>
+    </div>
+    
     <table class="table">
         <tr>
             <td style="min-width:100px">申请组织</td>

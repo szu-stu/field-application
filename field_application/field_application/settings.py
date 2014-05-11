@@ -142,6 +142,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
 
+    'django_like',
+
     'field_application.custom',
     'field_application.account',
     'field_application.student_activity_center',

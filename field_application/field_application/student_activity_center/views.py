@@ -17,6 +17,8 @@ from field_application.student_activity_center.models import \
 from field_application.utils.ajax import render_json
 from field_application.account.permission import check_perms, check_ownership
 from field_application.account.permission import check_not_approved
+from field_application.utils.forms import SearchForm
+from field_application.utils.views import search_application 
 
 
 class ApplyView(View):
@@ -49,8 +51,7 @@ def display_table(request):
                   {'table': table, 'curr_week': week})
 
 
-def display_list(request):
-    listing = StudentActivityCenterApplication.objects.all().order_by('-pk')
+def generate_page(listing, request):
     for app in listing:
         app.date = app.date.strftime('%Y年%m月%d日')
         app.place = [app.place]
@@ -60,37 +61,70 @@ def display_list(request):
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
         page = paginator.page(1)
-    return render(request, 'list.html',
-                {'page': page, 'title': u'学生活动中心场地申请',})
+    return page
 
 
-@login_required
-def manage(request):
-    org = request.user.organization
-    if org.user.has_perm('account.manager'):
-        listing = \
-            StudentActivityCenterApplication.objects.all().order_by('-pk')
-    else:
-        listing = StudentActivityCenterApplication.objects.\
-                filter(organization=org).order_by('-pk')
-    for app in listing:
-        app.date = app.date.strftime('%Y年%m月%d日')
-        app.place = [app.place]
-        app.time = app.time
-    paginator = Paginator(listing, 40)
-    try:
-        page = paginator.page(request.GET.get('page'))
-    except InvalidPage:
-        page = paginator.page(1)
-    return render(request, 'manage.html',
-            {'page': page, 'title': u'学生活动中心场地申请',
-             'modify_url': reverse('student_activity_center:modify'),
-             'approve_url': \
-                     reverse('student_activity_center:manager_approve'),
-             'delete_url': \
-                     reverse('student_activity_center:delete')})
+class ListAppView(View):
 
+    def get(self, request):
+        listing = StudentActivityCenterApplication.objects.all().order_by('-pk')
+        return render(request, 'list.html',
+                    {'page': generate_page(listing, request),
+                     'title': u'学生活动中心场地申请',
+                     'form': SearchForm})
+
+    def post(self, request):
+        form = SearchForm(request.POST)
+        if not form.is_valid():
+            listing = \
+                StudentActivityCenterApplication.objects.all().order_by('-pk')
+        else:
+            listing = search_application(StudentActivityCenterApplication,
+                                         form)
+        return render(request, 'list.html',
+                    {'page': generate_page(listing, request),
+                     'title': u'学生活动中心场地申请',
+                     'form': form})
+
+
+class ManageView(View):
+
+    @method_decorator(login_required)
+    def get(self, request):
+        return ManageView.manage(request,
+            StudentActivityCenterApplication.objects.all(),
+            SearchForm())
+
+    @method_decorator(login_required)
+    def post(self, request):
+        form = SearchForm(request.POST)
+        if not form.is_valid():
+            listing = \
+                StudentActivityCenterApplication.objects.all().order_by('-pk')
+        else:
+            listing = search_application(StudentActivityCenterApplication,
+                                         form)
+        return ManageView.manage(request, listing, form)
+
+    @classmethod
+    def manage(cls, request, listing, form):
+        org = request.user.organization
+        if org.user.has_perm('account.manager'):
+            listing = \
+                listing.order_by('-pk')
+        else:
+            listing = listing.filter(organization=org).order_by('-pk')
+        page = generate_page(listing, request)
+        return render(request, 'manage.html',
+                {'page': page, 'title': u'学生活动中心场地申请',
+                 'modify_url': reverse('student_activity_center:modify'),
+                 'approve_url': \
+                         reverse('student_activity_center:manager_approve'),
+                 'delete_url': \
+                         reverse('student_activity_center:delete'),
+                 'form': form})
  
+
 def get_detail(request):
     app_id = request.GET.get('id')
     app = get_object_or_404(StudentActivityCenterApplication, id=app_id)
