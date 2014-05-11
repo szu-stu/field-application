@@ -6,6 +6,12 @@ td.aui_main{
 /* application list table */
 td.app_sing_cond{
     text-align: left;
+	border-right-color: transparent;
+}
+td.app_sing_appTime{
+	text-align: right;
+	width: 160px;
+	border-left-color: transparent;
 }
 .app_table_title{
     background-color: #CCCCCC;

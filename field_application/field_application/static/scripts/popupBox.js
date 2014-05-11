@@ -38,6 +38,7 @@ function appListGen( ary, place ){
 
 	var appListTD = appListTR.insertCell( 0 );
 	appListTD.className = 'app_table_title';
+	appListTD.colSpan = "2";
 	appListTD.appendChild( document.createTextNode( "点击标题查看详细内容" ) );
 
 
@@ -55,6 +56,11 @@ function appListGen( ary, place ){
 
 		appListTD.innerHTML += detailLink;
 		appListTD.innerHTML += "&nbsp;&nbsp;【<span" + approvedText + "</span>】";
+		
+		appListTD = appListTR.insertCell( -1 );
+		appListTD.className = 'app_sing_appTime';
+		appListTD.innerHTML = ary[i].app_time;
+
 	}
 
 	return appList;
