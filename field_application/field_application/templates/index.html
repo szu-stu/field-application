@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div class="main">
-		<ul>
+		<ul style="padding-left:0px,margin-left:0px;">
 				{% if user.is_authenticated %}
 				<li class="style" style="height:50px;line-height:50px"><strong>{{ user.organization.chinese_name }}</strong></li>
 				<li class="style" style="height:50px;line-height:50px" >
@@ -29,12 +29,18 @@
 					<a href="{% url 'account:signup' %}">注册</a>
 				{% endif %}
 			</li>
+			<li style="height:210px;">
+				<a href="http://www.szu.edu.cn/minivideo/signup/">
+					<img src="/static/images/banner.jpg" width="100%" height="100%" style="position:absolute;left:0px" alt="微视频宣传" />
+				</a>
+			</li>
 			<li style="background-color:#E3EAF0;color:#D00000;font-size:42px;font-weight:bold;">
 				校园各场地申请
 			</li>
 			<li style="background-color:#E3EAF0;color:#000000;font-size:24px;font-weight:bold;">
 				<a href="http://www.szu.edu.cn/board/view.asp?id=259620">重申遵守教室管理规定</a>
 			</li>
+			
 			<li class="style">
 				<a href="{% url 'student_activity_center:table' %}" class="left">学生活动中心场地申请</a>
 				<a href="{% url 'student_activity_center:apply' %}" class="right">网上申请</a>
