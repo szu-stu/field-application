@@ -44,7 +44,8 @@
                                  data-app-id="[
                                     {% for app in apps %} 
                                         {id:'{{ app.id }}', title:'{{app.activity}}',
-                                         approved:'{{ app.approved }}' }, 
+                                         approved:'{{ app.approved }}',
+										 app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}' }, 
                                     {% endfor %}]"
                                  onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'exhibit' )">
                                 </td>
