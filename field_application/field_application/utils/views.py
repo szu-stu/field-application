@@ -1,5 +1,8 @@
 from field_application.utils.forms import SearchForm
 from field_application.meeting_room.models import MeetingRoomApplication
+from field_application.campus_field.models import PublicityApplication
+from field_application.campus_field.models import ExhibitApplication
+from django.db.models import Q
 
 
 def search_application(model, form):
@@ -17,7 +20,11 @@ def search_application(model, form):
         else:
             apps = model.objects.filter(activity__like=search_value)
     elif search_type == 'place':
-        apps = model.objects.filter(place__like=search_value)
+        if model == PublicityApplication:
+            apps = model.objects.filter(
+                Q(other_place__like=search_value) | Q(place__like=search_value))
+        else:
+            apps = model.objects.filter(place__like=search_value)
     else:
         raise Exception('search_type is not valid')
 

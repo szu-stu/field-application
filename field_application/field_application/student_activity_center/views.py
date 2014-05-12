@@ -71,7 +71,7 @@ class ListAppView(View):
         return render(request, 'list.html',
                     {'page': generate_page(listing, request),
                      'title': u'学生活动中心场地申请',
-                     'form': SearchForm})
+                     'form': SearchForm()})
 
     def post(self, request):
         form = SearchForm(request.POST)
@@ -80,7 +80,7 @@ class ListAppView(View):
                 StudentActivityCenterApplication.objects.all().order_by('-pk')
         else:
             listing = search_application(StudentActivityCenterApplication,
-                                         form)
+                                         form).order_by('-pk')
         return render(request, 'list.html',
                     {'page': generate_page(listing, request),
                      'title': u'学生活动中心场地申请',

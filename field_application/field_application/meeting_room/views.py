@@ -53,17 +53,15 @@ def display_table(request):
 
 
 def generate_page(listing, request):
-    paginator = Paginator(listing, 40)
     for app in listing:
         app.date = app.date.strftime('%Y年%m月%d日')
         app.activity = app.meeting_topic
+    paginator = Paginator(listing, 40)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
         page = paginator.page(1)
     return page
-    return render(request, 'list.html',
-                  {'page': page, 'title': u'会议室使用申请'})
 
     
 class ListAppView(View):
@@ -73,14 +71,15 @@ class ListAppView(View):
         return render(request, 'list.html',
                     {'page': generate_page(listing, request),
                      'title': u'会议室使用申请',
-                     'form': SearchForm})
+                     'form': SearchForm()})
 
     def post(self, request):
         form = SearchForm(request.POST)
         if not form.is_valid():
             listing = MeetingRoomApplication.objects.all().order_by('-pk')
         else:
-            listing = search_application(MeetingRoomApplication, form)
+            listing = search_application(MeetingRoomApplication,
+                                         form).order_by('-pk')
         return render(request, 'list.html',
                     {'page': generate_page(listing, request),
                      'title': u'会议室使用申请',
