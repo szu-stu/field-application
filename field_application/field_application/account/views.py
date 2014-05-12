@@ -120,7 +120,8 @@ class Profile(DetailView):
 
 
 def org_manage(request):
-    orgs = Organization.objects.all().order_by('-pk')
+    orgs = Organization.objects.filter(
+        user__is_active=True).order_by('-pk')
     return render(request, 'account/org-manage.html',
             {'list': orgs})
 
