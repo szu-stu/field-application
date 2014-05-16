@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 import logging
+import datetime
 
 from django.views.generic import View
 from django.shortcuts import render, render_to_response, get_object_or_404
@@ -18,6 +19,43 @@ from field_application.account.permission import check_perms, check_ownership
 from field_application.account.permission import check_not_approved
 from field_application.utils.forms import SearchForm
 from field_application.utils.views import search_application 
+
+
+def find_conflict_app(id, place, date, time):
+    ''' time 的元素为MeetingRoomApplication.TIME中的时间段
+        用","隔开
+    '''
+    time_like = '%' + '%'.join(time.split(',')) + '%'
+    conflict_app = MeetingRoomApplication.objects.filter(
+            place=place,
+            date=date,
+            time__like=time_like).exclude(pk=id)
+    return [(a.organization.chinese_name,
+             a.meeting_topic,
+             a.approved,
+             list(set(a.time) & set(time.split(','))),
+             a.pk) for a in conflict_app]
+
+
+def conflict_for_form(request):
+    ''' return conflict application to form '''
+    if request.method != 'GET':
+        raise Exception('request method is not GET')
+    id = request.GET.get('id')
+    time = request.GET.get('time')
+    place = request.GET.get('place')
+    app_date = datetime.datetime.strptime(request.GET.get('date'),
+                                          '%Y-%m-%d').date()
+    return render_json(find_conflict_app(id, place, app_date, time))
+
+
+def conflict_for_dialog(request):
+    ''' list conflict application on dialog '''
+    if request.method != 'GET':
+        raise Exception('request method is not GET')
+    id = request.GET.get('id')
+    a = get_object_or_404(MeetingRoomApplication, id=id)
+    return render_json(find_conflict_app(id, a.place, a.date, ','.join(a.time)))
 
 
 class ApplyMeetingRoomView(View):

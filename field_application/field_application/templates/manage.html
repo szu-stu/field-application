@@ -57,7 +57,7 @@
             <td onclick="javascript:showAppForm({{ app.id }}, plc)">{% for place in app.place %} {{ place }} {% endfor %}</td>
             <td onclick="javascript:showAppForm({{ app.id }}, plc)">{{ app.date }}</td>
             <td onclick="javascript:showAppForm({{ app.id }}, plc)">{% for time in app.time %} {{ time }} {% endfor %}</td>
-            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{{ app.application_time }}</td>
+            <td onclick="javascript:showAppForm({{ app.id }}, plc)">{{ app.application_time | date:"Y年n月d日G时i分" }}</td>
             <td onclick="javascript:showAppForm({{ app.id }}, plc)">
                 {% if app.approved %}
                     <span style="color: #ff0000;">已批准</span>
