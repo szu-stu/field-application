@@ -15,7 +15,9 @@ from field_application.account.permission import check_perms
 from field_application.meeting_room.forms import MeetingRoomApplicationForm
 from field_application.meeting_room.models import MeetingRoomApplication
 from field_application.utils.ajax import render_json
-from field_application.account.permission import check_perms, check_ownership
+from field_application.account.permission import check_perms
+from field_application.account.permission import check_ownership_MeetingRoom
+from field_application.account.permission import check_MeetingRoomManager
 from field_application.account.permission import check_not_approved
 from field_application.utils.forms import SearchForm
 from field_application.utils.views import search_application 
@@ -147,10 +149,16 @@ class ManageView(View):
     def manage(cls, request, listing, form):
         org = request.user.organization
         if org.user.has_perm('account.manager'):
-            listing = listing.order_by('-pk')
+            filtered_list = listing.order_by('-pk')
         else:
-            listing = listing.filter(organization=org).order_by('-pk')
-        page = generate_page(listing, request)
+            filtered_list = listing.filter(organization=org).order_by('-pk')
+        if org.user.has_perm('account.StoneDock1stFloorMeetingRoomManager'):
+            filtered_list = filtered_list | listing.filter(
+                    place=u'石头坞一楼会议室').order_by('-pk')
+        if org.user.has_perm('account.StoneDock2ndFloorMeetingRoomManager'):
+            filtered_list = filtered_list | listing.filter(
+                    place=u'石头坞二楼会议室').order_by('-pk')
+        page = generate_page(filtered_list, request)
         return render(request, 'manage.html',
                 {'page': page, 'title': u'会议室使用申请',
                  'modify_url': reverse('meeting_room:modify'),
@@ -184,7 +192,7 @@ def get_detail(request):
 class ModifyView(View):
 
     @method_decorator(login_required)
-    @method_decorator(check_ownership(MeetingRoomApplication))
+    @method_decorator(check_ownership_MeetingRoom)
     @method_decorator(check_not_approved(MeetingRoomApplication))
     def get(self, request):
         app_id = request.GET.get('id')
@@ -195,7 +203,7 @@ class ModifyView(View):
                  'post_url': reverse('meeting_room:modify')+'?id='+app_id})
 
     @method_decorator(login_required)
-    @method_decorator(check_ownership(MeetingRoomApplication))
+    @method_decorator(check_ownership_MeetingRoom)
     @method_decorator(check_not_approved(MeetingRoomApplication))
     def post(self, request):
         app_id = request.GET.get('id')
@@ -210,7 +218,7 @@ class ModifyView(View):
 
 
 @login_required
-@check_ownership(MeetingRoomApplication)
+@check_ownership_MeetingRoom
 @check_not_approved(MeetingRoomApplication)
 def delete(request):
     app_id = request.GET.get('id')
@@ -220,7 +228,7 @@ def delete(request):
 
 
 @login_required
-@check_perms('account.manager', u'无管理权限')
+@check_MeetingRoomManager(u'无管理权限')
 def manager_approve(request):
     app_id = request.GET.get('id')
     app = get_object_or_404(MeetingRoomApplication, id=app_id)

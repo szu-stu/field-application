@@ -8,6 +8,8 @@ class Organization(models.Model):
         permissions = (
             ('manager', u'可以管理其他组织和审核申请'),
             ('youth_league_committee', u'可以使用会议室'),
+            ('StoneDock1stFloorMeetingRoomManager', u'石头坞一楼会议室管理员'),
+            ('StoneDock2ndFloorMeetingRoomManager', u'石头坞二楼会议室管理员'),
         )
     user = models.OneToOneField(User)
     chinese_name = models.CharField(max_length=30, unique=True)
