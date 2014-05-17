@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 
+from field_application.meeting_room.models import MeetingRoomApplication
+
 
 def guest_or_redirect(function=None):
     actual_decorator = user_passes_test(
@@ -61,6 +63,49 @@ def check_ownership(ApplicationModel):
             return function(request, *args, **kwargs)
         return wrapped_check
     return decorator
+
+
+def check_MeetingRoomManager(message=u'权限不足'):
+    ''' specialization for meeting room '''
+    def decorator(function):
+        def wrapped_check(request, *args, **kwargs):
+            app_id = request.GET.get('id')
+            if not app_id:
+                return render(request, 'deny.html',
+                        {'message': u'非法地址'})
+            app = get_object_or_404(MeetingRoomApplication, id=app_id)
+            user = request.user
+            if not user.has_perm('account.manager') \
+                    and not (app.place == u'石头坞一楼会议室' and \
+                        user.has_perm('account.StoneDock1stFloorMeetingRoomManager')) \
+                    and not (app.place == u'石头坞二楼会议室' and \
+                        user.has_perm('account.StoneDock2ndFloorMeetingRoomManager')):
+                return render(request, 'deny.html', {'message': message})
+            return function(request, *args, **kwargs)
+        return wrapped_check
+    return decorator
+
+
+def check_ownership_MeetingRoom(function):
+    ''' specialization for meeting room '''
+    def wrapped_check(request, *args, **kwargs):
+        app_id = request.GET.get('id')
+        if not app_id:
+            return render(request, 'deny.html',
+                    {'message': u'非法地址'})
+        app = get_object_or_404(MeetingRoomApplication, id=app_id)
+        user = request.user
+        if user.organization.id != app.organization.id \
+                and not user.has_perms('account.manager') \
+                and not (app.place == u'石头坞一楼会议室' and \
+                    user.has_perm('account.StoneDock1stFloorMeetingRoomManager')) \
+                and not (app.place == u'石头坞二楼会议室' and \
+                    user.has_perm('account.StoneDock2ndFloorMeetingRoomManager')):
+            return render(request, 'deny.html',
+                    {'message': u'不能修改他人申请表'})
+        return function(request, *args, **kwargs)
+    return wrapped_check
+
 
 
 def check_not_approved(ApplicationModel):

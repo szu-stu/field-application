@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 import logging
+import datetime
 
 from django.views.generic import View
 from django.shortcuts import render, render_to_response, get_object_or_404
@@ -14,8 +15,49 @@ from field_application.account.permission import check_perms
 from field_application.meeting_room.forms import MeetingRoomApplicationForm
 from field_application.meeting_room.models import MeetingRoomApplication
 from field_application.utils.ajax import render_json
-from field_application.account.permission import check_perms, check_ownership
+from field_application.account.permission import check_perms
+from field_application.account.permission import check_ownership_MeetingRoom
+from field_application.account.permission import check_MeetingRoomManager
 from field_application.account.permission import check_not_approved
+from field_application.utils.forms import SearchForm
+from field_application.utils.views import search_application 
+
+
+def find_conflict_app(id, place, date, time):
+    ''' time 的元素为MeetingRoomApplication.TIME中的时间段
+        用","隔开
+    '''
+    time_like = '%' + '%'.join(time.split(',')) + '%'
+    conflict_app = MeetingRoomApplication.objects.filter(
+            place=place,
+            date=date,
+            time__like=time_like).exclude(pk=id)
+    return [(a.organization.chinese_name,
+             a.meeting_topic,
+             a.approved,
+             list(set(a.time) & set(time.split(','))),
+             a.pk) for a in conflict_app]
+
+
+def conflict_for_form(request):
+    ''' return conflict application to form '''
+    if request.method != 'GET':
+        raise Exception('request method is not GET')
+    id = request.GET.get('id')
+    time = request.GET.get('time')
+    place = request.GET.get('place')
+    app_date = datetime.datetime.strptime(request.GET.get('date'),
+                                          '%Y-%m-%d').date()
+    return render_json(find_conflict_app(id, place, app_date, time))
+
+
+def conflict_for_dialog(request):
+    ''' list conflict application on dialog '''
+    if request.method != 'GET':
+        raise Exception('request method is not GET')
+    id = request.GET.get('id')
+    a = get_object_or_404(MeetingRoomApplication, id=id)
+    return render_json(find_conflict_app(id, a.place, a.date, ','.join(a.time)))
 
 
 class ApplyMeetingRoomView(View):
@@ -50,41 +92,79 @@ def display_table(request):
             {'table': table, 'curr_week': week})
 
 
-def display_list(request):
-    listing = MeetingRoomApplication.objects.all().order_by('-pk')
-    paginator = Paginator(listing, 40)
+def generate_page(listing, request):
     for app in listing:
         app.date = app.date.strftime('%Y年%m月%d日')
         app.activity = app.meeting_topic
+    paginator = Paginator(listing, 40)
     try:
         page = paginator.page(request.GET.get('page'))
     except InvalidPage:
         page = paginator.page(1)
-    return render(request, 'list.html',
-                    {'page': page, 'title': u'会议室使用申请'})
+    return page
 
+    
+class ListAppView(View):
 
-@login_required
-def manage(request):
-    org = request.user.organization
-    if org.user.has_perm('account.manager'):
+    def get(self, request):
         listing = MeetingRoomApplication.objects.all().order_by('-pk')
-    else:
-        listing = MeetingRoomApplication.objects.\
-                filter(organization=org).order_by('-pk')
-    for app in listing:
-        app.date = app.date.strftime('%Y年%m月%d日')
-        app.activity = app.meeting_topic
-    paginator = Paginator(listing, 40)
-    try:
-        page = paginator.page(request.GET.get('page'))
-    except InvalidPage:
-        page = paginator.page(1)
-    return render(request, 'manage.html',
-            {'page': page, 'title': u'会议室使用申请',
-             'modify_url': reverse('meeting_room:modify'),
-             'approve_url': reverse('meeting_room:manager_approve'),
-             'delete_url': reverse('meeting_room:delete')})
+        return render(request, 'list.html',
+                    {'page': generate_page(listing, request),
+                     'title': u'会议室使用申请',
+                     'form': SearchForm()})
+
+    def post(self, request):
+        form = SearchForm(request.POST)
+        if not form.is_valid():
+            listing = MeetingRoomApplication.objects.all().order_by('-pk')
+        else:
+            listing = search_application(MeetingRoomApplication,
+                                         form).order_by('-pk')
+        return render(request, 'list.html',
+                    {'page': generate_page(listing, request),
+                     'title': u'会议室使用申请',
+                     'form': form})
+
+
+class ManageView(View):
+
+    @method_decorator(login_required)
+    def get(self, request):
+        return ManageView.manage(request,
+            MeetingRoomApplication.objects.all(),
+            SearchForm())
+
+    @method_decorator(login_required)
+    def post(self, request):
+        form = SearchForm(request.POST)
+        if not form.is_valid():
+            listing = \
+                MeetingRoomApplication.objects.all().order_by('-pk')
+        else:
+            listing = search_application(MeetingRoomApplication,
+                                         form)
+        return ManageView.manage(request, listing, form)
+
+    @classmethod
+    def manage(cls, request, listing, form):
+        org = request.user.organization
+        if org.user.has_perm('account.manager'):
+            filtered_list = listing.order_by('-pk')
+        else:
+            filtered_list = listing.filter(organization=org).order_by('-pk')
+        if org.user.has_perm('account.StoneDock1stFloorMeetingRoomManager'):
+            filtered_list = filtered_list | listing.filter(
+                    place=u'石头坞一楼会议室').order_by('-pk')
+        if org.user.has_perm('account.StoneDock2ndFloorMeetingRoomManager'):
+            filtered_list = filtered_list | listing.filter(
+                    place=u'石头坞二楼会议室').order_by('-pk')
+        page = generate_page(filtered_list, request)
+        return render(request, 'manage.html',
+                {'page': page, 'title': u'会议室使用申请',
+                 'modify_url': reverse('meeting_room:modify'),
+                 'approve_url': reverse('meeting_room:manager_approve'),
+                 'delete_url': reverse('meeting_room:delete'),
+                 'form': form})
 
  
 def get_detail(request):
@@ -112,7 +192,7 @@ def get_detail(request):
 class ModifyView(View):
 
     @method_decorator(login_required)
-    @method_decorator(check_ownership(MeetingRoomApplication))
+    @method_decorator(check_ownership_MeetingRoom)
     @method_decorator(check_not_approved(MeetingRoomApplication))
     def get(self, request):
         app_id = request.GET.get('id')
@@ -123,7 +203,7 @@ class ModifyView(View):
                  'post_url': reverse('meeting_room:modify')+'?id='+app_id})
 
     @method_decorator(login_required)
-    @method_decorator(check_ownership(MeetingRoomApplication))
+    @method_decorator(check_ownership_MeetingRoom)
     @method_decorator(check_not_approved(MeetingRoomApplication))
     def post(self, request):
         app_id = request.GET.get('id')
@@ -138,7 +218,7 @@ class ModifyView(View):
 
 
 @login_required
-@check_ownership(MeetingRoomApplication)
+@check_ownership_MeetingRoom
 @check_not_approved(MeetingRoomApplication)
 def delete(request):
     app_id = request.GET.get('id')
@@ -148,7 +228,7 @@ def delete(request):
 
 
 @login_required
-@check_perms('account.manager', u'无管理权限')
+@check_MeetingRoomManager(u'无管理权限')
 def manager_approve(request):
     app_id = request.GET.get('id')
     app = get_object_or_404(MeetingRoomApplication, id=app_id)

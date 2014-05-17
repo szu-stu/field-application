@@ -1,9 +1,8 @@
 #-*- coding: utf-8 -*-
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from django import forms
 from django.forms import ModelForm
-from datetime import datetime
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms import Textarea
 
