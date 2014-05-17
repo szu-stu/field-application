@@ -33,7 +33,17 @@
                 {% for apps in apps_7days %}
                     {% if apps %}
                     <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}"
-                        data-app-id="[{% for app in apps %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}' }, {% endfor %}]"  onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'south_stadium' )">
+                        data-app-id="[
+							{% for app in apps %}
+                                {
+                                    id:'{{ app.id }}',
+									title:'{{app.activity}}',
+									approved:'{{ app.approved }}'
+                                    {% if not forloop.last %},{% endif %}
+                                }	
+								{% endfor %}
+                        ]"
+						onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'south_stadium' )">
                         {# {% for app in apps %} #}
                         {#     <a href="#">{{ app.activity }}</a> #}
                         {# {% endfor %} #}
