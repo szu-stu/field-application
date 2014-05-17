@@ -24,8 +24,8 @@ function showAppList( applAry, place ){
 		   lock: true,
 		 button:[{
 		 	    name: '关闭',
-		 	callback: function(){ this.close(); },
-		 	}],
+		 	callback: function(){ this.close(); }
+		 	}]
 		});
 }
 function appListGen( ary, place ){
@@ -41,9 +41,12 @@ function appListGen( ary, place ){
 	appListTD.colSpan = "2";
 	appListTD.appendChild( document.createTextNode( "点击标题查看详细内容" ) );
 
+	if( typeof (ary[ary.length-1]) == 'undefined' ){
+		ary.length-=1;
+	}
 
 	var i;
-	for( i = 0; i <= ary.length - 1; i++ ){
+	for( i = 0; i < ary.length ; i++ ){
 		appListTR = appList.insertRow( -1 );
 		appListTD = appListTR.insertCell( -1 );
 		appListTD.className = 'app_sing_cond';
@@ -84,8 +87,8 @@ function showAppForm( appId, place ){
 				   lock: true,
 				 button: [{
 				 		    name: "返回",
-				 		callback: function(){ this.close() },
-				 }],
+				 		callback: function(){ this.close() }
+				 }]
 			});
 
 	//artDialog built in ajax   
