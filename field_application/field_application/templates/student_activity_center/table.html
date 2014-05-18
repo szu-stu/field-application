@@ -41,7 +41,18 @@
                 {% for apps in apps_everyday %}
                     {% if apps %}
                     <td class="{% if apps|all_approved %}red{%else%}gray{%endif%}"
-                        data-app-id="[{% for app in apps %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}', app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}' }, {% endfor %}]" onclick="javascript:showAppList(this.getAttribute('data-app-id'), 'student_activity_center' )">
+                        data-app-id="[
+							{% for app in apps %}
+								{
+									id:'{{ app.id }}',
+									title:'{{app.activity}}',
+									approved:'{{ app.approved }}',
+									app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}'
+                                    {% if not forloop.last %},{% endif %}
+                                }
+							{% endfor %}
+						]"
+                        onclick="javascript:showAppList(this.getAttribute('data-app-id'), 'student_activity_center' )">
                         </td>
                     {% else %}
     		        <td class="blue"></td>
