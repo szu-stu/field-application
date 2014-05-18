@@ -27,16 +27,19 @@ def find_conflict_app(id, place, date, time):
     ''' time 的元素为MeetingRoomApplication.TIME中的时间段
         用","隔开
     '''
-    time_like = '%' + '%'.join(time.split(',')) + '%'
-    conflict_app = MeetingRoomApplication.objects.filter(
-            place=place,
-            date=date,
-            time__like=time_like).exclude(pk=id)
-    return [(a.organization.chinese_name,
-             a.meeting_topic,
-             a.approved,
-             list(set(a.time) & set(time.split(','))),
-             a.pk) for a in conflict_app]
+    conflict_app = set()
+    for t in time.split(','):
+        time_like = '%' + t + '%'
+        conflict = MeetingRoomApplication.objects.filter(
+                place=place,
+                date=date,
+                time__like=time_like).exclude(pk=id)
+        conflict_app = conflict_app | set(conflict)
+    return [{'org': a.organization.chinese_name,
+             'meeting_topic': a.meeting_topic,
+             'approved': a.approved,
+             'conflict_time': list(set(a.time) & set(time.split(','))),
+             'app_id': a.pk} for a in conflict_app]
 
 
 def conflict_for_form(request):
@@ -49,15 +52,6 @@ def conflict_for_form(request):
     app_date = datetime.datetime.strptime(request.GET.get('date'),
                                           '%Y-%m-%d').date()
     return render_json(find_conflict_app(id, place, app_date, time))
-
-
-def conflict_for_dialog(request):
-    ''' list conflict application on dialog '''
-    if request.method != 'GET':
-        raise Exception('request method is not GET')
-    id = request.GET.get('id')
-    a = get_object_or_404(MeetingRoomApplication, id=id)
-    return render_json(find_conflict_app(id, a.place, a.date, ','.join(a.time)))
 
 
 class ApplyMeetingRoomView(View):
@@ -159,7 +153,7 @@ class ManageView(View):
             filtered_list = filtered_list | listing.filter(
                     place=u'石头坞二楼会议室').order_by('-pk')
         page = generate_page(filtered_list, request)
-        return render(request, 'manage.html',
+        return render(request, 'meeting_room/manage.html',
                 {'page': page, 'title': u'会议室使用申请',
                  'modify_url': reverse('meeting_room:modify'),
                  'approve_url': reverse('meeting_room:manager_approve'),
@@ -180,12 +174,12 @@ def get_detail(request):
             'applicant_phone_number': app.applicant_phone_number,
             'applicant_stu_id': app.applicant_stu_id,
             'applicant_college': app.applicant_college,
-            'application_time': \
-                    app.application_time.strftime('%Y年%m月%d日 %H:%M:%S'),
             'meeting_summary': app.meeting_summary,
             'remarks': app.remarks,
             'id': app_id,
-            'user_is_manager': request.user.has_perm('account.manager') }
+            'user_is_manager': request.user.has_perm('account.manager'),
+            'conflict_apps': \
+                    find_conflict_app(app_id, app.place, app.date, ','.join(app.time))}
     return render_json(data)
 
 

@@ -8,7 +8,6 @@ from field_application.meeting_room.views import ModifyView
 from field_application.meeting_room.views import ManageView 
 from field_application.meeting_room.views import manager_approve 
 from field_application.meeting_room.views import conflict_for_form
-from field_application.meeting_room.views import conflict_for_dialog
 
 urlpatterns = patterns(
     '',
@@ -23,6 +22,4 @@ urlpatterns = patterns(
 
     url(r'^conflict_for_form/$', conflict_for_form,
         name='conflict_for_form'),
-    url(r'^conflict_for_dialog/$', conflict_for_dialog,
-        name='conflict_for_dialog'),
  )

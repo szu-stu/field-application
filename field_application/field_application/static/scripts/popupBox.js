@@ -145,7 +145,6 @@ function genAppInfoTable( detail, place ){
 	    { index: "sponsorship_usage"      , 'text': "赞助财物用途"   },
 
 	    { index: "approved"               , 'text': "审批情况"       },
-	    { index: "application_time"       , 'text': "申请时间"       },
 	];
 
 	indexToText['meeting_room'] = [
