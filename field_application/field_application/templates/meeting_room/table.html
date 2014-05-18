@@ -52,12 +52,12 @@
                 data-app-id="[
                     {% for app in apps %}
 						{	
-                            id:'{{ app.id }}'
+                            id:'{{ app.id }}',
 							title:'{{app.meeting_topic}}',
 							approved:'{{ app.approved }}',
 							app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}'
-                            {% if not forloop.last %},{% endif %}
                         }
+                        {% if not forloop.last %},{% endif %}
 					{% endfor %}
                 ]" 
                 onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'meeting_room' )">
