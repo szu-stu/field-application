@@ -41,10 +41,6 @@ function appListGen( ary, place ){
 	appListTD.colSpan = "2";
 	appListTD.appendChild( document.createTextNode( "点击标题查看详细内容" ) );
 
-	if( typeof (ary[ary.length-1]) == 'undefined' ){
-		ary.length-=1;
-	}
-
 	var i;
 	for( i = 0; i < ary.length ; i++ ){
 		appListTR = appList.insertRow( -1 );
