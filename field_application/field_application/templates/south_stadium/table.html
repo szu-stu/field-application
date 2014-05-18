@@ -39,9 +39,9 @@
                                     id:'{{ app.id }}',
 									title:'{{app.activity}}',
 									approved:'{{ app.approved }}'
-                                    {% if not forloop.last %},{% endif %}
-                                }	
-								{% endfor %}
+                                }   
+                                {% if not forloop.last %},{% endif %}
+							{% endfor %}
                         ]"
 						onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'south_stadium' )">
                         {# {% for app in apps %} #}
