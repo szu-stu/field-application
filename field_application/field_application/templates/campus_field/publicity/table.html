@@ -56,31 +56,57 @@
                             {% for apps_every_day in apps_every_week %}
 
                                 {% if apps_every_day|get:left %}
-                                <td class="{% if apps_every_day|get:left|all_approved %}red{%else%}gray{%endif%}" data-app-id="[{% for app in apps_every_day|get:left %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}', app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}' }, {% endfor %}]" onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'publicity' )">
-                                    {# {% for app in apps_every_day|get:left %} #}
-                                    {#     {{ app.id }} #}
-                                    {# {% endfor %} #}
+                                <td class="{% if apps_every_day|get:left|all_approved %}red{%else%}gray{%endif%}"
+                                    data-app-id="[
+                                        {% for app in apps_every_day|get:left %}
+                                            {
+                                                id:'{{ app.id }}',
+                                                title:'{{app.activity}}',
+                                                approved:'{{ app.approved }}',
+                                                app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}'
+                                                {% if not forloop.last %}, {% endif %} 
+                                            }
+                                        {% endfor %}
+                                    ]"
+                                    onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'publicity' )">
                                 </td>
                                 {% else %}
                                     <td></td>
                                 {% endif %}
 
                                 {% if apps_every_day|get:mid %}
-                                <td class="{% if apps_every_day|get:mid|all_approved %}red{%else%}gray{%endif%}" data-app-id="[{% for app in apps_every_day|get:mid %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}', app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}'  }, {% endfor %}]" onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'publicity' )">
-                                    {# {% for app in apps_every_day|get:mid %} #}
-                                    {#     {{ app.id }} #}
-                                    {# {% endfor %} #}
+                                <td class="{% if apps_every_day|get:mid|all_approved %}red{%else%}gray{%endif%}"
+                                    data-app-id="[
+                                        {% for app in apps_every_day|get:mid %}
+                                            {
+                                                id:'{{ app.id }}',
+                                                title:'{{app.activity}}',
+                                                approved:'{{ app.approved }}',
+                                                app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}' 
+                                                {% if not forloop.last %}, {% endif %} 
+                                            }
+                                        {% endfor %}
+                                    ]"
+                                    onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'publicity' )">
                                 </td>
                                 {% else %}
                                     <td></td>
                                 {% endif %}
 
                                 {% if apps_every_day|get:right %}
-                                <td class="bold_border_right {% if apps_every_day|get:right|all_approved %}red{%else%}gray{%endif%}" 
-                                     data-app-id="[{% for app in apps_every_day|get:right %} {id:'{{ app.id }}', title:'{{app.activity}}', approved:'{{ app.approved }}', app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}'  }, {% endfor %}]" onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'publicity' )">
-                                    {# {% for app in apps_every_day|get:right%} #}
-                                    {#     {{ app.id }} #}
-                                    {# {% endfor %} #}
+                                <td class="bold_border_right {% if apps_every_day|get:right|all_approved %}red{%else%}gray{%endif%}"   
+                                    data-app-id="[
+                                        {% for app in apps_every_day|get:right %}
+                                            {
+                                                id:'{{ app.id }}',
+                                                title:'{{app.activity}}',
+                                                approved:'{{ app.approved }}',
+                                                app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}' 
+                                                {% if not forloop.last %}, {% endif %} 
+                                            }
+                                        {% endfor %}
+                                    ]"
+                                    onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'publicity' )">
                                 </td>
                                 {% else %}
                                     <td class="bold_border_right"></td>
@@ -88,7 +114,4 @@
 
                             {% endfor %}
                             </tr>
-                        {% endfor %}
-                {% endfor %}
-            </table>
 {% endblock %}

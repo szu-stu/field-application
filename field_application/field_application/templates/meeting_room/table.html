@@ -48,13 +48,19 @@
         <td>{{ date | date:"n月d日" }}</td>
         {% for apps in app_every_day %}
             {% if apps %}
-            <td class="{% if apps|approved_exist %}
-                            red
-                        {%else%}
-                            gray
-                        {%endif%}" 
-                        data-app-id="[{% for app in apps %} {id:'{{ app.id }}', title:'{{app.meeting_topic}}', approved:'{{ app.approved }}', app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}' }, {% endfor %}]" 
-                        onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'meeting_room' )">
+            <td class="{% if apps|approved_exist %}red{%else%}gray{%endif%}" 
+                data-app-id="[
+                    {% for app in apps %}
+						{	
+                            id:'{{ app.id }}'
+							title:'{{app.meeting_topic}}',
+							approved:'{{ app.approved }}',
+							app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}'
+                            {% if not forloop.last %},{% endif %}
+                        }
+					{% endfor %}
+                ]" 
+                onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'meeting_room' )">
             </td>
             {% else %}
             <td></td>
