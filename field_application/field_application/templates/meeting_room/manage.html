@@ -76,6 +76,7 @@
 
             {% if perms.account.manager or perms.account.StoneDock1stFloorMeetingRoomManager or perms.account.StoneDock2ndFloorMeetingRoomManager %}
             <td>
+                <!-- hack!! 当前会议室只有三个场地，307，石头坞一楼跟二楼，如果以后多了一个会议室，以下代码仅仅检查307可能得不到你想要的结果 -->
                 {% if not perms.account.manager and "307" in app.place %}
                     <span style="color: #999999;">
                     {% if app.approved %}
