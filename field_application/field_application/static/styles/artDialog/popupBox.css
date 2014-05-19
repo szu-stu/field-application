@@ -16,20 +16,21 @@ td.app_sing_appTime{
 .app_table_title{
     background-color: #CCCCCC;
     text-align: center;
-    width: 680px;
+    width: 480px;
 }
 span.app_approved{
     color: #E10601;
 }
+
 table.app_table td.gray, table.app_table td.red{
     cursor: pointer;
 }
 
 /* single application info table */
 table.app_info_table{
-    width: 680px;
+    width: 480px;
 }
-table.app_info_table td{
+table.app_table td{
     padding: 3px 5px;
     word-break: break-all;
 }
@@ -39,11 +40,15 @@ td.app_info_cont{
     text-align: left;
 }   
 td.app_info_title{
-    width: 120px;
+    width: 150px;
     vertical-align: top;
     text-align: right;
 }
 
+/* application table with conflict for meeting_room */
+table.app_table_with_conf{
+    width: 680px;
+}
 table.conf_app_table{
     border-collapse: collapse;
     margin-bottom: 10px;

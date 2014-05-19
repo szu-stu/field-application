@@ -212,16 +212,14 @@ function genAppInfoTable( detail, place ){
 		{ index: "plan_file"              , 'text': "策划文件" 		 },
 	];
 
-	indexToText['conflict_apps'] = [
-		{ index: "meeting_topic" , 'text': "会议主题"   },
-		{ index: "org"           , 'text': "申请部门"   },
-	    { index: "approved"      , 'text': "审批情况"   },
-		{ index: "conflict_time" , 'text': "冲突的时间" }
-	];
-
 	var appFormTable = document.createElement( 'table' );
-	appFormTable.className = 'app_table app_info_table';
-
+	appFormTable.className = 'app_table';
+	if( place == 'meeting_room' ){
+		appFormTable.className += ' app_table_with_conf';
+	}
+	else{
+		appFormTable.className += ' app_info_table';
+	}
 	var i;
 	var iTT = indexToText[place];
 	var appFormTableTR, appFormTableTD;
