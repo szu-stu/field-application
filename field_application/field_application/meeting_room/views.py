@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.forms.forms import NON_FIELD_ERRORS
 from django.core.paginator import InvalidPage, Paginator
+from django.utils import timezone
 
 from field_application.account.permission import check_perms
 from field_application.meeting_room.forms import MeetingRoomApplicationForm
@@ -37,6 +38,9 @@ def find_conflict_app(id, place, date, time):
         conflict_app = conflict_app | set(conflict)
     return [{'org': a.organization.chinese_name,
              'meeting_topic': a.meeting_topic,
+             'apply_time': \
+                     timezone.localtime(
+                         a.application_time).strftime('%Y年%m月%d日 %H:%M:%S'),
              'approved': a.approved,
              'conflict_time': list(set(a.time) & set(time.split(','))),
              'app_id': a.pk} for a in conflict_app]
@@ -80,7 +84,10 @@ class ApplyMeetingRoomView(View):
 
 
 def display_table(request):
-    week = int(request.GET.get('week') or 0)
+    try:
+        week = int(request.GET.get('week') or 0)
+    except ValueError:
+        week = 0
     table = MeetingRoomApplication.generate_table(offset=week)
     return render(request, 'meeting_room/table.html',
             {'table': table, 'curr_week': week})
