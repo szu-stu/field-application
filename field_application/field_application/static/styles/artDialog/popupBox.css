@@ -16,7 +16,7 @@ td.app_sing_appTime{
 .app_table_title{
     background-color: #CCCCCC;
     text-align: center;
-    width: 480px;
+    width: 680px;
 }
 span.app_approved{
     color: #E10601;
@@ -27,14 +27,14 @@ table.app_table td.gray, table.app_table td.red{
 
 /* single application info table */
 table.app_info_table{
-    width: 480px;
+    width: 680px;
 }
 table.app_info_table td{
     padding: 3px 5px;
     word-break: break-all;
 }
 td.app_info_cont{
-    width: 360px;
+    width: 560px;
     vertical-align: top;
     text-align: left;
 }   
@@ -42,4 +42,19 @@ td.app_info_title{
     width: 120px;
     vertical-align: top;
     text-align: right;
+}
+
+table.conf_app_table{
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+table.conf_app_table td{
+    vertical-align: top;
+}
+td.conflict_app_info_title{
+    text-align: right;
+}
+tr.conflict_app_info td{
+    width:36px;
+    width:4em;
 }

@@ -74,10 +74,15 @@ function showAppForm( appId, place ){
 		console.log( "ArtDialog not found." );
 	}
 
+	var width = 500;
+	if( place == 'meeting_room' ){
+		width: 700;
+	}
+
 	var dialog = artDlgBox.dialog({
 				  title: "",
 
-				  width: 500,
+				  width: width,
 				 height: 300,
 
 				   lock: true,
@@ -157,8 +162,9 @@ function genAppInfoTable( detail, place ){
 		{ index: "date"                   , 'text': "会议日期"   },	
 		{ index: "time"                   , 'text': "会议时间"   },
 		{ index: "meeting_summary"        , 'text': "会议简介"   },
-	  //{ index: "plan_file"              , 'text': "策划文件"   },
-		{ index: "remarks"                , 'text': "备注"       },
+	  //{ index: "plan_file"              , 'text': "策划文件"        },
+		{ index: "remarks"                , 'text': "备注"           },
+		{ index: "conflict_apps"		  , 'text': "时间重叠的申请" }
 	];
 
 	indexToText['exhibit'] = [
@@ -206,6 +212,12 @@ function genAppInfoTable( detail, place ){
 		{ index: "plan_file"              , 'text': "策划文件" 		 },
 	];
 
+	indexToText['conflict_apps'] = [
+		{ index: "meeting_topic" , 'text': "会议主题"   },
+		{ index: "org"           , 'text': "申请部门"   },
+	    { index: "approved"      , 'text': "审批情况"   },
+		{ index: "conflict_time" , 'text': "冲突的时间" }
+	];
 
 	var appFormTable = document.createElement( 'table' );
 	appFormTable.className = 'app_table app_info_table';
@@ -224,7 +236,6 @@ function genAppInfoTable( detail, place ){
 		    appFormTableTD = appFormTableTR.insertCell( -1 );
 			appFormTableTD.className = 'app_info_cont';
 
-		    var insertText = '';
 		    switch( iTT[i]['index'] ){
 		    	case 'plan_file':
 		    		if( detail[iTT[i]['index']] !='' )
@@ -235,9 +246,55 @@ function genAppInfoTable( detail, place ){
 		    	case 'approved':
 		    		detail['approved'] = ( detail['approved'] == true ) ? "已审批": "未审批";
 		    		break;
+		    	case 'conflict_apps':
+		    		var conflictAppsText = new Array();
+		    		var conf_apps = detail['conflict_apps'];
+
+		    		if( conf_apps.length == 0 ){
+		    			detail['conflict_apps'] = "无";
+		    		}
+		    		else{
+			    		var j = 0;
+			    		for( j = 0; j <conf_apps.length; j++ ) {
+			    			var currentConflictApp = conf_apps[ j ];
+			    			currentConflictApp['approved'] = (currentConflictApp['approved']==true)?"已审批":"未审批";
+			    			conflictAppsText[j]= '<table class="conf_app_table">\
+			    									<tr class="conflict_app_info">\
+			    										<td class="conflict_app_info_title">会议主题：</td><td>'+
+			    										currentConflictApp['meeting_topic']+
+			    										'</td>\
+			    									</tr>\
+			    									<tr class="conflict_app_info">\
+			    										<td class="conflict_app_info_title">申请组织：</td><td>'+
+			    										currentConflictApp['org']+
+			    										'</td>\
+			    									</tr>\
+			    									<tr class="conflict_app_info">\
+			    										<td class="conflict_app_info_title">申请时间：</td><td>'+
+			    										currentConflictApp['apply_time']+
+			    										'</td>\
+			    									</tr>\
+			    									<tr class="conflict_app_info">\
+			    										<td class="conflict_app_info_title">审批情况：</td><td>'+
+			    										currentConflictApp['approved']+
+			    										'</td>\
+			    									</tr>\
+			    									<tr class="conflict_times">\
+			    										<td class="conflict_app_info_title">冲突时间：</td>\
+			    										<td colSpan="2">'+
+			    											currentConflictApp['conflict_time'].join(',')+
+			    										'</td>\
+			    									</tr>\
+			    								  </table>';
+
+			    		};
+		    			detail['conflict_apps'] =  conflictAppsText.join( " " );
+		    		}
+
+		    		break;
 		    }
-		    insertText = detail[iTT[i]['index']];
-		    appFormTableTD.innerHTML = insertText;
+
+		    appFormTableTD.innerHTML =  detail[iTT[i]['index']];
 
 		//end inserting row
 	}
@@ -250,6 +307,6 @@ function genAppInfoTable( detail, place ){
 		var linkText = ( detail['approved'] == true ) ? "解除通过": "通过审批"
 		appFormTableTD.innerHTML = '<a href="' + linkAdd + '">' + linkText + '</a>';
 	}
-	
+
 	return appFormTable;
 }
