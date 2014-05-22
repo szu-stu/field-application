@@ -9,13 +9,13 @@
 {% block htmlhead %}
     {% load html_tools %}
     {{ 'jQuery/jquery-1.11.0.min.js'  | as_js  }}
-    {{ 'checkMonday.js'  | as_js  }}
+    {{ 'meeting_room_validation.js'   | as_js  }}
 {% endblock %}
 
 {% block main_content %}
     <h6 style="color:red;text-align:center;line-height:300%">石头坞一楼会议室周一12：00-14：00暂停申请，</h6>
     <h6 style="color:red;text-align:center;line-height:300%">307会议室周日20：00-23：00暂停申请，谢谢合作!</h6>
-    <form method="POST" enctype="multipart/form-data" action="{{ post_url }}">
+    <form method="POST" enctype="multipart/form-data" action="{{ post_url }}" id="application_form">
         {% csrf_token %}
         <table>
             <tr>
@@ -143,7 +143,7 @@
             {% endfor %}
         </div>        
         <div class="button_container">
-            <input type="submit" value="提交" />
+            <input type="button" onclick="checkConflict()" value="提交" />
             <input type="reset" value="重置" style="margin-left:100px;"/>
         </div>
     </form>

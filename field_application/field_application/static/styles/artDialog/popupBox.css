@@ -58,8 +58,7 @@ table.conf_app_table td{
 }
 td.conflict_app_info_title{
     text-align: right;
-}
-tr.conflict_app_info td{
-    width:36px;
-    width:4em;
+
+    width:40px;
+    width:5em;
 }
