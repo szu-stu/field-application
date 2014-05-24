@@ -166,6 +166,9 @@ function checkConflict( ){
 		        	$('#application_form').submit();
 	    		}
 	        }
+	        else{
+	        	$('#application_form').submit();
+	        }
 	    	
 	    }
 	});
