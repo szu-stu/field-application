@@ -34,9 +34,7 @@ class MeetingRoomApplication(models.Model):
     TIME = generate_time_table()
 
     PLACE = (
-        (u'学生活动中心307会议室', u'学生活动中心307会议室'),
         (u'石头坞一楼会议室', u'石头坞一楼会议室'),
-        (u'石头坞二楼会议室', u'石头坞二楼会议室'),
         #(u'学生活动中心305会议室', u'学生活动中心305会议室'),
     )
 
