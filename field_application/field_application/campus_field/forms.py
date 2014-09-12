@@ -171,8 +171,8 @@ class PublicityApplicationForm(forms.ModelForm):
             del self.cleaned_data['end_date']
             return super(PublicityApplicationForm, self).clean()
         if start_date and end_date \
-                and end_date > start_date + timedelta(days=2):
-            msg = u'展览时间不得超过3天'
+                and end_date > start_date + timedelta(days=1):
+            msg = u'展览时间不得超过2天'
             self._errors['end_date'] = self.error_class([msg])
             del self.cleaned_data['end_date']
 
