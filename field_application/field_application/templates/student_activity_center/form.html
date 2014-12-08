@@ -5,6 +5,12 @@
 {% block top_title %}<h1>学生活动中心场地申请</h1>{% endblock %}
 
 {% block main_content %}
+    <h2 style="text-align:center;color:red">    
+        由于期末临近,
+        校方决定20号及20号以后的场地都不给予申请，
+        请同学们多多合作
+    </h2>
+    </br>
     <form method="POST" enctype="multipart/form-data" action="{{ post_url }}">
         {% csrf_token %}
         <table>
