@@ -132,6 +132,10 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+RAVEN_CONFIG = {
+    'dsn': '',
+}
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -143,7 +147,8 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 
     'django_like',
-
+     
+    'raven.contrib.django.raven_compat',
     'field_application.custom',
     'field_application.account',
     'field_application.student_activity_center',
