@@ -1,0 +1,67 @@
+{% extends 'table_base.html' %}
+
+{% block htmltitle %}西南综合服务楼场地申请{% endblock %}
+
+{% block htmlhead %}
+    {% load html_tools %}
+
+    {{ 'integrated_service/table.css' | as_css }}
+
+    {{ 'artDialog/v4/artDialog.js'    | as_js  }}
+    {{ 'artDialog/v4/skins/opera.css' | as_css }}
+    {{ 'artDialog/popupBox.css'       | as_css }}
+
+    {{ 'popupBox.js'  | as_js  }}
+{% endblock %}
+
+{% block top_title %}<h1>西南综合服务楼场地申请</h1>{% endblock %}
+{% block title %}西南综合服务楼场地安排表(图形版){% endblock %}
+
+{% block main_content %}
+
+{% for place, apps_every_place in table.content %}
+<table class="app_table">
+    <tr>
+        <td colspan="2"></td>
+        {% for time in table.time_list %}
+        <td>{{ time }}</td>
+        {% endfor %}
+    </tr>
+    {% load check_approved %}
+    {% for app_every_day in apps_every_place %}      
+    {% cycle table.date.0 table.date.1 table.date.2 table.date.3 table.date.4 table.date.5 table.date.6 as date silent %}   
+    <tr>
+        {% if forloop.first %}
+        <td rowspan="7">
+            {{ place }}
+        </td>
+        {% endif %}
+        <td>{{ date | date:"n月d日" }}</td>
+        {% for apps in app_every_day %}
+            {% if apps %}
+            <td class="{% if apps|approved_exist %}red{%else%}gray{%endif%}" 
+                data-app-id="[
+                    {% for app in apps %}
+						{	
+                            id:'{{ app.id }}',
+							title:'{{app.topic}}',
+							approved:'{{ app.approved }}',
+							app_time:'{{ app.application_time | date:"n月d日 H:i:s" }}'
+                        }
+                        {% if not forloop.last %},{% endif %}
+					{% endfor %}
+                ]" 
+                onclick="javascript:showAppList( this.getAttribute('data-app-id'), 'meeting_room' )">
+            </td>
+            {% else %}
+            <td></td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endfor %}
+
+{% endblock %}
+
+
