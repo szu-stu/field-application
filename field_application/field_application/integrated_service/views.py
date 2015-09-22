@@ -162,7 +162,7 @@ class ManageView(View):
  
 def get_detail(request):
     app_id=request.GET.get('id')
-    app = get_object_or_404(MeetingRoomApplication, id=app_id)
+    app = get_object_or_404(InteServiceApplication, id=app_id)
     data = {'organization': app.organization.chinese_name,
             'place': app.place,
             'date': app.date.strftime('%Y年%m月%d日'),
