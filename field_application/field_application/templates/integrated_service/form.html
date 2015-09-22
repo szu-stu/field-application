@@ -16,7 +16,6 @@
     </br>
     <form method="POST" enctype="multipart/form-data" action="{{ post_url }}" id="application_form">
         {% csrf_token %}
-                      <h2 style="color: red; text-align:center">该场地正在测试修改中，暂且使用不了 </h2>
         <table>
             <tr>
                 <td class="title">活动主题</td>
@@ -125,6 +124,39 @@
                     {{ form.remarks }}
                     <div class="error">
                     {% for error in form.remarks.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+             <tr>
+                <td class="title" rowspan="2">
+                     <h5 style="color: red; text-align:center">(必填，若无赞助，请填无)</h5>
+                    有关赞助说明
+                </td>
+                <td colspan="3">
+                    <span>赞助商：</span>
+                    {{ form.sponsor }}
+                    <span>赞助金额及物品：</span>
+                    {{ form.sponsorship }}
+                    <div class="error">
+                    {% for error in form.sponsor.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    </div>
+                    <div class="error">
+                    {% for error in form.sponsorship.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <span>赞助财物主要用于：</span>
+                    {{ form.sponsorship_usage }}
+                    <div class="error">
+                    {% for error in form.sponsorship_usage.errors %}
                         {{ error }}&nbsp;
                     {% endfor %}
                     </div>

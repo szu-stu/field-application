@@ -39,6 +39,7 @@ class InteServiceApplication(models.Model):
         (u'一楼 111工作坊', u'一楼 111工作坊'),
         (u'一楼 110工作坊', u'一楼 110工作坊'),
         (u'四楼 426会议室', u'四楼 426会议室'),
+        (u'一楼 中厅', u'一楼 中厅'),
         #(u'天台', u'天台'),
     )
 
@@ -56,6 +57,9 @@ class InteServiceApplication(models.Model):
     remarks = models.CharField(max_length=300, blank=True, null=True)
     approved = models.BooleanField(default=False)
     application_time = models.DateTimeField(auto_now_add=True)
+    sponsor = models.CharField(max_length=30, blank=True, null=True)
+    sponsorship = models.CharField(max_length=30, blank=True, null=True)
+    sponsorship_usage = models.CharField(max_length=40, blank=True, null=True)
     deleted = models.BooleanField(default=False)
 
 
