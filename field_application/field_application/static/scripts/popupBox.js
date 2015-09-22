@@ -212,6 +212,25 @@ function genAppInfoTable( detail, place ){
 		{ index: "plan_file"              , 'text': "策划文件" 		 },
 	];
 
+	indexToText['integrated_service'] = [
+		{ index: "topic"                  , 'text': "活动主题"   },
+		{ index: "organization"           , 'text': "申请部门"   },
+		{ index: "applicant_name"         , 'text': "申请人姓名" },
+		{ index: "applicant_stu_id"       , 'text': "申请人学号"     },
+		{ index: "applicant_college"      , 'text': "申请人学院"     },
+		{ index: "applicant_phone_number" , 'text': "联系电话"   },
+		{ index: "place"                  , 'text': "申请所用场地"   },
+		{ index: "date"                   , 'text': "申请日期"   },	
+		{ index: "time"                   , 'text': "活动时段"   },
+		{ index: "summary"                , 'text': "活动内容简介"   },
+		{ index: "remarks"                , 'text': "备注"           },
+		{ index: "conflict_apps"		  , 'text': "时间重叠的申请" },
+
+		{ index: "sponsor"                , 'text': "赞助商"         },
+		{ index: "sponsorship"            , 'text': "赞助金额及物品" },
+		{ index: "sponsorship_usage"      , 'text': "赞助财物用途"   },
+	];
+
 	var appFormTable = document.createElement( 'table' );
 	appFormTable.className = 'app_table';
 	if( place == 'meeting_room' ){
