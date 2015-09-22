@@ -162,7 +162,7 @@ class ManageView(View):
  
 def get_detail(request):
     app_id=request.GET.get('id')
-    app = get_object_or_404(InteServiceApplication, id=app_id)
+    app = get_object_or_404(MeetingRoomApplication, id=app_id)
     data = {'organization': app.organization.chinese_name,
             'place': app.place,
             'date': app.date.strftime('%Y年%m月%d日'),
@@ -173,15 +173,16 @@ def get_detail(request):
             'applicant_phone_number': app.applicant_phone_number,
             'applicant_stu_id': app.applicant_stu_id,
             'applicant_college': app.applicant_college,
-            'summary': app.summary,
-            'remarks': app.remarks,
             'sponsor': app.sponsor, 'sponsorship': app.sponsorship,
             'sponsorship_usage': app.sponsorship_usage,
+            'summary': app.summary,
+            'remarks': app.remarks,
             'id': app_id,
             'user_is_manager': request.user.has_perm('account.manager'),
             'conflict_apps': \
                     find_conflict_app(app_id, app.place, app.date, ','.join(app.time))}
     return render_json(data)
+
 
 
 class ModifyView(View):
