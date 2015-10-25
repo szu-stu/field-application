@@ -115,8 +115,8 @@ function checkTuesdayWednewday(){
             }
         }
 		if((isTusday() || isWednesday()) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment() == false){
-			timeErrorBox.text( '综合楼101活动室周二周三18：00-23：00只允许深大团委申请，不便之处请谅，谢谢合作！' );
-			alert('综合楼101活动室周二周三18：00-23：00只允许深大团委申请，不便之处请谅，谢谢合作！')
+			timeErrorBox.text( '综合楼101活动室周二周三18：00-23：00只允许艺术团申请，不便之处请谅，谢谢合作！' );
+			alert('综合楼101活动室周二周三18：00-23：00只允许艺术团申请，不便之处请谅，谢谢合作！')
 			return false;
 		}
 		else{
