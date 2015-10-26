@@ -1,150 +1,160 @@
+// coding by 伟志，reviewing by 泽集
+
 $(function(){
 	//$('#id_date_month, #id_date_day, #id_date_year').change(checkMonday);
 	//$('[id^="id_place_"]').change(checkMonday);
 	//$('form').submit(checkMonday);
 	$('#id_date_month, #id_date_day, #id_date_year').change(checkSunday);
 	$('form').submit(checkSunday);
-	$('#id_date_month, #id_date_day, #id_date_year').change(checkSunday426);
+	$('#id_date_month, #id_date_day, #id_date_year').change(checkSunday426);// 综合服务楼426周日19:30-21:30仅供深大团委使用
 	$('form').submit(checkSunday426);
-	$('#id_date_month, #id_date_day, #id_date_year').change(checkTuesdayWednewday);
-	$('form').submit(checkTuesdayWednewday);
+	$('#id_date_month, #id_date_day, #id_date_year').change(checkMonsdayTuesday);// 综合楼101活动室周一周二18：00-23：00时段供艺术团使用
+	$('form').submit(checkMonsdayTuesday);
 });
 
 function checkMonday(){
-		var bannedPlaceBox = $('#id_place_1');
-		var bannedTimeChkBoxs = $( '#id_time_8, #id_time_9, #id_time_10, #id_time_11 ' );
-		var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
+	var bannedPlaceBox = $('#id_place_1');
+	var bannedTimeChkBoxs = $( '#id_time_8, #id_time_9, #id_time_10, #id_time_11 ' );
+	var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
 
-        var bannedTimeChecked = false;
-        for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
-            if(bannedTimeChkBoxs[i].checked)
-            {
-                bannedTimeChecked = true;
-                break;
-            }
-        }
-		if(isMonday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked){
-			timeErrorBox.text( '石头坞一楼会议室周一12：00-14：00暂停申请，谢谢合作!' );
-			alert('石头坞一楼会议室周一12：00-14：00暂停申请，谢谢合作!')
-			return false;
+	var bannedTimeChecked = false;
+	for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
+		if(bannedTimeChkBoxs[i].checked)
+		{
+			bannedTimeChecked = true;
+			break;
 		}
-		else{
-			bannedTimeChkBoxs.removeAttr( 'disabled' );
-			timeErrorBox.text('');
-		}
+	}
+	if(isMonday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked){
+		timeErrorBox.text( '石头坞一楼会议室周一12：00-14：00暂停申请，谢谢合作!' );
+		alert('石头坞一楼会议室周一12：00-14：00暂停申请，谢谢合作!')
+		return false;
+	}
+	else{
+		bannedTimeChkBoxs.removeAttr( 'disabled' );
+		timeErrorBox.text('');
+	}
 }
 
 function checkSunday(){
-		var bannedPlaceBox = $('#id_place_0');
-		var bannedTimeChkBoxs = $( '#id_time_24, #id_time_25, #id_time_26, #id_time_27, #id_time_28, #id_time_29 ' );
-		var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
+	var bannedPlaceBox = $('#id_place_0');
+	var bannedTimeChkBoxs = $( '#id_time_24, #id_time_25, #id_time_26, #id_time_27, #id_time_28, #id_time_29 ' );
+	var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
 
-        var bannedTimeChecked = false;
-        for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
-            if(bannedTimeChkBoxs[i].checked)
-            {
-                bannedTimeChecked = true;
-                break;
-            }
-        }
-        
-		if(isSunday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked){
-			timeErrorBox.text( '307会议室周日20：00-23：00暂停申请，谢谢合作!' );
-			alert('307会议室周日20：00-23：00暂停申请，谢谢合作!')
-			return false;
+	var bannedTimeChecked = false;
+	for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
+		if(bannedTimeChkBoxs[i].checked)
+		{
+			bannedTimeChecked = true;
+			break;
 		}
-		else{
-			bannedTimeChkBoxs.removeAttr( 'disabled' );
-			timeErrorBox.text('');
-		}
-}
-
-function checkSunday426(){
-		var bannedPlaceBox = $('#id_place_3');
-		var bannedTimeChkBoxs = $( '#id_time_20,#id_time_21,#id_time_22,#id_time_23,#id_time_24, #id_time_25, #id_time_26, #id_time_27, #id_time_28, #id_time_29 ' );
-		var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
-		var apartmentNameBox = $('#id_appartment_name').val();
-		function checkApartment(apartmentNameBox){
-			var allowableApartment = "深大团委";
-			if (apartmentNameBox == allowableApartment) {
-				return true;
-			}
-			else{
-				return false;
-			}
-		}
-        var bannedTimeChecked = false;
-        for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
-            if(bannedTimeChkBoxs[i].checked)
-            {
-                bannedTimeChecked = true;
-                break;
-            }
-        }
-		if(isSunday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment() == false){
-			timeErrorBox.text( '426会议室周日18：00-23：00只允许深大团委申请，不便之处请谅，谢谢合作！' );
-			alert('426会议室周日18：00-23：00只允许深大团委申请，不便之处请谅，谢谢合作！')
-			return false;
-		}
-		else{
-			bannedTimeChkBoxs.removeAttr( 'disabled' );
-			timeErrorBox.text('');
-		}
-}
-
-function checkTuesdayWednewday(){
-		var bannedPlaceBox = $('#id_place_0');
-		var bannedTimeChkBoxs = $( '#id_time_20,#id_time_21,#id_time_22,#id_time_23,#id_time_24, #id_time_25, #id_time_26, #id_time_27, #id_time_28, #id_time_29 ' );
-		var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
-		var apartmentNameBox = $('#id_appartment_name').val();
-		function checkApartment(apartmentNameBox){
-			var allowableApartment = "艺术团";
-			if (apartmentNameBox == allowableApartment) {
-				return true;
-			}
-			else{
-				return false;
-			}
-		}
-        var bannedTimeChecked = false;
-        for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
-            if(bannedTimeChkBoxs[i].checked)
-            {
-                bannedTimeChecked = true;
-                break;
-            }
-        }
-		if((isTusday() || isWednesday()) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment() == false){
-			timeErrorBox.text( '综合楼101活动室周二周三18：00-23：00只允许艺术团申请，不便之处请谅，谢谢合作！' );
-			alert('综合楼101活动室周二周三18：00-23：00只允许艺术团申请，不便之处请谅，谢谢合作！')
-			return false;
-		}
-		else{
-			bannedTimeChkBoxs.removeAttr( 'disabled' );
-			timeErrorBox.text('');
-		}
-}
-
-function isMonday(){
-	if( $( '#id_date_year'  ).val() == '' ||
-	    $( '#id_date_month' ).val() == '' || 
-	    $( '#id_date_day'   ).val() == '' ){
-		return;
 	}
-	
-	var applDay = new Date( $( '#id_date_year'  ).val(), $( '#id_date_month' ).val()-1, $( '#id_date_day'   ).val() );
-	if( applDay.getDay() == 1 ){
-		return true;
+
+	if(isSunday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked){
+		timeErrorBox.text( '307会议室周日20：00-23：00暂停申请，谢谢合作!' );
+		alert('307会议室周日20：00-23：00暂停申请，谢谢合作!')
+		return false;
 	}
 	else{
+		bannedTimeChkBoxs.removeAttr( 'disabled' );
+		timeErrorBox.text('');
+	}
+}
+
+// 综合服务楼426周日19:30-21:30仅供深大团委使用
+function checkSunday426(){
+	var bannedPlaceBox = $('#id_place_3');
+	var bannedTimeChkBoxs = $( '#id_time_23,#id_time_24, #id_time_25, #id_time_26' );
+	var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
+	var apartmentNameBox = $('#id_appartment_name').val();
+	function checkApartment(apartmentNameBox){
+		var allowableApartment = "深大团委";
+		if (apartmentNameBox == allowableApartment) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	var bannedTimeChecked = false;
+	for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
+		if(bannedTimeChkBoxs[i].checked)
+		{
+			bannedTimeChecked = true;
+			break;
+		}
+	}
+	if(isSunday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment() == false){
+		timeErrorBox.text( '426会议室周日19:30-21:30供深大团委使用，不便之处请谅解，谢谢合作！' );
+		alert('426会议室周日19:30-21:30供深大团委使用，不便之处请谅解，谢谢合作！')
+		return false;
+	}
+	else{
+		bannedTimeChkBoxs.removeAttr( 'disabled' );
+		timeErrorBox.text('');
+	}
+}
+
+// 综合楼101活动室周一周二18：00-23：00时段供艺术团使用
+function checkMonsdayTuesday(){
+	var bannedPlaceBox = $('#id_place_0');
+	var bannedTimeChkBoxs = $( '#id_time_20,#id_time_21,#id_time_22,#id_time_23,#id_time_24, #id_time_25, #id_time_26, #id_time_27, #id_time_28, #id_time_29 ' );
+	var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
+	var apartmentNameBox = $('#id_appartment_name').val();
+	function checkApartment(apartmentNameBox){
+		var allowableApartment = "艺术团";
+		if (apartmentNameBox == allowableApartment) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	var bannedTimeChecked = false;
+	for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
+		if(bannedTimeChkBoxs[i].checked)
+		{
+			bannedTimeChecked = true;
+			break;
+		}
+	}
+	if((isTusday() || isMonday()) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment() == false){
+		timeErrorBox.text( '综合楼101活动室周一周二18：00-23：00时段供艺术团使用，不便之处请谅解，谢谢合作！' );
+		alert('综合楼101活动室周一周二18：00-23：00时段供艺术团使用，不便之处请谅解，谢谢合作！')
+		return false;
+	}
+	else{
+		bannedTimeChkBoxs.removeAttr( 'disabled' );
+		timeErrorBox.text('');
+	}
+}
+
+function isMonday()
+{
+	if( $( '#id_date_year'  ).val() == '' ||
+		$( '#id_date_month' ).val() == '' || 
+		$( '#id_date_day'   ).val() == '' )
+	{
+		return;
+	}
+
+	var applDay = new Date( $( '#id_date_year'  ).val(), $( '#id_date_month' ).val()-1, $( '#id_date_day'   ).val() );
+	if( applDay.getDay() == 1 )
+	{
+		return true;
+	}
+	else
+	{
 		return false;
 	}
 }
 
-function isSunday(){
+function isSunday()
+{
 	if( $( '#id_date_year'  ).val() == '' ||
-	    $( '#id_date_month' ).val() == '' || 
-	    $( '#id_date_day'   ).val() == '' ){
+		$( '#id_date_month' ).val() == '' || 
+		$( '#id_date_day'   ).val() == '' )
+	{
 		return;
 	}
 	var applDay = new Date( $( '#id_date_year'  ).val(), $( '#id_date_month' ).val()-1, $( '#id_date_day'   ).val() );
@@ -156,39 +166,48 @@ function isSunday(){
 	}
 }
 
-function isWednesday(){
+function isWednesday()
+{
 	if( $( '#id_date_year'  ).val() == '' ||
-	    $( '#id_date_month' ).val() == '' || 
-	    $( '#id_date_day'   ).val() == '' ){
+		$( '#id_date_month' ).val() == '' || 
+		$( '#id_date_day'   ).val() == '' )
+	{
 		return;
 	}
-	
+
 	var applDay = new Date( $( '#id_date_year'  ).val(), $( '#id_date_month' ).val()-1, $( '#id_date_day'   ).val() );
-	if( applDay.getDay() == 3 ){
+	if( applDay.getDay() == 3 )
+	{
 		return true;
 	}
-	else{
+	else
+	{
 		return false;
 	}
 }
 
-function isTusday(){
+function isTusday()
+{
 	if( $( '#id_date_year'  ).val() == '' ||
-	    $( '#id_date_month' ).val() == '' || 
-	    $( '#id_date_day'   ).val() == '' ){
+		$( '#id_date_month' ).val() == '' || 
+		$( '#id_date_day'   ).val() == '' )
+	{
 		return;
 	}
-	
+
 	var applDay = new Date( $( '#id_date_year'  ).val(), $( '#id_date_month' ).val()-1, $( '#id_date_day'   ).val() );
-	if( applDay.getDay() == 2 ){
+	if( applDay.getDay() == 2 )
+	{
 		return true;
 	}
-	else{
+	else
+	{
 		return false;
 	}
 }
 
-function checkConflict( ){
+function checkConflict( )
+{
 	var app_info = [];
 
 	// check is modifying or adding
@@ -235,51 +254,51 @@ function checkConflict( ){
 		'22点30分-23点':29,
 	}
 	$.ajax({
-	    url: '../conflict_for_form/',
-	    data: app_info.join('&'),
-	    success: function( conflict_apps ) {
-	    	var alert_text = [];
-	    	if( conflict_apps.length > 0 ){
-	    		alert_text.push( '下列申请时间与您欲申请的时间有重叠，\n**有可能**导致您的申请不能通过审批。' );
-		    	alert_text.push( '--------------------------------------------' );
+		url: '../conflict_for_form/',
+		data: app_info.join('&'),
+		success: function( conflict_apps ) {
+			var alert_text = [];
+			if( conflict_apps.length > 0 ){
+				alert_text.push( '下列申请时间与您欲申请的时间有重叠，\n**有可能**导致您的申请不能通过审批。' );
+				alert_text.push( '--------------------------------------------' );
 
-	    		var i;
-	    		var conflict_time_json = {};
-	    		var conflict_time_array = [];
-	    		var c_t_array=[];
-		    	for( i = 0; i < conflict_apps.length; i++ ){
-		    		for ( j=0; j<conflict_apps[i]['conflict_time'].length; j++){
-		    			conflict_time_json[conflict_apps[i]['conflict_time'][j]]='';
-		    		}
-		    	}
-		    	for( c_t in conflict_time_json){
-		    		c_t_array[time_index[c_t]]=c_t;
-		    	}
-		    	for( c_t in c_t_array ){
-		    		conflict_time_array.push( c_t_array[c_t] );
-		    	}
-		    	alert_text.push( conflict_time_array.join(',\n'));
-	    		alert_text.push( '--------------------------------------------' );
-		    	alert_text.push( '点击"确定"继续提交，点击"取消"修改时间。' );
+				var i;
+				var conflict_time_json = {};
+				var conflict_time_array = [];
+				var c_t_array=[];
+				for( i = 0; i < conflict_apps.length; i++ ){
+					for ( j=0; j<conflict_apps[i]['conflict_time'].length; j++){
+						conflict_time_json[conflict_apps[i]['conflict_time'][j]]='';
+					}
+				}
+				for( c_t in conflict_time_json){
+					c_t_array[time_index[c_t]]=c_t;
+				}
+				for( c_t in c_t_array ){
+					conflict_time_array.push( c_t_array[c_t] );
+				}
+				alert_text.push( conflict_time_array.join(',\n'));
+				alert_text.push( '--------------------------------------------' );
+				alert_text.push( '点击"确定"继续提交，点击"取消"修改时间。' );
 
-		        var continue_submit_form = confirm( alert_text.join('\n') );
-		        if( continue_submit_form ){
-		        	$('#application_form').submit();
-	    		}
-	        }
-	        else{
-	        	$('#application_form').submit();
-	        }
-	    	
-	    }
+				var continue_submit_form = confirm( alert_text.join('\n') );
+				if( continue_submit_form ){
+					$('#application_form').submit();
+				}
+			}
+			else{
+				$('#application_form').submit();
+			}
+
+		}
 	});
 	//return false;
 }
 
 // 从地址中获取值
 function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
-    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	results = regex.exec(location.search);
+	return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
