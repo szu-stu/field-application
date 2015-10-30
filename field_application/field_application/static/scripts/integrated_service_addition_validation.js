@@ -1,4 +1,6 @@
-// coding by 伟志，reviewing by 泽集
+
+//@autor Dolby
+//@Checker Jim
 
 $(function(){
 	//$('#id_date_month, #id_date_day, #id_date_year').change(checkMonday);
@@ -84,9 +86,9 @@ function checkSunday426(){
 			break;
 		}
 	}
-	if(isSunday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment() == false){
+	if(isSunday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
 		timeErrorBox.text( '426会议室周日19:30-21:30供深大团委使用，不便之处请谅解，谢谢合作！' );
-		alert('426会议室周日19:30-21:30供深大团委使用，不便之处请谅解，谢谢合作！')
+		alert('426会议室周日19:30-21:30供深大团委使用，不便之处请谅解，谢谢合作！');
 		return false;
 	}
 	else{
@@ -118,9 +120,9 @@ function checkMonsdayTuesday(){
 			break;
 		}
 	}
-	if((isTusday() || isMonday()) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment() == false){
+	if((isTusday() || isMonday()) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
 		timeErrorBox.text( '综合楼101活动室周一周二18：00-23：00时段供艺术团使用，不便之处请谅解，谢谢合作！' );
-		alert('综合楼101活动室周一周二18：00-23：00时段供艺术团使用，不便之处请谅解，谢谢合作！')
+		alert('综合楼101活动室周一周二18：00-23：00时段供艺术团使用，不便之处请谅解，谢谢合作！');
 		return false;
 	}
 	else{
