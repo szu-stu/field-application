@@ -10,7 +10,7 @@ $(function(){
 	$('form').submit(checkSunday);
 	$('#id_date_month, #id_date_day, #id_date_year').change(checkSunday426);// 综合服务楼426周日19:30-21:30仅供深大团委使用
 	$('form').submit(checkSunday426);
-	$('#id_date_month, #id_date_day, #id_date_year').change(checkMonsdayTuesday);// 综合楼101活动室周一周二18：00-23：00时段供艺术团使用
+	$('#id_date_month, #id_date_day, #id_date_year').change(checkMonsdayTuesday);// 综合楼101活动室周一周二周三18：00-23：00时段供艺术团使用
 	$('form').submit(checkMonsdayTuesday);
 });
 
@@ -97,7 +97,7 @@ function checkSunday426(){
 	}
 }
 
-// 综合楼101活动室周一周二18：00-23：00时段供艺术团使用
+// 综合楼101活动室周一周二周三18：00-23：00时段供艺术团使用
 function checkMonsdayTuesday(){
 	var bannedPlaceBox = $('#id_place_0');
 	var bannedTimeChkBoxs = $( '#id_time_20,#id_time_21,#id_time_22,#id_time_23,#id_time_24, #id_time_25, #id_time_26, #id_time_27, #id_time_28, #id_time_29 ' );
@@ -120,7 +120,7 @@ function checkMonsdayTuesday(){
 			break;
 		}
 	}
-	if((isTusday() || isMonday()) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
+	if((isTusday() || isMonday()||isWednesday()) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
 		timeErrorBox.text( '综合楼101活动室周一周二18：00-23：00时段供艺术团使用，不便之处请谅解，谢谢合作！' );
 		alert('综合楼101活动室周一周二18：00-23：00时段供艺术团使用，不便之处请谅解，谢谢合作！');
 		return false;
