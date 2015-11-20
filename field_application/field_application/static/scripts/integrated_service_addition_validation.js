@@ -12,6 +12,8 @@ $(function(){
 	$('form').submit(checkSunday426);
 	$('#id_date_month, #id_date_day, #id_date_year').change(checkMonsdayTuesday);// 综合楼101活动室周一周二周三18：00-23：00时段供艺术团使用
 	$('form').submit(checkMonsdayTuesday);
+	$('#id_date_month, #id_date_day, #id_date_year').change(checkNoon426);// 西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用
+	$('form').submit(checkNoon426);
 });
 
 function checkMonday(){
@@ -131,6 +133,30 @@ function checkMonsdayTuesday(){
 	}
 }
 
+// 西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用
+function checkNoon426(){
+	var bannedPlaceBox = $('#id_place_3');
+	var bannedTimeChkBoxs = $( 'id_time_8,id_time_9,id_time_10,id_time_11,id_time_12' );
+	var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
+	var bannedTimeChecked = false;
+	for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
+		if(bannedTimeChkBoxs[i].checked)
+		{
+			bannedTimeChecked = true;
+			break;
+		}
+	}
+	if(isMonToFri() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked){
+		timeErrorBox.text( '西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用,谢谢合作!' );
+		alert('西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用,谢谢合作!');
+		return false;
+	}
+	else{
+		bannedTimeChkBoxs.removeAttr( 'disabled' );
+		timeErrorBox.text('');
+	}
+}
+
 function isMonday()
 {
 	if( $( '#id_date_year'  ).val() == '' ||
@@ -207,7 +233,25 @@ function isTusday()
 		return false;
 	}
 }
+function isMonToFri()
+{
+	if( $( '#id_date_year'  ).val() == '' ||
+		$( '#id_date_month' ).val() == '' || 
+		$( '#id_date_day'   ).val() == '' )
+	{
+		return;
+	}
 
+	var applDay = new Date( $( '#id_date_year'  ).val(), $( '#id_date_month' ).val()-1, $( '#id_date_day'   ).val() );
+	if( applDay.getDay() == 1||applDay.getDay() == 2 ||applDay.getDay() == 3||applDay.getDay() == 4||applDay.getDay() == 5)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 function checkConflict( )
 {
 	var app_info = [];
