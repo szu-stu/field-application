@@ -136,7 +136,7 @@ function checkMonsdayTuesday(){
 // 西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用
 function checkNoon426(){
 	var bannedPlaceBox = $('#id_place_3');
-	var bannedTimeChkBoxs = $( 'id_time_8,id_time_9,id_time_10,id_time_11,id_time_12' );
+	var bannedTimeChkBoxs = $( '#id_time_8,#id_time_9,#id_time_10,#id_time_11,#id_time_12' );
 	var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
 	var bannedTimeChecked = false;
 	for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
