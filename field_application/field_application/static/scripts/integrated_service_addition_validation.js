@@ -138,7 +138,20 @@ function checkNoon426(){
 	var bannedPlaceBox = $('#id_place_3');
 	var bannedTimeChkBoxs = $( 'id_time_8,id_time_9,id_time_10,id_time_11,id_time_12' );
 	var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
+	var apartmentNameBox = $('#id_appartment_name').val();
 	var bannedTimeChecked = false;
+
+	function checkApartment(apartmentNameBox){
+		var allowableApartment1 = "公会";
+		var allowableApartment2 = "督导室";
+		var allowableApartment3 = "离退办";
+		if (apartmentNameBox == allowableApartment1||apartmentNameBox == allowableApartment2||apartmentNameBox == allowableApartment3) {
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
 	for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
 		if(bannedTimeChkBoxs[i].checked)
 		{
@@ -146,7 +159,7 @@ function checkNoon426(){
 			break;
 		}
 	}
-	if(isMonToFri() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked){
+	if(isMonToFri() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked&&checkApartment(apartmentNameBox)){
 		timeErrorBox.text( '西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用,谢谢合作!' );
 		alert('西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用,谢谢合作!');
 		return false;
