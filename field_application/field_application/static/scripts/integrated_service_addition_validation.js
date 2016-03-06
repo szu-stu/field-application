@@ -14,6 +14,8 @@ $(function(){
 	$('form').submit(checkMonsdayTuesday);
 	$('#id_date_month, #id_date_day, #id_date_year').change(checkNoon426);// 西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用
 	$('form').submit(checkNoon426);
+	$('#id_date_month, #id_date_day, #id_date_year').change(checkSunday101);// 综合楼101活动室周日18：00-23：00时段供深圳大学DJI俱乐部使用
+	$('form').submit(checkSunday101);
 });
 
 function checkMonday(){
@@ -132,6 +134,41 @@ function checkMonsdayTuesday(){
 		timeErrorBox.text('');
 	}
 }
+// 综合楼101活动室周日18：00-23：00时段供深圳大学DJI俱乐部使用
+function checkSunday101()
+{
+	var bannedPlaceBox = $('#id_place_0');
+	var bannedTimeChkBoxs = $( '#id_time_20,#id_time_21,#id_time_22,#id_time_23,#id_time_24, #id_time_25, #id_time_26, #id_time_27, #id_time_28, #id_time_29 ' );
+	var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
+	var apartmentNameBox = $('#id_appartment_name').val();
+	function checkApartment(apartmentNameBox){
+		var allowableApartment = "深圳大学DJI俱乐部";
+		if (apartmentNameBox == allowableApartment) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	var bannedTimeChecked = false;
+	for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
+		if(bannedTimeChkBoxs[i].checked)
+		{
+			bannedTimeChecked = true;
+			break;
+		}
+	}
+	if(isSunday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
+		timeErrorBox.text( '综合楼101活动室周日18：00-23：00时段供深圳大学DJI俱乐部使用，不便之处请谅解，谢谢合作！' );
+		alert('综合楼101活动室周日18：00-23：00时段供深圳大学DJI俱乐部使用，不便之处请谅解，谢谢合作！');
+		return false;
+	}
+	else{
+		bannedTimeChkBoxs.removeAttr( 'disabled' );
+		timeErrorBox.text('');
+	}
+}
+
 
 // 西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用
 function checkNoon426(){
