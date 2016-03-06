@@ -31,7 +31,7 @@ function checkMonday(){
 			break;
 		}
 	}
-	if(isMonday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked){
+	if(isDay(["Mon"]) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked){
 		timeErrorBox.text( '石头坞一楼会议室周一12：00-14：00暂停申请，谢谢合作!' );
 		alert('石头坞一楼会议室周一12：00-14：00暂停申请，谢谢合作!')
 		return false;
@@ -56,7 +56,7 @@ function checkSunday(){
 		}
 	}
 
-	if(isSunday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked){
+	if(isDay(["Sun"]) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked){
 		timeErrorBox.text( '307会议室周日20：00-23：00暂停申请，谢谢合作!' );
 		alert('307会议室周日20：00-23：00暂停申请，谢谢合作!')
 		return false;
@@ -90,7 +90,7 @@ function checkSunday426(){
 			break;
 		}
 	}
-	if(isSunday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
+	if(isDay(["Sun"]) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
 		timeErrorBox.text( '426会议室周日19:30-21:30供深大团委使用，不便之处请谅解，谢谢合作！' );
 		alert('426会议室周日19:30-21:30供深大团委使用，不便之处请谅解，谢谢合作！');
 		return false;
@@ -124,9 +124,9 @@ function checkMonsdayTuesday(){
 			break;
 		}
 	}
-	if((isTusday() || isMonday()||isWednesday()) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
-		timeErrorBox.text( '综合楼101活动室周一周二18：00-23：00时段供艺术团使用，不便之处请谅解，谢谢合作！' );
-		alert('综合楼101活动室周一周二18：00-23：00时段供艺术团使用，不便之处请谅解，谢谢合作！');
+	if(isDay(["Tus","Mon","Wed"]) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
+		timeErrorBox.text( '综合楼101活动室周一周二周三18：00-23：00时段供艺术团使用，不便之处请谅解，谢谢合作！' );
+		alert('综合楼101活动室周一周二周三18：00-23：00时段供艺术团使用，不便之处请谅解，谢谢合作！');
 		return false;
 	}
 	else{
@@ -158,7 +158,7 @@ function checkSunday101()
 			break;
 		}
 	}
-	if(isSunday() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
+	if(isDay(["Sun"]) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
 		timeErrorBox.text( '综合楼101活动室周日18：00-23：00时段供深圳大学DJI俱乐部使用，不便之处请谅解，谢谢合作！' );
 		alert('综合楼101活动室周日18：00-23：00时段供深圳大学DJI俱乐部使用，不便之处请谅解，谢谢合作！');
 		return false;
@@ -196,7 +196,7 @@ function checkNoon426(){
 			break;
 		}
 	}
-	if(isMonToFri() && bannedPlaceBox.prop('checked') == true && bannedTimeChecked&&checkApartment(apartmentNameBox)){
+	if(isDay(["Mon","Tus","Wed","Thu","Fri"]) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked&&checkApartment(apartmentNameBox)){
 		timeErrorBox.text( '西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用,谢谢合作!' );
 		alert('西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用,谢谢合作!');
 		return false;
@@ -302,6 +302,44 @@ function isMonToFri()
 		return false;
 	}
 }
+
+Array.prototype.contains = function(obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function isDay(daylist)//daylist is a list,eg: daylist=["Mon","Tus"];
+{
+	var year=$( '#id_date_year'  ).val(),
+		month=$( '#id_date_month' ).val(),
+		day=$( '#id_date_day'   ).val(),
+		weekdays=["Mon","Tus","Wed","Thu",'Fri',"Sat","Sun"],
+		applDate = new Date( year,month-1, day ),
+		applDay=applDate.getDay();
+
+	for (var i=0,length=daylist.length;i<length;i++){
+		if( !weekdays.contains(daylist[i])){
+			console.log("isDay 函数传入的参数有误，请检查");
+		}
+	}
+
+	if( year == '' ||month == '' || day == '' ){
+		return;
+	}
+	if( daylist.contains(weekdays[applDay]) ){
+		return true;
+	}
+	else{
+		return false;
+	}
+
+}
+
 function checkConflict( )
 {
 	var app_info = [];
