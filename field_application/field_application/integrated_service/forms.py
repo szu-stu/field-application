@@ -43,20 +43,13 @@ class InteServiceApplicationForm(forms.ModelForm):
                     place=self.cleaned_data.get('place'),
                     date=self.cleaned_data.get('date'),
                     time__contains=time,
-                    approved=True).exists():
+                    ).exists():
                 msg = time + u'已有人申请'
                 self._errors['time'] = self.error_class([msg])
-                del self.cleaned_data['time']
-                return self.cleaned_data
-
-        for time in self.cleaned_data['time']:
-            if len(InteServiceApplication.objects.filter(
-                    place=self.cleaned_data.get('place'),
-                    date=self.cleaned_data.get('date'),
-                    time__contains=time)) > 1:
-                msg = time + u'已有过多人申请'
-                self._errors['time'] = self.error_class([msg])
-                del self.cleaned_data['time']
-                break
+                raise forms.ValidationError(
+                    u'您的申请与别人有冲突，请检查')
         return self.cleaned_data
+
+
+        
 
