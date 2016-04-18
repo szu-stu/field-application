@@ -105,6 +105,8 @@ class ExhibitApplicationForm(forms.ModelForm):
             raise forms.ValidationError(u'申请的场地使用时间距离现在不能超过14天')
         return end_date
 
+    
+
 
 #  检查场地是否已经存在通过的申请 not used now
 def check_publicity(place_list,

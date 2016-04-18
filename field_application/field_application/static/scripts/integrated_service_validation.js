@@ -1,10 +1,3 @@
-$(function(){
-	//$('#id_date_month, #id_date_day, #id_date_year').change(checkMonday);
-	//$('[id^="id_place_"]').change(checkMonday);
-	//$('form').submit(checkMonday);
-	$('#id_date_month, #id_date_day, #id_date_year').change(checkSunday);
-	$('form').submit(checkSunday);
-});
 
 function checkConflict( ){
 	var app_info = [];
