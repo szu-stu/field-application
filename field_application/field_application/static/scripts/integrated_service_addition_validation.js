@@ -5,8 +5,7 @@
 $(function(){
 	$('#id_date_month, #id_date_day, #id_date_year').change(checkSunday426);// 综合服务楼426周日19:00-22:00仅供深大团委使用
 	$('form').submit(checkSunday426);
-	// $('#id_date_month, #id_date_day, #id_date_year').change(checkMonsdayTuesday);// 综合楼101活动室周一周二周三18：00-23：00时段供艺术团使用
-	// $('form').submit(checkMonsdayTuesday);
+	
 	$('#id_date_month, #id_date_day, #id_date_year').change(checkNoon426);// 西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用
 	$('form').submit(checkNoon426);
 	$('#id_date_month, #id_date_day, #id_date_year').change(checkSunday101);//每周日下午14:00-18:00以及每周日晚19:00-22:00，综合服务楼,101，深大艺术团民乐分团使用。
