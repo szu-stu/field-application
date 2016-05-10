@@ -48,15 +48,5 @@ class MeetingRoomApplicationForm(forms.ModelForm):
                 self._errors['time'] = self.error_class([msg])
                 del self.cleaned_data['time']
                 return self.cleaned_data
-
-        for time in self.cleaned_data['time']:
-            if len(MeetingRoomApplication.objects.filter(
-                    place=self.cleaned_data.get('place'),
-                    date=self.cleaned_data.get('date'),
-                    time__contains=time)) >= 1:
-                msg = time + u'已有过多人申请'
-                self._errors['time'] = self.error_class([msg])
-                del self.cleaned_data['time']
-                break
         return self.cleaned_data
 
