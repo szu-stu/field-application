@@ -29,7 +29,7 @@ function checkMonday(){
 			timeErrorBox.text('');
 		}
 }
-
+/*
 function checkSunday(){
 		var bannedPlaceBox = $('#id_place_0');
 		var bannedTimeChkBoxs = $( '#id_time_24, #id_time_25, #id_time_26, #id_time_27, #id_time_28, #id_time_29 ' );
@@ -54,7 +54,7 @@ function checkSunday(){
 			timeErrorBox.text('');
 		}
 }
-
+*/
 function isMonday(){
 	if( $( '#id_date_year'  ).val() == '' ||
 	    $( '#id_date_month' ).val() == '' || 
