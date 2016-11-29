@@ -1,30 +1,29 @@
-
 //@autor Dolby
 //@Checker Jim
 
 $(function(){
-	$('#id_date_month, #id_date_day, #id_date_year').change(checkSunday426);// 综合服务楼426周日20:30-11:00仅供深大团委使用
-	$('form').submit(checkSunday426);
-	
-	$('#id_date_month, #id_date_day, #id_date_year').change(checkNoon426);// 西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用
-	$('form').submit(checkNoon426);
-	$('#id_date_month, #id_date_day, #id_date_year').change(checkMonday101);//每周一晚18:00-22:00，综合服务楼101，深大艺术团戏剧分团使用。
-	$('form').submit(checkMonday101);
-	$('#id_date_month, #id_date_day, #id_date_year').change(checkFriday101);//每周五晚18:00-22:00，综合服务楼101，深大艺术团使用。
-	$('form').submit(checkFriday101);
-	$('#id_date_month, #id_date_day, #id_date_year').change(checkSaturday101);//每周六下午15:00-21:00，综合服务楼101，深大艺术团戏剧分团使用
-	$('form').submit(checkSaturday101);
-	$('#id_date_month, #id_date_day, #id_date_year').change(checkSunday101);//每周日下午15:00-21:00，综合服务楼101，深大艺术团戏剧分团使用
-	$('form').submit(checkSunday101);
-	$('#id_date_month, #id_date_day, #id_date_year').change(checkThursdayNav);///每周四晚19:00-22:00综合服务楼大厅，深大艺术团使用
-	$('form').submit(checkThursdayNav);
-
+	$('#id_date_month, #id_date_day, #id_date_year').change(check426su20302300);//综合服务楼426周日20:30-23:00仅供深大团委使用
+	$('form').submit(check426su20302300);
+	$('#id_date_month, #id_date_day, #id_date_year').change(check426wd12301430);//西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用
+	$('form').submit(check426wd12301430);
+	$('#id_date_month, #id_date_day, #id_date_year').change(check101mo18002200);//每周一18:00-22:00综合服务楼101，深大艺术团戏剧分团使用。
+	$('form').submit(check101mo18002200);
+	$('#id_date_month, #id_date_day, #id_date_year').change(check101fr18002200);//每周五18:00-22:00综合服务楼101，深大艺术团使用。
+	$('form').submit(check101fr18002200);
+	$('#id_date_month, #id_date_day, #id_date_year').change(check101sa15002100);//每周六15:00-21:00综合服务楼101，深大艺术团戏剧分团使用
+	$('form').submit(check101sa15002100);
+	$('#id_date_month, #id_date_day, #id_date_year').change(check101su15002100);//每周日15:00-21:00综合服务楼101，深大艺术团戏剧分团使用
+	$('form').submit(check101su15002100);
+	$('#id_date_month, #id_date_day, #id_date_year').change(check101th17002200);//每周四17:00-22:00综合服务楼101，深大艺术团使用
+	$('form').submit(check101th17002200);
+	$('#id_date_month, #id_date_day, #id_date_year').change(check100th19002300);//每周四19:00-23:00综合服务楼大厅，深大艺术团/WE使用
+	$('form').submit(check100th19002300);
 });
 
 
 
 //20:30-23:00
-function checkSunday426(){
+function check426su20302300(){
 	var bannedPlaceBox = $('#id_place_3');
 	var bannedTimeChkBoxs = $('#id_time_25,#id_time_26,#id_time_27,#id_time_28,#id_time_29');
 	var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
@@ -57,8 +56,43 @@ function checkSunday426(){
 	}
 }
 
+//每周4晚17:00-22:00，综合服务楼101，仅供深大艺术团民乐分团使用
+function check101th17002200()
+{
+	var bannedPlaceBox = $('#id_place_0');
+	var bannedTimeChkBoxs = $( '#id_time18,#id_time_19,#id_time_20,#id_time_21,#id_time_22,#id_time_23,#id_time_24, #id_time_25, #id_time_26,#id_time_27' );
+	var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
+	var apartmentNameBox = $('#id_appartment_name').val();
+	function checkApartment(apartmentNameBox){
+		var allowableApartment = "艺术团";
+		if (apartmentNameBox == allowableApartment) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	var bannedTimeChecked = false;
+	for(var i = 0; i < bannedTimeChkBoxs.length; i++) {
+		if(bannedTimeChkBoxs[i].checked)
+		{
+			bannedTimeChecked = true;
+			break;
+		}
+	}
+	if(isDay([4]) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
+		timeErrorBox.text( '每周4晚17:00-22:00，综合服务楼101，仅供深大艺术团使用，不便之处请谅解，谢谢合作！' );
+		alert('每周4晚17:00-22:00，综合服务楼101，仅供深大艺术团使用，不便之处请谅解，谢谢合作！');
+		return false;
+	}
+	else{
+		bannedTimeChkBoxs.removeAttr( 'disabled' );
+		timeErrorBox.text('');
+	}
+}
+
 //每周五晚18:00-22:00，综合服务楼110，仅供深大艺术团戏剧分团使用，每周五晚19:00-21:30，综合服务楼110，仅供深大艺术团民乐分团使用
-function checkFriday101()
+function check101fr18002200()
 {
 	var bannedPlaceBox = $('#id_place_0');
 	var bannedTimeChkBoxs = $( '#id_time_20,#id_time_21,#id_time_22,#id_time_23,#id_time_24, #id_time_25, #id_time_26,#id_time_27' );
@@ -93,7 +127,7 @@ function checkFriday101()
 }
 
 //每周1玩18.00 到 22.00 深大艺术团戏剧分团
-function checkMonday101()
+function check101mo18002200()
 {
 	var bannedPlaceBox = $('#id_place_0');
 	var bannedTimeChkBoxs = $( '#id_time_20,#id_time_21,#id_time_22,#id_time_23,#id_time_24, #id_time_25, #id_time_26,#id_time_27' );
@@ -128,7 +162,7 @@ function checkMonday101()
 }
 
 //每周6下午15.00 到 21.00 深大艺术团戏剧分团
-function checkSaturday101()
+function check101sa15002100()
 {
 	var bannedPlaceBox = $('#id_place_0');
 	var bannedTimeChkBoxs = $( '#id_time_14,#id_time_15,#id_time_16,#id_time_17,#id_time_18,#id_time_19,#id_time_20,#id_time_21_#id_time_22,#id_time_23,#id_time_24,#id_time_25' );
@@ -162,10 +196,10 @@ function checkSaturday101()
 	}
 }
 
-//每周四晚上19.-22. 深圳大学艺术团训练使用，综合服务楼大厅
-function checkThursdayNav(){
+//每周四晚上19.-23. 深圳大学艺术团训练使用，综合服务楼大厅
+function check100th19002300(){
 	var bannedPlaceBox = $('#id_place_4');
-	var bannedTimeChkBoxs = $( '#id_time_22,#id_time_23,#id_time_24, #id_time_25, #id_time_26,#id_time_27' );
+	var bannedTimeChkBoxs = $( '#id_time_22, #id_time_23, #id_time_24, #id_time_25, #id_time_26, #id_time_27, #id_time_28 ,#id_time_29' );
 	var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
 	var apartmentNameBox = $('#id_appartment_name').val();
 	function checkApartment(apartmentNameBox){
@@ -186,8 +220,8 @@ function checkThursdayNav(){
 		}
 	}
 	if(isDay([4]) && bannedPlaceBox.prop('checked') == true && bannedTimeChecked && checkApartment(apartmentNameBox) == false){
-		timeErrorBox.text( '每周四下午19:00-22:00，综合服务楼101，仅供深大艺术团使用，不便之处请谅解，谢谢合作！' );
-		alert('每周四下午19:00-22:00，综合服务楼101，仅供深大艺术团使用，不便之处请谅解，谢谢合作！');
+		timeErrorBox.text( '每周四下午19:00-23:00，综合服务楼101，仅供深大艺术团使用，不便之处请谅解，谢谢合作！' );
+		alert('每周四下午19:00-23:00，综合服务楼101，仅供深大艺术团使用，不便之处请谅解，谢谢合作！');
 		return false;
 	}
 	else{
@@ -196,7 +230,7 @@ function checkThursdayNav(){
 	}
 }
 //每周7下午15.00 到 20.00 深大艺术团戏剧分团
-function checkSunday101()
+function check101su15002100()
 {
 	var bannedPlaceBox = $('#id_place_0');
 	var bannedTimeChkBoxs = $( '#id_time_14,#id_time_15,#id_time_16,#id_time_17,#id_time_18,#id_time_19,#id_time_20,#id_time_21_#id_time_22,#id_time_23' );
@@ -230,7 +264,7 @@ function checkSunday101()
 	}
 }
 // 西南综合服务楼426会议室 周一到周五的12点半至14点半期间不可用
-function checkNoon426(){
+function check426wd12301430(){
 	var bannedPlaceBox = $('#id_place_3');
 	var bannedTimeChkBoxs = $( '#id_time_9,#id_time_10,#id_time_11,#id_time_12' );
 	var timeErrorBox = $( '#id_time_29' ).closest('ul').siblings('div.error');
