@@ -67,9 +67,7 @@ class MeetingRoomApplicationForm(forms.ModelForm):
     def clean(self):
 
         if 'time' not in self.cleaned_data or \
-
                 'date' not in self.cleaned_data or \
-
                 'place' not in self.cleaned_data:
 
             return super(MeetingRoomApplicationForm, self).clean()
