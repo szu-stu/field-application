@@ -1,7 +1,8 @@
 import os
 
 import django.conf.global_settings as DEFAULT_SETTINGS
-
+# import databases settings and debug settings
+from field_application.config.production import *
 
 # Repository directory
 ROOT = os.path.dirname(os.path.dirname(__file__))
@@ -16,7 +17,6 @@ LANGUAGES = (
     ('zh-cn', _('China')),
 )
 
-DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 LOGIN_URL = '/account/signin/'
@@ -26,18 +26,6 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'field_application_db',                      # Or path to database file if using sqlite3.
-        'USER': 'field_application_user',
-        'PASSWORD': 'jkui',
-        'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
-    }
-}
-
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
