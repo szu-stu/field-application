@@ -1,0 +1,15 @@
+#to ignore some file
+#virtualenv
+field_env
+
+#production
+field_application/field_application/config/production.py
+
+#db
+field_application/field_application_db
+
+
+#and the swp..
+*swp
+
+
