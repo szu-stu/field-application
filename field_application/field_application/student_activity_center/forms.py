@@ -21,11 +21,15 @@ class StudentActivityCenterApplicationForm(ModelForm):
 
     def clean_date(self):
         date = self.cleaned_data.get('date')
+        d1 = date.replace(2017, 6, 8) #COMMENT AFTER 20170611
+        d2 = date.replace(2017, 6, 11) #COMMENT AFTER 20170611
         now = datetime.now().date()
         if date < now:
             raise forms.ValidationError(u'所填日期已过')
         if date >= now + timedelta(days=14):
             raise forms.ValidationError(u'申请的场地使用时间距离现在不能超过14天')
+        if (date >= d1) and (date <= d2): #COMMENT AFTER 20170611
+            raise forms.ValidationError(u'四创嘉年华 不开放申请') #COMMENT AFTER 20170611
         return date
 
     def clean(self):
