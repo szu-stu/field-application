@@ -6,8 +6,7 @@ from django.forms import ModelForm
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms import Textarea
 
-from field_application.student_activity_center.models \
-        import StudentActivityCenterApplication
+from field_application.student_activity_center.models import StudentActivityCenterApplication
 
 
 class StudentActivityCenterApplicationForm(ModelForm):
@@ -20,17 +19,12 @@ class StudentActivityCenterApplicationForm(ModelForm):
         }
 
     def clean_date(self):
-		applace = self.cleaned_data.get('place')
         date = self.cleaned_data.get('date')
-        d1 = date.replace(2017, 11, 9) #COMMENT AFTER 20171128
-        d2 = date.replace(2017, 11, 28) #COMMENT AFTER 20171128
         now = datetime.now().date()
         if date < now:
             raise forms.ValidationError(u'所填日期已过')
         if date >= now + timedelta(days=14):
             raise forms.ValidationError(u'申请的场地使用时间距离现在不能超过14天')
-        if (date >= d1) and (date <= d2) and (applace == u'石头坞广场' ): #COMMENT AFTER 20171128
-            raise forms.ValidationError(u'11月9日至11月28日期间为临时快递中心，如需使用，请联系袁老师（电话：26535651，办公地址：学生事务服务中心）') #COMMENT AFTER 20170611
         return date
 
     def clean(self):
